@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstagramGetter {
+	
+	//This is a test to see if github works.
 
 	private String instagramUrl = "https://api.instagram.com/v1/tags/nofilter/media/recent?client_id=CLIENTID";
 	

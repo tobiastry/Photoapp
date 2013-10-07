@@ -1,5 +1,5 @@
 test:
-	f:/project/photoapp/Server/node_modules/.bin/mocha
+	mocha --reporter spec \ --watch --growl
 
 
 .PHONY: test

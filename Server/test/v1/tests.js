@@ -6,9 +6,9 @@ var assert = require('assert');
 var request = require('supertest');
 var mongoose = require('mongoose');
 var winston = require('winston');
-var config = require('./Config/v1/config-debug');
+var config = require('./Config/config');
 
-var url = config.url;
+var url = config.dev.url;
 function tests() {
 	
 	it('should return the slideshow delay', function() {

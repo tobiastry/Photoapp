@@ -12,6 +12,6 @@
 		"winston": "0.7.2"
 	},
 	"scripts":{
-		"test": "test/v1/routes.js"
+		"test": "mocha"
 	}
 }

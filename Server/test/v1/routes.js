@@ -6,13 +6,13 @@ var assert = require('assert');
 var request = require('supertest');
 var mongoose = require('mongoose');
 var winston = require('winston');
-var config = require('./Config/v1/config-debug');
-var tests = require('.test/tests');
+var config = require('../../Config/config');
+var tests = require('./tests');
 
 describe('Routing', function() {
 	
 	before(function() {
-		mongoose.connect(config.db.mongodb);
+		mongoose.connect(config.dev.db.mongodb);
 		done();
 	});
 	 // use describe to give a title to your test suite, in this case the tile is "Account"

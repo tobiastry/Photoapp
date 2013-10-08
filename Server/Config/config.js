@@ -4,9 +4,9 @@
 
 module.exports = {
 	"dev": {
-		"mongodb": "mongodb://localhost",
-		"url": "localhost:8081",		
-		"port": 8081
+		"mongodb": "mongodb://pensolut.net",
+		"url": "localhost:8083",		
+		"port": 8083
 	},
 	"logger": {
 			"api": "logs/api.log",

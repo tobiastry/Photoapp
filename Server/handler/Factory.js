@@ -5,7 +5,7 @@ var factory = {
 				case "v1":
 					
 			}		
-		};
+		}
 }
 
 

@@ -6,12 +6,9 @@ function getVersion(contentType){
 }
 
 var contentType = "";
-function getDelay(req, res){
+exports.getDelay = function (req, res){
 	contentType = req.get('Content-Type');
 	var version = getVersion(contentType);
 	var delay = factory.getDelay(version);
 	res.send(delay); 
 }
-
-//exports
-exports.DelayHandler = getDelay;

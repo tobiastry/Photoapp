@@ -1,8 +1,6 @@
 var config = require('./Config/config');
 var express = require('express');
-var app = express()
-
-var DelayHandler = require('./handler/DelayHandler');
+var app = express();
 
 var routes = require('./Routes/routes');
 var fs = require('fs');
@@ -14,7 +12,7 @@ app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(app.router);
-	app.use(express.static(_dirname + '/public'));
+	//app.use(express.static(_dirname + '/public'));
 });
 
 app.configure('development', function(){
@@ -25,15 +23,15 @@ app.configure('production', function(){
 	app.use(express.errorHandler());
 });
 
-var handlers = {
-	delay: new DelayHandler();
-};
-
 function start(){
-	routes.setup(app, handlers);
-	var port = process.env.Port || config.dev.port;
-	app.listen(port);
-	console.log("Express server listening on port %d in %s mode", port, app.settings.env);
+	routes.setup(app);
+	var port = process.env.PORT || config.dev.port;
+	app.set('port', port);
+	console.log('before listen!');
+	app.listen(port, function(){
+		console.log("listening on port: " + app.get('port'));
+	});
+	//console.log("Express server listening on port %d in %s mode", port, app.settings.env);
 }
 
 // exports

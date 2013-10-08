@@ -1,5 +1,5 @@
 test:
-	mocha --reporter spec \ --watch --growl
+	./node_modules/mocha/bin/mocha --reporter spec \ --watch --growl
 
 
 .PHONY: test

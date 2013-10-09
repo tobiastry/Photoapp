@@ -1,14 +1,20 @@
 var factory = require('./Factory');
+var util = require('./utils');
 
-
-var contentType = "";
 exports.getDelay = function (req, res){
-	var getVersion = function getVersion(contentType){
-	var version = contentType.substring(12, 14);
-	return version;
-	};
-	contentType = req.get('Content-Type');
-	var version = contentType.substring(12, 14);
-	var delay = factory.getDelay(version);
-	res.send(delay); 
+	try{
+		var version = util.getVersion(req);
+		factory.getDelay(res, version);
+	}catch(e){
+		res.send(500, e.message);	
+	}
+}
+
+exports.setDelay = function (req, res){
+	try{
+		var version = util.getVersion(req);
+		factory.setDelay(res, version, req.params.value);
+	}catch(e){
+		res.send(500, e.message);
+	}
 }

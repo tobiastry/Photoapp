@@ -25,8 +25,8 @@ app.configure('production', function(){
 
 function start(){
 	routes.setup(app);
-	var port = process.env.PORT || config.dev.port;
-	app.set('port', port);
+	//var port = process.env.PORT || config.dev.port;
+	//app.set('port', port);
 	console.log('before listen!');
 	app.listen(port, function(){
 		console.log("listening on port: " + app.get('port'));

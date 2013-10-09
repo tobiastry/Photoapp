@@ -1,5 +1,5 @@
 test:
-	./node_modules/mocha/bin/mocha --reporter spec \ --watch --growl
+	./node_modules/mocha/bin/mocha $(find test -name "*test*") --reporter spec \ --watch --growl
 
 
 .PHONY: test

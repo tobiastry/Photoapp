@@ -1,9 +1,12 @@
 /**
  * Contains routes to different services
  */
-var handlers = require('../handler/DelayHandler');
+var DelayHandler = require('../handler/DelayHandler');
+
 function setup(app){
-	app.get('/api/delay', handlers.getDelay);
+	//Delay
+	app.get('/api/delay', DelayHandler.getDelay);
+	app.put('/api/delay/:value', DelayHandler.setDelay);
 }
 
 exports.setup = setup;

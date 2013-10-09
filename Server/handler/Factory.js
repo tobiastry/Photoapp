@@ -14,7 +14,7 @@ function DBException(message){
 exports.getDelay = function(res, version){
 	switch(version){
 		case "v1":
-			Delay.find({version: version}, function(err, delay){
+			Delay.findOne({version: version}, function(err, delay){
 				if(err) throw new DBException(err);
 				res.send(200, delay);
 			});
@@ -28,8 +28,8 @@ exports.setDelay = function(res, version, value){
 	switch(version){
 		case "v1":
 			Delay.update({version: version}, {time: value}, {upsert: true}, function(err, num, raw){
-				if(err) console.log(err);//throw new DBException(err);
-				res.send(200, value);
+				if(err) throw new DBException();//throw new DBException(err);
+				res.send(200, {time: value});
 			});
 			break;
 		default:

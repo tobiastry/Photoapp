@@ -5,10 +5,10 @@
 module.exports = {
 	"dev": {
 		"test": {
-			"mongodb": "mongodb://pensolut.net/phototest",
+			"mongodb": "mongodb://admin:glenn@ds047948.mongolab.com:47948/db",
 			"port": 33000
 		},
-		"mongodb": "mongodb://pensolut.net/photo",
+		"mongodb": "mongodb://admin:glenn@ds047948.mongolab.com:47948/db/photoapp",
 		"url": "localhost:8084",		
 		"port": 8084
 	},

@@ -1,0 +1,22 @@
+<testsuite name="Mocha Tests" tests="2" failures="2" errors="2" skipped="0" timestamp="Sun, 13 Oct 2013 04:47:17 GMT" time="0.015">
+<testcase classname="PUT /api/delay/2" name="should return 4" time="NaN" message="Cannot read property 'statusCode' of undefined"><failure classname="PUT /api/delay/2" name="should return 4" time="NaN" message="Cannot read property 'statusCode' of undefined"><![CDATA[TypeError: Cannot read property 'statusCode' of undefined
+    at Request._callback (/home/sfabriece/project/Photoapp/Server/test/test.js:29:26)
+    at self.callback (/home/sfabriece/project/Photoapp/Server/node_modules/request/request.js:129:22)
+    at Request.EventEmitter.emit (events.js:95:17)
+    at ClientRequest.self.clientErrorHandler (/home/sfabriece/project/Photoapp/Server/node_modules/request/request.js:239:10)
+    at ClientRequest.EventEmitter.emit (events.js:95:17)
+    at Socket.socketErrorListener (http.js:1548:9)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at net.js:441:14
+    at process._tickCallback (node.js:415:13)]]></failure></testcase>
+<testcase classname="GET /api/delay" name="should return 4" time="NaN" message="Cannot read property 'statusCode' of undefined"><failure classname="GET /api/delay" name="should return 4" time="NaN" message="Cannot read property 'statusCode' of undefined"><![CDATA[TypeError: Cannot read property 'statusCode' of undefined
+    at Request._callback (/home/sfabriece/project/Photoapp/Server/test/test.js:46:26)
+    at self.callback (/home/sfabriece/project/Photoapp/Server/node_modules/request/request.js:129:22)
+    at Request.EventEmitter.emit (events.js:95:17)
+    at ClientRequest.self.clientErrorHandler (/home/sfabriece/project/Photoapp/Server/node_modules/request/request.js:239:10)
+    at ClientRequest.EventEmitter.emit (events.js:95:17)
+    at Socket.socketErrorListener (http.js:1548:9)
+    at Socket.EventEmitter.emit (events.js:95:17)
+    at net.js:441:14
+    at process._tickCallback (node.js:415:13)]]></failure></testcase>
+</testsuite>

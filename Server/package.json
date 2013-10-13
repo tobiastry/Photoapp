@@ -13,6 +13,6 @@
 		"request": "2.27.0"
 	},
 	"scripts":{
-		"test": "./node_modueks/.bin/mocha -R xunit test/ > test-reports.xml"
+		"test": "./node_modules/.bin/mocha -R xunit test/ > test-reports.xml"
 	}
 }

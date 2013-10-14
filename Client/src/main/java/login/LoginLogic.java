@@ -13,7 +13,7 @@ public class LoginLogic {
     private static final int PASSWORD = 1234;
 
     /**
-     * Checks the given string against the hardcoded password.
+     * Checks the given string against the hard coded password.
      *
      * @param password
      * @return true if password is correct

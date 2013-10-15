@@ -68,15 +68,12 @@ public class LoginWindow {
         /*
          * Pressing "enter" in the textfield
          * Checking if the submitted password is equal to the one in LoginLogic
+         * If it succeedes the menu stage is generated
          */
         txtBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
                 if (LoginLogic.checkLogin(txtBox.getText())) {
-                    /*
-                     * TODO What ever you want to happen when the correct password is submitted
-                     */
-                    
                   Menu menu = new Menu();
                   menu.generateStage();
                   stage.close();

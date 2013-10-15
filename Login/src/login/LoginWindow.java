@@ -1,4 +1,4 @@
-package Login;
+package login;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,7 +20,6 @@ public class LoginWindow {
      * Scene setup
      */
     private Scene scene;
-    private LoginLogic logic = new LoginLogic();
     
     public LoginWindow() {
         Text header = new Text("Login");
@@ -67,7 +66,7 @@ public class LoginWindow {
         txtBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                if (logic.checkLogin(txtBox.getText())) {
+                if (LoginLogic.checkLogin(txtBox.getText())) {
                     System.exit(0);
                 } else {
                     denied.setVisible(true);

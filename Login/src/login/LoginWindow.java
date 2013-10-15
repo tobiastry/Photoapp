@@ -14,13 +14,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ *
+ * @author Emil
+ */
 public class LoginWindow {
 
     /*
      * Scene setup
      */
     private Scene scene;
-    
+    private Stage stage;
+    private final GridPane grid;
+
     public LoginWindow() {
         Text header = new Text("Login");
         header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 50));
@@ -36,7 +42,7 @@ public class LoginWindow {
         denied.setFill(Color.RED);
         denied.setVisible(false);
 
-        final GridPane grid = new GridPane();
+        grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(10);
@@ -56,18 +62,24 @@ public class LoginWindow {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Login canceled");
-                System.exit(0);
+                stage.close();
             }
         });
         /*
          * Pressing "enter" in the textfield
+         * Checking if the submitted password is equal to the one in LoginLogic
          */
         txtBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
                 if (LoginLogic.checkLogin(txtBox.getText())) {
-                    System.exit(0);
+                    /*
+                     * TODO What ever you want to happen when the correct password is submitted
+                     */
+                    
+                  Menu menu = new Menu();
+                  menu.generateStage();
+                  stage.close();
                 } else {
                     denied.setVisible(true);
                     txtBox.setText("");
@@ -75,13 +87,9 @@ public class LoginWindow {
             }
         });
     }
-
-    /*
-     * Generating the scene in a new window
-     */
-    public void generateScene() {
-                LoginWindow d = new LoginWindow();
-                Stage stage = new Stage();
+   
+       public void generateStage() {
+                stage = new Stage();
                 stage.setScene(scene);
                 stage.initStyle(StageStyle.TRANSPARENT);
                 stage.show();

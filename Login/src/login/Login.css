@@ -1,0 +1,23 @@
+/* 
+    Document   : Login Style Sheet
+    Created on : 14.okt.2013, 17:16:12
+    Author     : Emil
+    Description:
+        Styling certain parts of the login screen
+*/
+
+.root { 
+    -fx-background-color: #95C5D7;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.button {
+    -fx-font-size: 15px;
+    -fx-font-family: "Tahoma";
+    -fx-background-color: #73A3B5;
+}
+
+.button:hover {
+    -fx-background-color: #B7E7F9;
+}

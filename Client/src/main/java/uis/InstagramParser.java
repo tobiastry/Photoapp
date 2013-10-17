@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
 import com.google.gson.*;
 
 public class InstagramParser {
@@ -40,3 +40,4 @@ public class InstagramParser {
 	}
 
 }
+*/

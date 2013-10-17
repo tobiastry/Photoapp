@@ -8,9 +8,13 @@ package sletting;
  *
  * @author Emil
  */
-public class TestMain {
-    public static void main(String[] args){
-       Testtester bs = new Testtester();
-        System.out.println(bs.metode1(4));
+public class Testtester {
+    
+    public int metode1(int tall){
+        return 4+tall;
+    }
+    
+    public String metode2(String ad){
+        return ad;
     }
 }

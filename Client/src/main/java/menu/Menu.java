@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -20,24 +21,30 @@ public class Menu {
     private Stage stage;
     private Scene scene;
     private ArrayList<Button> buttons;
+    private DelayNode delay;
     //Skal holde panes fra andre aktiviteter
     private Pane searchPane, deletePane;
-    
+
     public Menu() {
         buttons = new ArrayList<>();
         this.makeButtons();
         
+        delay = new DelayNode();
+
         root = new GridPane();
         this.buildRootPane();
-        
+
         sidePane = new VBox();
         this.buildSidePane();
-        
+
         root.add(sidePane, 0, 0);
         Pane testPane = new Pane();
-        testPane.setPrefSize(600, 600);
+        testPane.setMinSize(800, 600);
+        testPane.setPrefSize(1080, 720);
+        GridPane.setHgrow(testPane, Priority.ALWAYS);
+        GridPane.setVgrow(testPane, Priority.ALWAYS);
         setActivityPane(testPane);
-        scene = new Scene(root, 800, 600, Color.WHITE);
+        scene = new Scene(root, 1280, 720, Color.WHITE);
 
     }
 
@@ -51,13 +58,14 @@ public class Menu {
 
     private void buildSidePane() {
         sidePane.setAlignment(Pos.TOP_RIGHT);
-        sidePane.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(sidePane, Priority.ALWAYS);
         sidePane.setSpacing(10);
         sidePane.setMinWidth(200);
         sidePane.getChildren().addAll(buttons);
+        sidePane.getChildren().add(delay);
     }
-    
-    private void makeButtons(){
+
+    private void makeButtons() {
         Button btnSearch = new Button("Hente Bilder");
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -86,15 +94,15 @@ public class Menu {
         if (root.getChildren().size() > 2) {
             root.getChildren().remove(1);
         }
-        root.add(activityPane, 1, 0);      
+        root.add(activityPane, 1, 0);
     }
 
     public void generateStage() {
         stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("PhotoApp");
-        stage.setMinHeight(600);
-        stage.setMinWidth(800);
+        stage.setMinHeight(620);
+        stage.setMinWidth(1020);
         stage.show();
     }
 

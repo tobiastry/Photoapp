@@ -5,13 +5,13 @@
 module.exports = {
 	"dev": {
 		"test": {
-			"mongodb": "localhost/test",
+			"mongodb": "pensolut.com/test",
 			"port": 8084
 		}
 	},		
 	"prod": {
-		"mongodb": "mongodb://admin:glenn@ds047948.mongolab.com:47948/db/photoapp",
-		"port": 8081
+		"mongodb": "pensolut.com/live",
+		"port": 80
 	},
 	"logger": {
 		"api": "logs/api.log",

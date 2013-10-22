@@ -7,12 +7,11 @@
 		"express": "3.4.0",
 		"mocha":"1.13.0",
 		"mongoose": "3.6.20",
-		"supertest": "0.8.0",
-		"should": "1.3.0",
 		"winston": "0.7.2",
-		"request": "2.27.0"
+		"request": "2.27.0",
+		"assert": "0.4.9"
 	},
 	"scripts":{
-		"test": "./node_modules/.bin/mocha -R xunit"
+		"test": "./node_modules/.bin/mocha -R spec"
 	}
 }

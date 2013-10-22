@@ -25,13 +25,9 @@ app.configure('production', function(){
 var server = "";
 function start(){
 	routes.setup(app);
-	//var port = process.env.PORT || config.dev.port;
-	//app.set('port', port);
-	//console.log('before listen!');
 	server = app.listen(app.get('port'), function(){
 		console.log("listening on port: " + app.get('port'));
 	});
-	//console.log("Express server listening on port %d in %s mode", port, app.settings.env);
 }
 
 function stop(){

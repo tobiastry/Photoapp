@@ -5,7 +5,7 @@
 module.exports = {
 	"dev": {
 		"test": {
-			"mongodb": "pensolut.com/test",
+			"mongodb": "localhost/test",
 			"port": 8084
 		}
 	},		

@@ -7,7 +7,6 @@ var delaySchema = new Schema({
 });
 
 var pictureSchema = new Schema({
-	version: {type: String, default: 'v1'},
 	thumburl: String,
 	url: String
 });

@@ -12,6 +12,6 @@
 		"assert": "0.4.9"
 	},
 	"scripts":{
-		"test": "./node_modules/.bin/mocha -R xunit"
+		"test": "./node_modules/.bin/mocha -R spec"
 	}
 }

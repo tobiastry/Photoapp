@@ -8,7 +8,8 @@ function setup(app){
 	//Delay
 	app.get('/api/delay', DelayHandler.getDelay);
 	app.put('/api/delay/:value', DelayHandler.setDelay);
-	app.post('/api/picture/addPictures', PictureHandler.insertPictures);
+	app.post('/api/picture/addpictures', PictureHandler.insertPictures);
+	app.get('/api/picture/getpictures', PictureHandler.getPictures);
 }
 
 exports.setup = setup;

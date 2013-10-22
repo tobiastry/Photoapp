@@ -68,3 +68,18 @@ exports.insertPictures = function(res, version, body){
 			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
 	}
 }
+
+exports.getPictures = function (res, version){
+	switch(version){
+		case "v1":
+				Picture.find({url: {$ne: null}}, function(err, pictures){
+					if(err) throw new DBException(err);
+					else{
+						res.send(200, pictures);
+					}
+				});
+			break;
+		default:
+			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
+	}
+}

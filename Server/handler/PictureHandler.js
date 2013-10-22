@@ -9,3 +9,12 @@ exports.insertPictures = function (req, res){
 		res.send(500, e.message);
 	}
 }
+
+exports.getPictures = function (req, res){
+	try{
+		var version = util.getVersion(req);
+		factory.getPictures(res, version);
+	}catch(e){
+		res.send(500, e.message);
+	}
+}

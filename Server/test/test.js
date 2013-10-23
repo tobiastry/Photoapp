@@ -31,7 +31,7 @@ describe ('Test', function(){
 
 	after(function(done){
 		Delay.remove({version: "v1", time: 4}, function(err){});
-		//Picture.remove({url: {$ne: null}}, function(err){});
+		Picture.remove({url: {$ne: null}}, function(err){});
 		db.close();
 		server.stop();
 		done();

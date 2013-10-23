@@ -31,7 +31,7 @@ describe ('Test', function(){
 
 	after(function(done){
 		Delay.remove({version: "v1", time: 4}, function(err){});
-		Picture.remove({url: {$ne: null}}, function(err){});
+		//Picture.remove({url: {$ne: null}}, function(err){});
 		db.close();
 		server.stop();
 		done();
@@ -77,6 +77,7 @@ describe ('Test', function(){
 				headers: {'Content-Type': ct},
 				body: JSON.stringify(pictures)
 				}, function(err, res, body){
+					console.log(body);
 					assert.equal(200, res.statusCode, body);
 					assert.equal(2, JSON.parse(body).successcount, body);
 					done();
@@ -87,8 +88,7 @@ describe ('Test', function(){
 			request({
 				uri: url+ '/api/picture/getpictures',
 				method: 'GET',
-				headers: {'Content-Type': ct},
-				body: JSON.stringify(pictures)
+				headers: {'Content-Type': ct}
 				}, function(err, res, body){
 					assert.equal(200, res.statusCode, body);
 					assert.equal(2, JSON.parse(body).length, body);
@@ -96,6 +96,23 @@ describe ('Test', function(){
 					done();
 				})
 		})// end return pictures
+
+		it('should delete pictures', function(done){
+			var urls = [];
+			urls.push({url: "aaa"});
+			urls.push({url: "bbb"});
+			request({
+				uri: url+ '/api/picture/delete',
+				method: 'DELETE',
+				headers: {'Content-Type': ct},
+				body: JSON.stringify(urls)
+				}, function(err, res, body){
+					console.log(body);
+					assert.equal(200, res.statusCode, body);
+					assert.equal(2, JSON.parse(body).deletecount, body);
+					done();
+				})
+		})// end delete pictures
 	})// end pictures describe 
 	
 })//end describe

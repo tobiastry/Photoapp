@@ -10,6 +10,7 @@ function setup(app){
 	app.put('/api/delay/:value', DelayHandler.setDelay);
 	app.post('/api/picture/addpictures', PictureHandler.insertPictures);
 	app.get('/api/picture/getpictures', PictureHandler.getPictures);
+	app.delete('/api/picture/delete', PictureHandler.deletePictures);
 }
 
 exports.setup = setup;

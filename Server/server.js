@@ -26,7 +26,9 @@ var server = "";
 function start(){
 	routes.setup(app);
 	server = app.listen(app.get('port'), function(){
-		console.log("listening on port: " + app.get('port'));
+		if (process.env.NODE_ENV == 'production') {
+			console.log("listening on port: " + app.get('port'));
+		}
 	});
 }
 

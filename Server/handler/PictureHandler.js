@@ -18,3 +18,12 @@ exports.getPictures = function (req, res){
 		res.send(500, e.message);
 	}
 }
+
+exports.deletePictures = function (req, res){
+	try{
+		var version = util.getVersion(req);
+		factory.deletePictures(res, version, req.body);
+	}catch(e){
+		res.send(500, e.message);
+	}
+}

@@ -7,6 +7,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -14,6 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Menu {
 
@@ -30,7 +35,7 @@ public class Menu {
     public Menu() {
         buttons = new ArrayList<>();
         this.makeButtons();
-        
+
         delay = new DelayNode();
 
         root = new GridPane();
@@ -46,8 +51,22 @@ public class Menu {
         testPane.setPrefSize(1080, 720);
         GridPane.setHgrow(testPane, Priority.ALWAYS);
         GridPane.setVgrow(testPane, Priority.ALWAYS);
+
         setActivityPane(testPane);
         scene = new Scene(root, 1280, 720, Color.WHITE);
+        
+        //To move the window without borders
+        //Need pressed/released also
+        //Maximizing? :s
+        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            System.out.println("Vindu: " + scene.getWindow().getX());
+            System.out.println(event.getX());
+            //scene.getWindow().setX(event.getX());
+            //scene.getWindow().setY(event.getY());
+        }
+    });
 
     }
 
@@ -64,8 +83,8 @@ public class Menu {
         VBox.setVgrow(vPane, Priority.ALWAYS);
         vPane.setSpacing(10);
         vPane.getChildren().addAll(buttons);
-        vPane.setMinWidth(200);        
-        
+        vPane.setMinWidth(200);
+
         sidePane.setMinWidth(200);
         sidePane.getChildren().add(vPane);
         AnchorPane.setTopAnchor(vPane, 5.0);
@@ -87,7 +106,7 @@ public class Menu {
             @Override
             public void handle(ActionEvent event) {
                 //setActivityPane(deletePane);
-                stage.setTitle("PhotoApp");
+                stage.setTitle("Neida");
             }
         });
         buttons.add(btnSearch);
@@ -111,7 +130,7 @@ public class Menu {
         stage.setTitle("PhotoApp");
         stage.setMinHeight(620);
         stage.setMinWidth(1020);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
     }
-
 }

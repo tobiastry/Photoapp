@@ -20,7 +20,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
 	console.log("Successfully connected to mongoDB. Starting web server...");
-	server.app.set('port', process.env.Port || config.prod.port);
+	server.app.set('port', process.env.Port || config.dev.test.port);
 	server.start();
 	console.log("Successfully started web server. Waiting for incoming connections...");
 });

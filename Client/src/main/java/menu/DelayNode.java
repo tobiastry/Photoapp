@@ -4,6 +4,9 @@
  */
 package menu;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -24,9 +27,12 @@ public class DelayNode extends GridPane{
     private TextField delayField;
     private Button setButton;
     private int delay = 0;
+    DelayCom action;
     
     public DelayNode(){
         super();
+                
+        action = new DelayCom();
         
         header  = new Text("Slideshow Intervall");
         header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
@@ -38,12 +44,13 @@ public class DelayNode extends GridPane{
         error.setVisible(false);
         error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
         
-        delayField = new TextField(Integer.toString(getDelay()));
+        delayField = new TextField(getDelay());
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
         
         setButton = new Button("Sett Intervall");
         setButton.setPrefSize(180, 30);
+
         
         setButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -59,11 +66,11 @@ public class DelayNode extends GridPane{
         });
         
         //TODO vurder annet enn gridpane, eller få til colspan
-        this.add(header, 0, 0);
+        this.add(header, 0, 0, 2, 1);
         this.add(delayField, 0, 1);
         this.add(unit, 1, 1);
-        this.add(error, 0, 2);
-        this.add(setButton, 0, 3);
+        this.add(error, 0, 2, 2, 1);
+        this.add(setButton, 0, 3, 2, 1);
     }
     
     private boolean testInput(String input){
@@ -74,14 +81,24 @@ public class DelayNode extends GridPane{
         }        
         return true;
     }
-
-    private int getDelay() {
-        return delay;
+    
+    private String getDelay(){
+        int i;
+        try {
+            i = action.getDelay();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+            return "error";
+        }   
+        return i + "";
     }
     
     private void setDelay(int delay){
-        this.delay = delay + 2;
-        delayField.setText("" + this.delay);
+        try {
+            System.out.println(action.setDelay(delay));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
 }

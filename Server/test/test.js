@@ -11,6 +11,26 @@ var Picture = require('../Model/V1Models').Picture;
 var url = "";
 var db = "";
 var ct = "application/v1+json";
+/*describe('Array', function(){
+  describe('#indexOf()', function(){
+    it('should return -1 when the value is not present', function(){
+      assert.equal((1), [1,2,3].indexOf(5));
+      assert.equal((1), [1,2,3].indexOf(5));
+      assert.equal((2), [1,2,3].indexOf(5));
+    })
+    it('should return -1 when the value is not presenth', function(){
+      assert.equal((-1), [1,2,3].indexOf(5));
+    })
+  })
+})
+describe('Arrays', function(){
+  describe('#indexOfs()', function(){
+    it('should return -1 when the value is not presentl', function(){
+      assert.equal((1), [1,2,3].indexOf(5));
+    })
+  })
+})*/
+
 describe ('Test', function(){
 
 	before(function(done){
@@ -77,7 +97,6 @@ describe ('Test', function(){
 				headers: {'Content-Type': ct},
 				body: JSON.stringify(pictures)
 				}, function(err, res, body){
-					console.log(body);
 					assert.equal(200, res.statusCode, body);
 					assert.equal(2, JSON.parse(body).successcount, body);
 					done();
@@ -107,9 +126,8 @@ describe ('Test', function(){
 				headers: {'Content-Type': ct},
 				body: JSON.stringify(urls)
 				}, function(err, res, body){
-					console.log(body);
 					assert.equal(200, res.statusCode, body);
-					assert.equal(2, JSON.parse(body).deletecount, body);
+					assert.equal(3, JSON.parse(body).deletecount, body);
 					done();
 				})
 		})// end delete pictures

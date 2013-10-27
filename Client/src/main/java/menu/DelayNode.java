@@ -1,12 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package menu;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -26,7 +20,6 @@ public class DelayNode extends GridPane{
     private Text header, unit, error;
     private TextField delayField;
     private Button setButton;
-    private int delay = 0;
     DelayCom action;
     
     public DelayNode(){
@@ -77,6 +70,7 @@ public class DelayNode extends GridPane{
         try {
             int i = Integer.parseInt(input);
         } catch(NumberFormatException e) {
+            //e.printStackTrace();
             return false;
         }        
         return true;
@@ -87,7 +81,7 @@ public class DelayNode extends GridPane{
         try {
             i = action.getDelay();
         } catch(IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return "error";
         }   
         return i + "";
@@ -97,7 +91,7 @@ public class DelayNode extends GridPane{
         try {
             System.out.println(action.setDelay(delay));
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
     

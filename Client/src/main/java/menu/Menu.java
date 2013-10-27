@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -16,7 +17,8 @@ import javafx.stage.Stage;
 
 public class Menu {
 
-    private VBox sidePane;
+    private VBox vPane;
+    private AnchorPane sidePane;
     private GridPane root;
     private Stage stage;
     private Scene scene;
@@ -34,7 +36,8 @@ public class Menu {
         root = new GridPane();
         this.buildRootPane();
 
-        sidePane = new VBox();
+        sidePane = new AnchorPane();
+        vPane = new VBox();
         this.buildSidePane();
 
         root.add(sidePane, 0, 0);
@@ -57,12 +60,17 @@ public class Menu {
     }
 
     private void buildSidePane() {
-        sidePane.setAlignment(Pos.TOP_RIGHT);
-        VBox.setVgrow(sidePane, Priority.ALWAYS);
-        sidePane.setSpacing(10);
+        vPane.setAlignment(Pos.TOP_RIGHT);
+        VBox.setVgrow(vPane, Priority.ALWAYS);
+        vPane.setSpacing(10);
+        vPane.getChildren().addAll(buttons);
+        vPane.setMinWidth(200);        
+        
         sidePane.setMinWidth(200);
-        sidePane.getChildren().addAll(buttons);
+        sidePane.getChildren().add(vPane);
+        AnchorPane.setTopAnchor(vPane, 5.0);
         sidePane.getChildren().add(delay);
+        AnchorPane.setBottomAnchor(delay, 10.0);
     }
 
     private void makeButtons() {

@@ -61,7 +61,6 @@ describe ('Test', function(){
 				}, function(err, res, body){
 					assert.equal(200, res.statusCode, body);
 					assert.equal(4, JSON.parse(body).time, body);
-					assert.equal("v1", JSON.parse(body).version, body);
 					done();
 				})
 		})// end get delay

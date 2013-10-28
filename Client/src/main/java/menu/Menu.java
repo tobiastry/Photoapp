@@ -1,5 +1,6 @@
 package menu;
 
+import getImage.AddPictureGUI;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import login.LoginWindow;
+import removeImage.RemovePictureGUI;
 
 public class Menu {
 
@@ -29,7 +30,7 @@ public class Menu {
     private DelayNode delay;
     double xPos, yPos;
     //Skal holde panes fra andre aktiviteter
-    private Pane searchPane, deletePane;
+    private Pane getImagePane, removeImagePane;
 
     public Menu() {
         buttons = new ArrayList<>();
@@ -45,15 +46,23 @@ public class Menu {
         this.buildSidePane();
 
         root.add(sidePane, 0, 0);
-        Pane testPane = new Pane();
-        testPane.setMinSize(800, 600);
-        testPane.setPrefSize(1080, 720);
-        GridPane.setHgrow(testPane, Priority.ALWAYS);
-        GridPane.setVgrow(testPane, Priority.ALWAYS);
 
-        setActivityPane(testPane);
+        removeImagePane = new RemovePictureGUI();
+        //Pane testPane = new Pane();
+        removeImagePane.setMinSize(800, 600);
+        removeImagePane.setPrefSize(1080, 720);
+        GridPane.setHgrow(removeImagePane, Priority.ALWAYS);
+        GridPane.setVgrow(removeImagePane, Priority.ALWAYS);
+
+        getImagePane = new AddPictureGUI();
+        getImagePane.setMinSize(800, 600);
+        getImagePane.setPrefSize(1080, 720);
+        GridPane.setHgrow(getImagePane, Priority.ALWAYS);
+        GridPane.setVgrow(getImagePane, Priority.ALWAYS);
+
+        setActivityPane(removeImagePane);
         scene = new Scene(root, 1280, 720, Color.WHITE);
-        scene.getStylesheets().add(LoginWindow.class.getResource("Login.css").toExternalForm());
+        //scene.getStylesheets().add(LoginWindow.class.getResource("../stylesheet/Login.css").toExternalForm());
 
 
         sidePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -113,14 +122,14 @@ public class Menu {
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //setActivityPane(searchPane);
+                setActivityPane(getImagePane);
             }
         });
         Button btnDelete = new Button("Slette Bilder");
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //setActivityPane(deletePane);
+                setActivityPane(removeImagePane);
             }
         });
         buttons.add(btnSearch);
@@ -132,7 +141,7 @@ public class Menu {
     }
 
     private void setActivityPane(Pane activityPane) {
-        if (root.getChildren().size() > 2) {
+        if (root.getChildren().size() > 1) {
             root.getChildren().remove(1);
         }
         root.add(activityPane, 1, 0);

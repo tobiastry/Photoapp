@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  */
 public class DelayNode extends GridPane{
         
-    private Text header, unit, error;
+    private Text header, unit, error, confirm;
     private TextField delayField;
     private Button setButton;
     DelayCom action;
@@ -37,6 +37,10 @@ public class DelayNode extends GridPane{
         error.setVisible(false);
         error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
         
+        confirm = new Text("Nytt Intervall Satt!");
+        confirm.setVisible(false);
+        confirm.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        
         delayField = new TextField(getDelay());
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
@@ -48,31 +52,36 @@ public class DelayNode extends GridPane{
         setButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                error.setVisible(false);
+                confirm.setVisible(false);
                 String input = delayField.getText();
                 if(testInput(input)){
-                    error.setVisible(false);
-                    setDelay(Integer.parseInt(input));
+                    int ret = setDelay(Integer.parseInt(input));
+                    if(ret != 0){
+                        confirm.setVisible(true);
+                    }
                 } else{
                     error.setVisible(true);
                 }
             }
         });
         
-        //TODO vurder annet enn gridpane, eller få til colspan
         this.add(header, 0, 0, 2, 1);
         this.add(delayField, 0, 1);
         this.add(unit, 1, 1);
         this.add(error, 0, 2, 2, 1);
+        this.add(confirm, 0, 2, 2, 1);
         this.add(setButton, 0, 3, 2, 1);
     }
     
+    //Hvilke mulige delay skal vi ha?
     private boolean testInput(String input){
         try {
             int i = Integer.parseInt(input);
         } catch(NumberFormatException e) {
             //e.printStackTrace();
             return false;
-        }        
+        }
         return true;
     }
     
@@ -87,12 +96,14 @@ public class DelayNode extends GridPane{
         return i + "";
     }
     
-    private void setDelay(int delay){
+    private int setDelay(int delay){
+        int newDelay = 0;
         try {
-            System.out.println(action.setDelay(delay));
+            newDelay = action.setDelay(delay);
         } catch (IOException ex) {
-            //ex.printStackTrace();
+            //ex.printStackTrace();            
         }
+        return newDelay;
     }
     
 }

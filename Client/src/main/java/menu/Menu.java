@@ -7,10 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -19,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import login.LoginWindow;
 
 public class Menu {
 
@@ -29,6 +27,7 @@ public class Menu {
     private Scene scene;
     private ArrayList<Button> buttons;
     private DelayNode delay;
+    double xPos, yPos;
     //Skal holde panes fra andre aktiviteter
     private Pane searchPane, deletePane;
 
@@ -54,26 +53,43 @@ public class Menu {
 
         setActivityPane(testPane);
         scene = new Scene(root, 1280, 720, Color.WHITE);
-        
-        //To move the window without borders
-        //Need pressed/released also
-        //Maximizing? :s
-        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            System.out.println("Vindu: " + scene.getWindow().getX());
-            System.out.println(event.getX());
-            //scene.getWindow().setX(event.getX());
-            //scene.getWindow().setY(event.getY());
-        }
-    });
+        scene.getStylesheets().add(LoginWindow.class.getResource("Login.css").toExternalForm());
+
+
+        sidePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2 && !event.isConsumed()) {
+                    event.consume();
+                    stage.setFullScreen(!stage.isFullScreen());
+                }
+            }
+        });
+
+        sidePane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xPos = event.getX();
+                yPos = event.getY();
+            }
+        });
+
+        sidePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!stage.isFullScreen()) {
+                    scene.getWindow().setX(event.getScreenX() - xPos);
+                    scene.getWindow().setY(event.getScreenY() - yPos);
+                }
+            }
+        });
 
     }
 
     private void buildRootPane() {
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
-        root.setGridLinesVisible(true);
+        //root.setGridLinesVisible(true);
 
 
     }
@@ -98,7 +114,6 @@ public class Menu {
             @Override
             public void handle(ActionEvent event) {
                 //setActivityPane(searchPane);
-                stage.setTitle("Emil er teit!");
             }
         });
         Button btnDelete = new Button("Slette Bilder");
@@ -106,7 +121,6 @@ public class Menu {
             @Override
             public void handle(ActionEvent event) {
                 //setActivityPane(deletePane);
-                stage.setTitle("Neida");
             }
         });
         buttons.add(btnSearch);

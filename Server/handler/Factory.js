@@ -18,7 +18,7 @@ exports.getDelay = function(res, version){
 			Delay.findOne({version: version}, function(err, delay){
 				if(err) throw new DBException(err);
 				else{
-					res.send(200, delay);
+					res.send(200, {time: delay.time});
 				}
 			});
 			break;

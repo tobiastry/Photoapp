@@ -11,7 +11,7 @@ module.exports = {
 	},		
 	"prod": {
 		"mongodb": "pensolut.com/live",
-		"port": 8081
+		"port": 8084
 	},
 	"logger": {
 		"api": "logs/api.log",

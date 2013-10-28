@@ -11,25 +11,6 @@ var Picture = require('../Model/V1Models').Picture;
 var url = "";
 var db = "";
 var ct = "application/v1+json";
-/*describe('Array', function(){
-  describe('#indexOf()', function(){
-    it('should return -1 when the value is not present', function(){
-      assert.equal((1), [1,2,3].indexOf(5));
-      assert.equal((1), [1,2,3].indexOf(5));
-      assert.equal((2), [1,2,3].indexOf(5));
-    })
-    it('should return -1 when the value is not presenth', function(){
-      assert.equal((-1), [1,2,3].indexOf(5));
-    })
-  })
-})
-describe('Arrays', function(){
-  describe('#indexOfs()', function(){
-    it('should return -1 when the value is not presentl', function(){
-      assert.equal((1), [1,2,3].indexOf(5));
-    })
-  })
-})*/
 
 describe ('Test', function(){
 

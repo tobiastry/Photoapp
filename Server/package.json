@@ -9,8 +9,7 @@
 		"mongoose": "3.6.20",
 		"winston": "0.7.2",
 		"request": "2.27.0",
-		"assert": "0.4.9",
-		"forever": "0.10.9"
+		"assert": "0.4.9"
 	},
 	"scripts":{
 		"test": "./node_modules/.bin/mocha -R tap > report/report.tap"

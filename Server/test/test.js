@@ -107,7 +107,7 @@ describe ('Test', function(){
 				body: JSON.stringify(urls)
 				}, function(err, res, body){
 					assert.equal(200, res.statusCode, body);
-					assert.equal(3, JSON.parse(body).deletecount, body);
+					assert.equal(2, JSON.parse(body).deletecount, body);
 					done();
 				})
 		})// end delete pictures

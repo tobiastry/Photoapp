@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,9 +26,10 @@ public class RemovePictureGUI extends GridPane {
     final ArrayList<Thumbnail> thumbnails;
 
     public RemovePictureGUI() {
-        setHgap(8);
-        setVgap(8);
-        setPadding(new Insets(8));
+        int gap = 8;
+        setHgap(gap);
+        setVgap(gap);
+        setPadding(new Insets(gap));
         ScrollPane scroll = new ScrollPane();
         setVgrow(scroll, Priority.ALWAYS);
         ColumnConstraints cc = new ColumnConstraints();
@@ -36,8 +38,8 @@ public class RemovePictureGUI extends GridPane {
         scroll.setFitToWidth(true);
         FlowPane grid = new FlowPane();
         grid.setPadding(new Insets(8));
-        grid.setVgap(8);
-        grid.setHgap(8);
+        grid.setVgap(gap);
+        grid.setHgap(gap);
         ArrayList<Picture> pictures = new ArrayList<>();
         //= logic.getImageList();
         thumbnails = new ArrayList<>();
@@ -85,14 +87,19 @@ public class RemovePictureGUI extends GridPane {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
-        HBox hbox = new HBox(8);
-        hbox.getChildren().addAll(mark, unmark);
-        add(privious, 0, 1);
-        add(markPage, 1, 1);
-        add(unmarkPage, 2, 1);
-        add(next, 3, 1);
-        add(hbox, 0, 2);
-        add(delete, 3, 2);
+
+        HBox pageMarkBox = new HBox(gap);
+        pageMarkBox.getChildren().addAll(privious, markPage, unmarkPage, next);
+        pageMarkBox.setAlignment(Pos.CENTER);
+        add(pageMarkBox, 0, 1, 3, 1);
+
+        HBox markBox = new HBox(gap);
+        markBox.getChildren().addAll(mark, unmark);
+        markBox.setAlignment(Pos.CENTER);
+        add(markBox, 0, 2, 3, 1);
+
+        setHalignment(delete, HPos.RIGHT);
+        add(delete, 2, 2);
         ThumbnailLoader tl = new ThumbnailLoader();
         Thread t = new Thread(tl);
         t.start();

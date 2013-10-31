@@ -10,7 +10,7 @@ module.exports = {
 		}
 	},		
 	"prod": {
-		"mongodb": "pensolut.com/live",
+		"mongodb": "localhost/live",
 		"port": 8084
 	},
 	"logger": {

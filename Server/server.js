@@ -1,5 +1,6 @@
 var config = require('./Config/config');
 var express = require('express');
+var Delay = require('./Model/V1Models').Delay;
 var app = express();
 
 var routes = require('./Routes/routes');
@@ -9,7 +10,8 @@ var expressLogFile = fs.createWriteStream('./logs/express.log', {flags: 'a'});
 // Configuration
 app.configure(function(){
 	app.use(express.logger({stream: expressLogFile}));
-	app.use(express.bodyParser());
+	app.use(express.json());
+	app.use(express.urlencoded());
 	app.use(express.methodOverride());
 	app.use(app.router);
 	//app.use(express.static(_dirname + '/public'));
@@ -24,12 +26,29 @@ app.configure('production', function(){
 });
 var server = "";
 function start(){
-	routes.setup(app);
-	server = app.listen(app.get('port'), function(){
-		if (process.env.NODE_ENV == 'production') {
-			console.log("listening on port: " + app.get('port'));
+	Delay.findOne({version: "v1"}, function(err, delay){
+		if(!delay) {
+			Delay.create({}, function(err, delay){
+				if (delay) {
+					init();
+				}else{
+					process.exit(1);
+				}
+			});
+		}else{
+			init();
 		}
 	});
+	
+}
+
+function init(){
+	routes.setup(app);
+		server = app.listen(app.get('port'), function(){
+			if (process.env.NODE_ENV == 'production') {
+				console.log("listening on port: " + app.get('port'));
+			}
+		});
 }
 
 function stop(){

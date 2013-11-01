@@ -96,10 +96,9 @@ describe ('Test', function(){
 				})
 		})// end return pictures
 
-		it('should delete pictures', function(done){
+		it('should delete one picture', function(done){
 			var urls = [];
-			urls.push({url: "aaa"});
-			urls.push({url: "bbb"});
+			urls.push({url: "zzz"});
 			request({
 				uri: url+ '/api/picture/delete',
 				method: 'DELETE',
@@ -107,10 +106,23 @@ describe ('Test', function(){
 				body: JSON.stringify(urls)
 				}, function(err, res, body){
 					assert.equal(200, res.statusCode, body);
-					assert.equal(2, JSON.parse(body).deletecount, body);
+					assert.equal(1, JSON.parse(body).deletecount, body);
 					done();
 				})
 		})// end delete pictures
+
+		it('should return one picture', function(done){
+			request({
+				uri: url+ '/api/picture/getpictures',
+				method: 'GET',
+				headers: {'Content-Type': ct}
+				}, function(err, res, body){
+					assert.equal(200, res.statusCode, body);
+					assert.equal(1, JSON.parse(body).length, body);
+					assert.equal("aaa", JSON.parse(body)[0].thumburl, body);
+					done();
+				})
+		})// end return pictures
 	})// end pictures describe 
 	
 })//end describe

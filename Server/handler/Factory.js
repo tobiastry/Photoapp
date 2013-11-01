@@ -12,38 +12,39 @@ function DBException(message){
 	this.name = "DbException";
 }
 
-exports.getDelay = function(res, version){
+exports.getDelay = function(res, version, next){
 	switch(version){
 		case "v1":
 			Delay.findOne({version: version}, function(err, delay){
-				if(err) throw new DBException(err);
-				else{
+				if(!delay) {
+					return next(new DBException("400"));
+				}else{
 					res.send(200, {time: delay.time});
 				}
 			});
 			break;
 		default:
-			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
+			return next(new VersionException("you must supply a Content-Type as shown in the documentation."));
 	}
 }
 
-exports.setDelay = function(res, version, value){
+exports.setDelay = function(res, version, value, next){
 	switch(version){
 		case "v1":
 			Delay.update({version: version}, {time: value}, {upsert: true}, function(err){
-				if(err) throw new DBException(err);
+				if(err) return next(new DBException(err));
 				else{
 					res.send(200, {time: value});
 				}
 			});
 			break;
 		default:
-			throw new DBException("an undefined error occured! " + version);
+			return next(new DBException("an undefined error occured! " + version));
 	}
 }
 
 
-exports.insertPictures = function(res, version, body){
+exports.insertPictures = function(res, version, body, next){
 	var success = 0;
 	var insert = function(picture, last){
 		Picture.update({url: picture.url, version: version}, picture, {upsert: true}, function(err){
@@ -65,30 +66,30 @@ exports.insertPictures = function(res, version, body){
 			}
 			break;
 		default:
-			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
+			return next(new VersionException("you must supply a Content-Type as shown in the documentation."));
 	}
 }
 
-exports.getPictures = function (res, version){
+exports.getPictures = function (res, version, next){
 	switch(version){
 		case "v1":
 				
 				Picture.find({'version': version}, function(err, pictures){
-					if(err) throw new DBException(err);
+					if(err) return next(new DBException(err));
 					else{
 						res.send(200, pictures);
 					}
 				});
 			break;
 		default:
-			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
+			return next(new VersionException("you must supply a Content-Type as shown in the documentation."));
 	}
 }
 
-exports.deletePictures = function (res, version, body){
+exports.deletePictures = function (res, version, body, next){
 	var deleted = 0;
 	var remove = function(pic, last){
-		Picture.remove([{url: pic.url},{'version': version}], function(err){
+		Picture.remove({url: pic.url, version: version}, function(err){
 			if (!err) deleted++;
 			if (last) {
 				res.send(200, {deletecount: deleted})
@@ -106,6 +107,6 @@ exports.deletePictures = function (res, version, body){
 			}
 			break;
 		default:
-			throw new VersionException("you must supply a Content-Type as shown in the documentation.");
+			return next(new VersionException("you must supply a Content-Type as shown in the documentation."));
 	}
 }

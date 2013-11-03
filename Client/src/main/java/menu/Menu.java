@@ -60,9 +60,9 @@ public class Menu {
         GridPane.setHgrow(getImagePane, Priority.ALWAYS);
         GridPane.setVgrow(getImagePane, Priority.ALWAYS);
 
-        setActivityPane(removeImagePane);
+        setActivityPane(getImagePane);
         scene = new Scene(root, 1280, 720, Color.WHITE);
-        //scene.getStylesheets().add(LoginWindow.class.getResource("../stylesheet/Login.css").toExternalForm());
+        scene.getStylesheets().add(Menu.class.getResource("../stylesheets/Menu.css").toExternalForm());
 
 
         sidePane.setOnMouseClicked(new EventHandler<MouseEvent>() {

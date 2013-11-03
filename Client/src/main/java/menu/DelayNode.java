@@ -4,6 +4,7 @@ import repository.DelayCom;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -29,7 +30,7 @@ public class DelayNode extends GridPane{
         action = new DelayCom();
         
         header  = new Text("Slideshow Intervall");
-        header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         
         unit = new Text("Sekunder");
         unit.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
@@ -67,6 +68,7 @@ public class DelayNode extends GridPane{
             }
         });
         
+        this.setHgap(5);
         this.add(header, 0, 0, 2, 1);
         this.add(delayField, 0, 1);
         this.add(unit, 1, 1);

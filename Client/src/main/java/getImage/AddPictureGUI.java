@@ -7,13 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import getImage.AddPictureLogic;
 import model.Picture;
-import getImage.UpdateThread;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -25,14 +20,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-/**
- *
- * @web http://java-buddy.blogspot.com/
- */
 public class AddPictureGUI extends GridPane{
 	Text textCounter;
 	private AddPictureLogic logic = new AddPictureLogic();
-	private List<Picture> pictureList = new ArrayList<Picture>();
+	private List<Picture> pictureList = new ArrayList<>();
 	private  UpdateThread thread = logic.getThread();
 	private Label statusLabel = new Label("");
 	private Label progressLabel = new Label("");
@@ -44,7 +35,7 @@ public class AddPictureGUI extends GridPane{
 		setHgap(12);
 		setVgap(12);
 
-		Label searchLabel = new Label("S�k bilder etter tag:");
+		Label searchLabel = new Label("Søk bilder etter tag:");
 		add(searchLabel, 0, 0);
 
 

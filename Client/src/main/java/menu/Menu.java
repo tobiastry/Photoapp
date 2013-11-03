@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -29,7 +30,7 @@ public class Menu {
     private ArrayList<Button> buttons;
     private DelayNode delay;
     private double xPos, yPos;
-    private boolean resize;
+    private Pane resize;
     //Skal holde panes fra andre aktiviteter
     private Pane getImagePane, removeImagePane;
 
@@ -48,24 +49,25 @@ public class Menu {
 
         root.add(sidePane, 0, 0);
 
+        resize = new Pane();
+        resize.setMinSize(15, 15);
+        resize.setCursor(Cursor.SE_RESIZE);
+
+        root.add(resize, 2, 1);
+
         removeImagePane = new RemovePictureGUI();
-        //Pane testPane = new Pane();
-        removeImagePane.setMinSize(800, 600);
-        removeImagePane.setPrefSize(1080, 720);
+        //These growers should be moved to the their respective classes
         GridPane.setHgrow(removeImagePane, Priority.ALWAYS);
         GridPane.setVgrow(removeImagePane, Priority.ALWAYS);
-
         getImagePane = new AddPictureGUI();
-        getImagePane.setMinSize(800, 600);
-        getImagePane.setPrefSize(1080, 720);
         GridPane.setHgrow(getImagePane, Priority.ALWAYS);
         GridPane.setVgrow(getImagePane, Priority.ALWAYS);
-
         setActivityPane(getImagePane);
-        scene = new Scene(root, 1280, 720, Color.WHITE);
+        
+        scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
         scene.getStylesheets().add(Menu.class.getResource("../stylesheets/Menu.css").toExternalForm());
 
-
+        //Toggle Fullscreen
         sidePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -76,6 +78,7 @@ public class Menu {
             }
         });
 
+        //Moving the window
         sidePane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -94,33 +97,18 @@ public class Menu {
             }
         });
 
-        //Resize        
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xPos = event.getX();
-                yPos = event.getY();
-                if (xPos > scene.getWidth() - 15 && yPos > scene.getHeight() - 15) {
-                    resize = true;
-                } else {
-                    resize = false;
-                }
-            }
-        });
-
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        //Resizing the window      
+        resize.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (!stage.isFullScreen()) {
-                    if (resize) {
-                        double x = event.getScreenX();
-                        double y = event.getScreenY();
-                        if (x - scene.getWindow().getX() > 1280) {
-                            scene.getWindow().setWidth(event.getScreenX() - scene.getWindow().getX());
-                        }
-                        if (y - scene.getWindow().getY() > 720) {
-                            scene.getWindow().setHeight(event.getScreenY() - scene.getWindow().getY());
-                        }
+                    double x = event.getScreenX();
+                    double y = event.getScreenY();
+                    if (x - scene.getWindow().getX() > 1280) {
+                        scene.getWindow().setWidth(event.getScreenX() - scene.getWindow().getX());
+                    }
+                    if (y - scene.getWindow().getY() > 720) {
+                        scene.getWindow().setHeight(event.getScreenY() - scene.getWindow().getY());
                     }
                 }
             }
@@ -131,6 +119,8 @@ public class Menu {
     private void buildRootPane() {
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
+        //Change setActivityPane if you enable GridLines
+        //root.setGridLinesVisible(true);
 
 
     }
@@ -143,6 +133,7 @@ public class Menu {
         vPane.setMinWidth(200);
 
         sidePane.setMinWidth(200);
+        //sidePane.setMinHeight(710);
         sidePane.getChildren().add(vPane);
         AnchorPane.setTopAnchor(vPane, 5.0);
         sidePane.getChildren().add(delay);
@@ -173,8 +164,9 @@ public class Menu {
     }
 
     private void setActivityPane(Pane activityPane) {
-        if (root.getChildren().size() > 1) {
-            root.getChildren().remove(1);
+        //Remember to +1 this if you have turned on GridLines
+        if (root.getChildren().size() > 2) {
+            root.getChildren().remove(2);
         }
         root.add(activityPane, 1, 0);
     }

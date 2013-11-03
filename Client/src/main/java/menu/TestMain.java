@@ -17,10 +17,10 @@ public class TestMain extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        //Menu menu = new Menu();
-        //menu.generateStage();
-        LoginWindow login = new LoginWindow();
-        login.generateStage();
+        Menu menu = new Menu();
+        menu.generateStage();
+        //LoginWindow login = new LoginWindow();
+        //login.generateStage();
         
     }
 

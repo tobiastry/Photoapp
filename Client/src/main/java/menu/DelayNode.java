@@ -4,10 +4,10 @@ import repository.DelayCom;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -46,6 +46,7 @@ public class DelayNode extends GridPane{
         delayField = new TextField(getDelay());
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
+        delayField.setTooltip(new Tooltip("Delay må være 1 sekund eller mer"));
         
         setButton = new Button("Sett Intervall");
         setButton.setPrefSize(180, 30);
@@ -104,7 +105,7 @@ public class DelayNode extends GridPane{
         try {
             newDelay = action.setDelay(delay);
         } catch (IOException ex) {
-            //ex.printStackTrace();            
+            //ex.printStackTrace();    
         }
         return newDelay;
     }

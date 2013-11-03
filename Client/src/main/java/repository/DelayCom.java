@@ -15,6 +15,11 @@ public class DelayCom {
 
     private String delayUrl = "http://pensolut.com:8084/api/delay";
 
+    /**
+     * Retrieves the delay from the server
+     * @return The Delay as an int
+     * @throws IOException 
+     */
     public int getDelay() throws IOException {
         URL url = new URL(delayUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -30,6 +35,12 @@ public class DelayCom {
         return delay;
     }
     
+    /**
+     * Sets the Delay at the server
+     * @param delay
+     * @return The Delay set if successful
+     * @throws IOException 
+     */
     public int setDelay(int delay) throws IOException {
         URL url = new URL(delayUrl + "/" + delay);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

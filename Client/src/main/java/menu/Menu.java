@@ -28,7 +28,8 @@ public class Menu {
     private Scene scene;
     private ArrayList<Button> buttons;
     private DelayNode delay;
-    double xPos, yPos;
+    private double xPos, yPos;
+    private boolean resize;
     //Skal holde panes fra andre aktiviteter
     private Pane getImagePane, removeImagePane;
 
@@ -93,12 +94,43 @@ public class Menu {
             }
         });
 
+        //Resize        
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xPos = event.getX();
+                yPos = event.getY();
+                if (xPos > scene.getWidth() - 15 && yPos > scene.getHeight() - 15) {
+                    resize = true;
+                } else {
+                    resize = false;
+                }
+            }
+        });
+
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!stage.isFullScreen()) {
+                    if (resize) {
+                        double x = event.getScreenX();
+                        double y = event.getScreenY();
+                        if (x - scene.getWindow().getX() > 1280) {
+                            scene.getWindow().setWidth(event.getScreenX() - scene.getWindow().getX());
+                        }
+                        if (y - scene.getWindow().getY() > 720) {
+                            scene.getWindow().setHeight(event.getScreenY() - scene.getWindow().getY());
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     private void buildRootPane() {
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(5, 5, 5, 5));
-        //root.setGridLinesVisible(true);
 
 
     }

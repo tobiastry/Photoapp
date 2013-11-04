@@ -31,7 +31,7 @@ public class Menu {
     private DelayNode delay;
     private double xPos, yPos;
     private Pane resize;
-    //Skal holde panes fra andre aktiviteter
+    //Skal holde panes fra aktiviteter
     private Pane getImagePane, removeImagePane;
 
     public Menu() {
@@ -56,7 +56,7 @@ public class Menu {
         root.add(resize, 2, 1);
 
         removeImagePane = new RemovePictureGUI();
-        //These growers should be moved to the their respective classes
+        //These "growers" should be moved to the their respective classes
         GridPane.setHgrow(removeImagePane, Priority.ALWAYS);
         GridPane.setVgrow(removeImagePane, Priority.ALWAYS);
         getImagePane = new AddPictureGUI();
@@ -118,8 +118,8 @@ public class Menu {
 
     private void buildRootPane() {
         root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(5, 5, 5, 5));
-        //Change setActivityPane if you enable GridLines
+        //root.setPadding(new Insets(5, 5, 5, 5));
+        //Change setActivityPane if you enable GridLines (this adds a child)
         //root.setGridLinesVisible(true);
 
 

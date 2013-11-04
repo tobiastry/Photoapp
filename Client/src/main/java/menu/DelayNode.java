@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -35,7 +36,7 @@ public class DelayNode extends GridPane{
         unit = new Text("Sekunder");
         unit.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
     
-        error = new Text("Feil i input!");
+        error = new Text("Ugyldig input!");
         error.setVisible(false);
         error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
         
@@ -43,10 +44,25 @@ public class DelayNode extends GridPane{
         confirm.setVisible(false);
         confirm.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
         
+        this.setVgap(5);
+        this.setTranslateX(10);
+        
         delayField = new TextField(getDelay());
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
         delayField.setTooltip(new Tooltip("Delay må være 1 sekund eller mer"));
+        delayField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                confirm.setVisible(false);
+                String input = delayField.getText();
+                if(testInput(input)){
+                    error.setVisible(false);
+                } else {
+                    error.setVisible(true);
+                }
+            }
+        });
         
         setButton = new Button("Sett Intervall");
         setButton.setPrefSize(180, 30);

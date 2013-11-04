@@ -46,7 +46,7 @@ public class RemovePictureGUI extends GridPane {
         //temp
         for (int i = 0; i < 24; i++) {
             Picture p = new Picture();
-            p.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150700" + (i / 10) + (i % 10) + ".jpg";
+            p.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
             pictures.add(p);
         }
 
@@ -82,6 +82,30 @@ public class RemovePictureGUI extends GridPane {
             }
         });
         delete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        privious.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        next.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        markPage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        unmarkPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
                 throw new UnsupportedOperationException("Not supported yet.");

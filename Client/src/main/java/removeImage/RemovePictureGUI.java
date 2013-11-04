@@ -1,6 +1,8 @@
 package removeImage;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -22,6 +24,10 @@ public class RemovePictureGUI extends GridPane {
 
     final ArrayList<Thumbnail> thumbnails;
     final ThumbnailLoader pl;
+    final static int imagePerPane = 24;
+    private int nextThumbIndex = 0, maxImages = 0, rem = 0;
+    private FlowPane grid;
+    private Button next, previous;
 
     public RemovePictureGUI() {
         int gap = 8;
@@ -34,7 +40,7 @@ public class RemovePictureGUI extends GridPane {
         cc.setHgrow(Priority.ALWAYS);
         getColumnConstraints().add(cc);
         scroll.setFitToWidth(true);
-        FlowPane grid = new FlowPane();
+        grid = new FlowPane();
         grid.setPadding(new Insets(8));
         grid.setVgap(gap);
         grid.setHgap(gap);
@@ -47,8 +53,8 @@ public class RemovePictureGUI extends GridPane {
         Button mark = new Button("Merk alle");
         Button unmark = new Button("Avmerk alle");
         Button delete = new Button("Slett merkede");
-        Button privious = new Button("< Forrige");
-        Button next = new Button("Neste >");
+        previous = new Button("< Forrige");
+        next = new Button("Neste >");
         Button markPage = new Button("Merk alle på siden");
         Button unmarkPage = new Button("Avmerk alle på siden");
 
@@ -70,18 +76,20 @@ public class RemovePictureGUI extends GridPane {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
-        privious.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
         next.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                showNext();
             }
         });
+        
+        previous.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                showPrevious();
+            }
+        });
+        previous.setDisable(true);
         markPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
@@ -96,7 +104,7 @@ public class RemovePictureGUI extends GridPane {
         });
 
         HBox pageMarkBox = new HBox(gap);
-        pageMarkBox.getChildren().addAll(privious, markPage, unmarkPage, next);
+        pageMarkBox.getChildren().addAll(previous, markPage, unmarkPage, next);
         pageMarkBox.setAlignment(Pos.CENTER);
         add(pageMarkBox, 0, 1, 3, 1);
 
@@ -110,12 +118,66 @@ public class RemovePictureGUI extends GridPane {
 
         thumbnails = new ArrayList<>();
         pl = new ThumbnailLoader(thumbnails);
+        
+        maxImages = pl.imageListSize();
+
+        if (maxImages < imagePerPane) {
+            next.setDisable(true);
+            markPage.setDisable(true);
+            unmarkPage.setDisable(true);
+        }
         //temp
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < maxImages; i++) {
             Thumbnail tn = new Thumbnail();
             thumbnails.add(tn);
         }
+        
+        rem = maxImages % imagePerPane;
+        if (maxImages > imagePerPane) {
+            maxImages -= rem;
+        }
         grid.getChildren().addAll(thumbnails);
         pl.loadPictures(0);
+        
+        nextThumbIndex = imagePerPane;
+    }
+
+    private void showNext() {
+        if (maxImages >= imagePerPane) {
+            grid.getChildren().clear();
+            if (nextThumbIndex == maxImages) {
+                for (int i = nextThumbIndex; i < (maxImages + rem); i++) {
+                    previous.setDisable(false);
+                    grid.getChildren().add(thumbnails.get(i));
+                }
+                next.setDisable(true);
+                return;
+            } else {
+                for (int i = nextThumbIndex; i < (nextThumbIndex + imagePerPane); i++) {
+                    previous.setDisable(false);
+                    grid.getChildren().add(thumbnails.get(i));
+                }
+            }
+
+            nextThumbIndex += imagePerPane;
+
+            if (nextThumbIndex > thumbnails.size() - 1) {
+                next.setDisable(true);
+            }
+        }
+    }
+
+    private void showPrevious() {
+        nextThumbIndex -= imagePerPane;
+
+        grid.getChildren().clear();
+        for (int i = nextThumbIndex; i < ((nextThumbIndex) + imagePerPane); i++) {
+            next.setDisable(false);
+            grid.getChildren().add(thumbnails.get(i));
+        }
+        if (nextThumbIndex == 0) {
+            previous.setDisable(true);
+            nextThumbIndex = imagePerPane;
+        }
     }
 }

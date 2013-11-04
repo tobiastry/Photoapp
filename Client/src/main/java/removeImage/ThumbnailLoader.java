@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package removeImage;
 
 import java.io.IOException;
@@ -23,6 +19,7 @@ class ThumbnailLoader {
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
         this.thumbnails = thumbnails;
+        urls = new ArrayList<>();
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
             urls = retriver.getImageList();
@@ -30,11 +27,10 @@ class ThumbnailLoader {
             Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 //temp:
-//        for (int i = 0; i < 30; i++) {
-//            Picture p = new Picture();
-//            p.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
-//            pictures.add(p);
-//        }
+        /*for (int i = 0; i < 30; i++) {
+           String p = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
+            urls.add(p);
+        }*/
     }
 
     
@@ -51,6 +47,10 @@ class ThumbnailLoader {
         ImageListLoaderTask tl = new ImageListLoaderTask();
         Thread t = new Thread(tl);
         t.start();
+    }
+    
+    public int imageListSize(){
+        return urls.size();
     }
 
     private class ImageListLoaderTask extends Task {

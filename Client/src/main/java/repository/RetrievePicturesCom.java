@@ -32,7 +32,6 @@ public class RetrievePicturesCom {
         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
 
         int respons = connection.getResponseCode();
-        System.out.println("HTTP respons: " + respons);
         
         if (respons == 200) {
             JsonParser parser = new JsonParser();
@@ -40,7 +39,7 @@ public class RetrievePicturesCom {
             JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
 
             for (JsonElement j : imageUrlArray) {
-                String imageUrl = j.getAsJsonObject().get("url").getAsString();
+                String imageUrl = j.getAsJsonObject().get("thumburl").getAsString();
                 imageList.add(imageUrl);
             }
         }

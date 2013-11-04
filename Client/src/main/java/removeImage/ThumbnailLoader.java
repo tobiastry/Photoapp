@@ -23,13 +23,13 @@ class ThumbnailLoader {
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
         this.thumbnails = thumbnails;
-        //temp:
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
             urls = retriver.getImageList();
         } catch (IOException ex) {
             Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
+//temp:
 //        for (int i = 0; i < 30; i++) {
 //            Picture p = new Picture();
 //            p.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";

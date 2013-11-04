@@ -19,7 +19,7 @@ class ThumbnailLoader {
 
     private final ArrayList<Thumbnail> thumbnails;
     private ArrayList<String> urls;
-    private int from;
+    private int from = 0;
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
         this.thumbnails = thumbnails;
@@ -37,6 +37,9 @@ class ThumbnailLoader {
 //        }
     }
 
+    
+    //Loads pictures inn to 'thumbnails' from 'urls' starting at 'from'
+    //Use loadPictures(24) to load the second page if a page has 24 thumbnails
     public void loadPictures(int from) {
         this.from = from;
         ImageListLoaderTask tl = new ImageListLoaderTask();

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class RetrievePicturesCom {
 
-    String request = "http://pensolut.com:8084/api/picture/getpictures";
+    private String request = "http://pensolut.com:8084/api/picture/getpictures";
 
     /**
      * Retrieving list of all the image URL's from the server
@@ -30,27 +30,20 @@ public class RetrievePicturesCom {
         connection.setRequestProperty("Content-Type", "application/v1+json");
         connection.connect();
         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-        char[] hei = new char[512];
-        reader.read(hei);
-        System.out.println(hei[0]+hei[1]+hei[2]+hei[3]);
-        //if (reader.toString().startsWith("{")) {
 
+        int respons = connection.getResponseCode();
+        System.out.println("HTTP respons: " + respons);
+        
+        if (respons == 200) {
             JsonParser parser = new JsonParser();
-//            JsonObject obj = parser.parse(reader).getAsJsonObject();
- //           JsonArray imageUrlArray = obj.get("url").getAsJsonArray();
-            
+
             JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
-            System.out.println(imageUrlArray.size());
 
             for (JsonElement j : imageUrlArray) {
                 String imageUrl = j.getAsJsonObject().get("url").getAsString();
-                System.out.println(imageUrl);
                 imageList.add(imageUrl);
             }
-            System.out.println("HTTP respons: " + connection.getResponseCode());
-
-    //    }
-
+        }
         return imageList;
     }
 }
@@ -61,7 +54,10 @@ class Mainer {
         RetrievePicturesCom com = new RetrievePicturesCom();
 
         try {
-            System.out.println(com.getImageList().get(0));
+            ArrayList<String> list = com.getImageList();
+            for (String url : list) {
+                System.out.println(url);
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();

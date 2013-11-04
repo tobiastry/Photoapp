@@ -20,7 +20,6 @@ import javafx.scene.layout.Priority;
  */
 public class RemovePictureGUI extends GridPane {
 
-    //RemovePictureLogic logic;
     final ArrayList<Thumbnail> thumbnails;
     final ThumbnailLoader pl;
 

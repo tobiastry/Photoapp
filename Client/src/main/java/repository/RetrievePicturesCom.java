@@ -2,7 +2,6 @@ package repository;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,22 +43,5 @@ public class RetrievePicturesCom {
             }
         }
         return imageList;
-    }
-}
-
-class Mainer {
-
-    public static void main(String[] args) {
-        RetrievePicturesCom com = new RetrievePicturesCom();
-
-        try {
-            ArrayList<String> list = com.getImageList();
-            for (String url : list) {
-                System.out.println(url);
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 }

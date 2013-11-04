@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-import model.Picture;
 
 /**
  * 
@@ -27,12 +26,10 @@ public class Thumbnail extends StackPane {
 
     private ImageView imageView;
     private CheckBox cb;
-    private Picture picture;
+    //private Picture picture;
     private Image image;
 
-    public Thumbnail(Picture p) {
-
-        picture = p;
+    public Thumbnail() {
         setPrefSize(150, 150);
         Rectangle frame = new Rectangle(152, 152);
         getChildren().add(frame);
@@ -63,8 +60,6 @@ public class Thumbnail extends StackPane {
         setMargin(cb, new Insets(8, 8, 8, 8));
         getChildren().addAll(imageView, cb);
         setCursor(Cursor.HAND);
-        //TODO
-        //loadImage();
     }
 
     public boolean isSelected(){
@@ -75,14 +70,14 @@ public class Thumbnail extends StackPane {
         cb.setSelected(selected);
     }
     
-    public void loadImage() {
+    public void loadImage(final String pic) {
         Thread t = new Thread(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        image = new Image(picture.thumbUrl);
+                        image = new Image(pic);
                         imageView.setImage(image);
                     }
                 });

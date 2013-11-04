@@ -1,7 +1,6 @@
 package removeImage;
 
 import java.util.ArrayList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -14,7 +13,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import model.Picture;
 
 /**
  *
@@ -24,6 +22,7 @@ public class RemovePictureGUI extends GridPane {
 
     //RemovePictureLogic logic;
     final ArrayList<Thumbnail> thumbnails;
+    final ThumbnailLoader pl;
 
     public RemovePictureGUI() {
         int gap = 8;
@@ -40,23 +39,8 @@ public class RemovePictureGUI extends GridPane {
         grid.setPadding(new Insets(8));
         grid.setVgap(gap);
         grid.setHgap(gap);
-        ArrayList<Picture> pictures = new ArrayList<>();
-        //= logic.getImageList();
-        thumbnails = new ArrayList<>();
-        //temp
-        for (int i = 0; i < 24; i++) {
-            Picture p = new Picture();
-            p.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
-            pictures.add(p);
-        }
-
-        for (Picture picture : pictures) {
-            Thumbnail tn = new Thumbnail(picture);
-            thumbnails.add(tn);
-        }
 
         grid.setAlignment(Pos.CENTER);
-        grid.getChildren().addAll(thumbnails);
 
         scroll.setContent(grid);
         add(scroll, 0, 0, 4, 1);
@@ -124,19 +108,15 @@ public class RemovePictureGUI extends GridPane {
 
         setHalignment(delete, HPos.RIGHT);
         add(delete, 2, 2);
-        ThumbnailLoader tl = new ThumbnailLoader();
-        Thread t = new Thread(tl);
-        t.start();
-    }
 
-    private class ThumbnailLoader extends Task {
-
-        @Override
-        protected Object call() throws Exception {
-            for (Thumbnail thumbnail : thumbnails) {
-                thumbnail.loadImage();
-            }
-            return null;
+        thumbnails = new ArrayList<>();
+        pl = new ThumbnailLoader(thumbnails);
+        //temp
+        for (int i = 0; i < 24; i++) {
+            Thumbnail tn = new Thumbnail();
+            thumbnails.add(tn);
         }
+        grid.getChildren().addAll(thumbnails);
+        pl.loadPictures(0);
     }
 }

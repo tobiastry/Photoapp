@@ -28,6 +28,7 @@ public class Thumbnail extends StackPane {
     private CheckBox cb;
     //private Picture picture;
     private Image image;
+    private String url;
 
     public Thumbnail() {
         setPrefSize(150, 150);
@@ -71,6 +72,7 @@ public class Thumbnail extends StackPane {
     }
     
     public void loadImage(final String pic) {
+        url = pic;
         Thread t = new Thread(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -85,5 +87,9 @@ public class Thumbnail extends StackPane {
             }
         });
         t.start();
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

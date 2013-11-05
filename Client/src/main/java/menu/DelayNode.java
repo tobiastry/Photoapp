@@ -18,36 +18,36 @@ import javafx.scene.text.Text;
  *
  * @author Stian
  */
-public class DelayNode extends GridPane{
-        
+public class DelayNode extends GridPane {
+
     private Text header, unit, error, confirm;
     private TextField delayField;
     private Button setButton;
     DelayCom action;
-    
-    public DelayNode(){
+
+    public DelayNode() {
         super();
-                
         action = new DelayCom();
-        
-        header  = new Text("Slideshow Intervall");
+
+        header = new Text("Slideshow Intervall");
         header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        
+
         unit = new Text("Sekunder");
         unit.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-    
-        error = new Text("Ugyldig input!");
+
+        error = new Text("");
         error.setVisible(false);
         error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-        
+
         confirm = new Text("Nytt Intervall Satt!");
         confirm.setVisible(false);
         confirm.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-        
-        this.setVgap(5);
-        this.setTranslateX(10);
-        
-        delayField = new TextField(getDelay());
+
+        if (getDelay() == 0) {
+            error.setVisible(true);
+        } else {
+            delayField = new TextField(getDelay() + "");
+        }
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
         delayField.setTooltip(new Tooltip("Delay må være 1 sekund eller mer"));
@@ -56,35 +56,38 @@ public class DelayNode extends GridPane{
             public void handle(KeyEvent event) {
                 confirm.setVisible(false);
                 String input = delayField.getText();
-                if(testInput(input)){
+                if (testInput(input)) {
                     error.setVisible(false);
                 } else {
                     error.setVisible(true);
                 }
             }
         });
-        
+
         setButton = new Button("Sett Intervall");
         setButton.setPrefSize(180, 30);
-
-        
         setButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 error.setVisible(false);
                 confirm.setVisible(false);
                 String input = delayField.getText();
-                if(testInput(input)){
-                    int ret = setDelay(Integer.parseInt(input));
-                    if(ret != 0){
+                if (testInput(input)) {
+                    int ok = setDelay(Integer.parseInt(input));
+                    if (ok != 0) {
                         confirm.setVisible(true);
+                        delayField.setText(ok + "");
+                    } else {
+                        error.setVisible(true);
                     }
-                } else{
+                } else {
                     error.setVisible(true);
                 }
             }
         });
-        
+
+        this.setTranslateX(10);
+        this.setVgap(5);
         this.setHgap(5);
         this.add(header, 0, 0, 2, 1);
         this.add(delayField, 0, 1);
@@ -93,37 +96,45 @@ public class DelayNode extends GridPane{
         this.add(confirm, 0, 2, 2, 1);
         this.add(setButton, 0, 3, 2, 1);
     }
-    
-    //Hvilke mulige delay skal vi ha?
-    private boolean testInput(String input){
+
+    //Tests if the input is valid
+    private boolean testInput(String input) {
+        int i;
         try {
-            int i = Integer.parseInt(input);
-        } catch(NumberFormatException e) {
+            i = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
             //e.printStackTrace();
+            error.setText("Ugyldig input");
+            return false;
+        }
+        if (i < 1) {
+            error.setText("Minimum delay er 1");
             return false;
         }
         return true;
     }
-    
-    private String getDelay(){
+
+    private int getDelay() {
         int i;
         try {
             i = action.getDelay();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             //ex.printStackTrace();
-            return "error";
-        }   
-        return i + "";
+            error.setText("Server utilgjengelig");
+            return 0;
+        }
+        return i;
     }
-    
-    private int setDelay(int delay){
-        int newDelay = 0;
+
+    private int setDelay(int delay) {
+        int newDelay;
         try {
             newDelay = action.setDelay(delay);
         } catch (IOException ex) {
             //ex.printStackTrace();    
+            error.setText("Server utilgjengelig");
+            return 0;
         }
         return newDelay;
     }
-    
 }

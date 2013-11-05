@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class SelectedThumbnailLister {
 
-    ArrayList<Thumbnail> thumbnails;
-    ArrayList<String> urls;
+    private ArrayList<Thumbnail> thumbnails;
+    private ArrayList<String> urls;
     
     public SelectedThumbnailLister(ArrayList<Thumbnail> thumbnails) {
         this.thumbnails = thumbnails;
@@ -24,5 +24,9 @@ public class SelectedThumbnailLister {
                 urls.add(thumbnail.getUrl());
             }
         }
+    }
+
+    public ArrayList<String> getUrls() {
+        return urls;
     }
 }

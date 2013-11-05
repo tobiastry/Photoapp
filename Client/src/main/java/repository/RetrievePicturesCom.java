@@ -22,7 +22,6 @@ public class RetrievePicturesCom {
      */
     public ArrayList getImageList() throws IOException {
         ArrayList imageList = new ArrayList();
-
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

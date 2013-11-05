@@ -64,13 +64,17 @@ public class RemovePictureGUI extends GridPane {
         mark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                for (Thumbnail thumbnail : thumbnails) {
+                    thumbnail.setSelected(true);
+                }
             }
         });
         unmark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                for (Thumbnail thumbnail : thumbnails) {
+                    thumbnail.setSelected(false);
+                }
             }
         });
         delete.setOnAction(new EventHandler<ActionEvent>() {
@@ -140,47 +144,8 @@ public class RemovePictureGUI extends GridPane {
         }
         grid.getChildren().addAll(thumbnails);
         pl.loadPictures(0);
-        
+
         nextThumbIndex = imagePerPane;
-    }
-
-    private void showNext() {
-        if (maxImages >= imagePerPane) {
-            grid.getChildren().clear();
-            if (nextThumbIndex == maxImages) {
-                for (int i = nextThumbIndex; i < (maxImages + rem); i++) {
-                    previous.setDisable(false);
-                    grid.getChildren().add(thumbnails.get(i));
-                }
-                next.setDisable(true);
-                return;
-            } else {
-                for (int i = nextThumbIndex; i < (nextThumbIndex + imagePerPane); i++) {
-                    previous.setDisable(false);
-                    grid.getChildren().add(thumbnails.get(i));
-                }
-            }
-
-            nextThumbIndex += imagePerPane;
-
-            if (nextThumbIndex > thumbnails.size() - 1) {
-                next.setDisable(true);
-            }
-        }
-    }
-
-    private void showPrevious() {
-        nextThumbIndex -= imagePerPane;
-
-        grid.getChildren().clear();
-        for (int i = nextThumbIndex; i < ((nextThumbIndex) + imagePerPane); i++) {
-            next.setDisable(false);
-            grid.getChildren().add(thumbnails.get(i));
-        }
-        if (nextThumbIndex == 0) {
-            previous.setDisable(true);
-            nextThumbIndex = imagePerPane;
-        }
     }
 
     private void showNext() {

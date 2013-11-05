@@ -24,6 +24,5 @@ public class SelectedThumbnailLister {
                 urls.add(thumbnail.getUrl());
             }
         }
-        System.out.println(urls);
     }
 }

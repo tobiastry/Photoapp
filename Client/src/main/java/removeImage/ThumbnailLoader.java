@@ -27,10 +27,10 @@ class ThumbnailLoader {
             Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 //temp:
-//        for (int i = 0; i < 100; i++) {
-//           String p = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
-//            urls.add(p);
-//        }
+        /*for (int i = 0; i < 30; i++) {
+           String p = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
+            urls.add(p);
+        }*/
     }
 
     

@@ -1,6 +1,8 @@
 package removeImage;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -138,8 +140,47 @@ public class RemovePictureGUI extends GridPane {
         }
         grid.getChildren().addAll(thumbnails);
         pl.loadPictures(0);
-
+        
         nextThumbIndex = imagePerPane;
+    }
+
+    private void showNext() {
+        if (maxImages >= imagePerPane) {
+            grid.getChildren().clear();
+            if (nextThumbIndex == maxImages) {
+                for (int i = nextThumbIndex; i < (maxImages + rem); i++) {
+                    previous.setDisable(false);
+                    grid.getChildren().add(thumbnails.get(i));
+                }
+                next.setDisable(true);
+                return;
+            } else {
+                for (int i = nextThumbIndex; i < (nextThumbIndex + imagePerPane); i++) {
+                    previous.setDisable(false);
+                    grid.getChildren().add(thumbnails.get(i));
+                }
+            }
+
+            nextThumbIndex += imagePerPane;
+
+            if (nextThumbIndex > thumbnails.size() - 1) {
+                next.setDisable(true);
+            }
+        }
+    }
+
+    private void showPrevious() {
+        nextThumbIndex -= imagePerPane;
+
+        grid.getChildren().clear();
+        for (int i = nextThumbIndex; i < ((nextThumbIndex) + imagePerPane); i++) {
+            next.setDisable(false);
+            grid.getChildren().add(thumbnails.get(i));
+        }
+        if (nextThumbIndex == 0) {
+            previous.setDisable(true);
+            nextThumbIndex = imagePerPane;
+        }
     }
 
     private void showNext() {

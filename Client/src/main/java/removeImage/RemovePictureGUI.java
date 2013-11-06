@@ -25,7 +25,7 @@ public class RemovePictureGUI extends GridPane {
     private final ArrayList<Thumbnail> thumbnails;
     private final ThumbnailLoader pl;
     private final static int imagePerPane = 24;
-    private int nextThumbIndex = 0, maxImages = 0, rem = 0;
+    private int thumbIndex = 0, maxImages = 0, rem = 0;
     private FlowPane grid;
     private Button next, previous;
     private SelectedThumbnailLister lister;
@@ -100,13 +100,17 @@ public class RemovePictureGUI extends GridPane {
         markPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                for (int i = thumbIndex; i < thumbIndex + imagePerPane; i++) {
+                    thumbnails.get(i).setSelected(true);
+                }
             }
         });
         unmarkPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                for (int i = thumbIndex; i < thumbIndex + imagePerPane; i++) {
+                    thumbnails.get(i).setSelected(false);
+                }
             }
         });
 
@@ -141,49 +145,54 @@ public class RemovePictureGUI extends GridPane {
         rem = maxImages % imagePerPane;
         if (maxImages > imagePerPane) {
             maxImages -= rem;
+            for (int i = 0; i < imagePerPane; i++) {
+                grid.getChildren().add(thumbnails.get(i));
+            }
+        } else {
+            grid.getChildren().addAll(thumbnails);
         }
-        grid.getChildren().addAll(thumbnails);
+
         pl.loadPictures(0);
 
-        nextThumbIndex = imagePerPane;
+        thumbIndex = 0;
     }
 
     private void showNext() {
+        thumbIndex += imagePerPane;
         if (maxImages >= imagePerPane) {
             grid.getChildren().clear();
-            if (nextThumbIndex == maxImages) {
-                for (int i = nextThumbIndex; i < (maxImages + rem); i++) {
+            if (thumbIndex == maxImages) {
+                for (int i = thumbIndex; i < (maxImages + rem); i++) {
                     previous.setDisable(false);
                     grid.getChildren().add(thumbnails.get(i));
                 }
                 next.setDisable(true);
                 return;
             } else {
-                for (int i = nextThumbIndex; i < (nextThumbIndex + imagePerPane); i++) {
+                for (int i = thumbIndex; i < (thumbIndex + imagePerPane); i++) {
                     previous.setDisable(false);
                     grid.getChildren().add(thumbnails.get(i));
                 }
             }
 
-            nextThumbIndex += imagePerPane;
 
-            if (nextThumbIndex > thumbnails.size() - 1) {
+            if (thumbIndex > thumbnails.size() - 1) {
                 next.setDisable(true);
             }
         }
     }
 
     private void showPrevious() {
-        nextThumbIndex -= imagePerPane;
+        thumbIndex -= imagePerPane;
 
         grid.getChildren().clear();
-        for (int i = nextThumbIndex; i < ((nextThumbIndex) + imagePerPane); i++) {
+        for (int i = thumbIndex; i < ((thumbIndex) + imagePerPane); i++) {
             next.setDisable(false);
             grid.getChildren().add(thumbnails.get(i));
         }
-        if (nextThumbIndex == 0) {
+        if (thumbIndex == 0) {
             previous.setDisable(true);
-            nextThumbIndex = imagePerPane;
+            thumbIndex = imagePerPane;
         }
     }
 }

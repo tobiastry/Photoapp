@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -39,6 +40,7 @@ public class DelayNode extends GridPane {
         error = new Text("");
         error.setVisible(false);
         error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        error.setFill(Color.RED);
 
         confirm = new Text("Nytt Intervall Satt!");
         confirm.setVisible(false);

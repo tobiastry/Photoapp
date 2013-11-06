@@ -36,9 +36,9 @@ public class Menu {
     public Menu() {
         buttons = new ArrayList<>();
         makeButtons();
-        
+
         delay = new DelayNode();
-        
+
         sidePane = new AnchorPane();
         vPane = new VBox();
         buildSidePane();
@@ -62,7 +62,7 @@ public class Menu {
         GridPane.setHgrow(getImagePane, Priority.ALWAYS);
         GridPane.setVgrow(getImagePane, Priority.ALWAYS);
         setActivityPane(getImagePane);
-        
+
         scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
         scene.getStylesheets().add(Menu.class.getResource("../stylesheets/Menu.css").toExternalForm());
 
@@ -124,11 +124,11 @@ public class Menu {
         vPane.setMinWidth(200);
         sidePane.getChildren().add(vPane);
         AnchorPane.setTopAnchor(vPane, 5.0);
-        
+        sidePane.setMaxWidth(200.0);
+
         sidePane.getChildren().add(delay);
-        AnchorPane.setLeftAnchor(delay, 10.0);
         AnchorPane.setBottomAnchor(delay, 80.0);
-        
+
         //Button for closing the menu
         Button btnExit = new Button("Lukk Meny");
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
@@ -139,7 +139,7 @@ public class Menu {
         });
         btnExit.setPrefSize(190, 40);
         btnExit.setCancelButton(true);
-        btnExit.setTranslateX(10.0);
+        btnExit.setTranslateX(5.0);
         sidePane.getChildren().add(btnExit);
         AnchorPane.setBottomAnchor(btnExit, 10.0);
     }
@@ -178,8 +178,8 @@ public class Menu {
     }
 
     /**
-     * This method generates the stage for the Menu
-     * Call this method to start the menu.
+     * This method generates the stage for the Menu Call this method to start
+     * the menu.
      */
     public void generateStage() {
         stage = new Stage();

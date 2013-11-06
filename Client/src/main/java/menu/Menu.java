@@ -4,7 +4,6 @@ import getImage.AddPictureGUI;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -36,17 +35,17 @@ public class Menu {
 
     public Menu() {
         buttons = new ArrayList<>();
-        this.makeButtons();
-
+        makeButtons();
+        
         delay = new DelayNode();
-
-        root = new GridPane();
-        this.buildRootPane();
-
+        
         sidePane = new AnchorPane();
         vPane = new VBox();
-        this.buildSidePane();
+        buildSidePane();
 
+        root = new GridPane();
+        //Change setActivityPane if you enable GridLines (this adds a child)
+        //root.setGridLinesVisible(true);
         root.add(sidePane, 0, 0);
 
         resize = new Pane();
@@ -56,7 +55,7 @@ public class Menu {
         root.add(resize, 2, 1);
 
         removeImagePane = new RemovePictureGUI();
-        //These "growers" should be moved to the their respective classes
+        // TODO These "growers" should be moved to the their respective classes
         GridPane.setHgrow(removeImagePane, Priority.ALWAYS);
         GridPane.setVgrow(removeImagePane, Priority.ALWAYS);
         getImagePane = new AddPictureGUI();
@@ -116,30 +115,36 @@ public class Menu {
 
     }
 
-    private void buildRootPane() {
-        root.setAlignment(Pos.CENTER);
-        //root.setPadding(new Insets(5, 5, 5, 5));
-        //Change setActivityPane if you enable GridLines (this adds a child)
-        //root.setGridLinesVisible(true);
-
-
-    }
-
+    //Builds the side panel
     private void buildSidePane() {
         vPane.setAlignment(Pos.TOP_RIGHT);
         VBox.setVgrow(vPane, Priority.ALWAYS);
         vPane.setSpacing(10);
         vPane.getChildren().addAll(buttons);
         vPane.setMinWidth(200);
-
-        sidePane.setMinWidth(200);
-        //sidePane.setMinHeight(710);
         sidePane.getChildren().add(vPane);
         AnchorPane.setTopAnchor(vPane, 5.0);
+        
         sidePane.getChildren().add(delay);
-        AnchorPane.setBottomAnchor(delay, 10.0);
+        AnchorPane.setLeftAnchor(delay, 10.0);
+        AnchorPane.setBottomAnchor(delay, 80.0);
+        
+        //Button for closing the menu
+        Button btnExit = new Button("Lukk Meny");
+        btnExit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.close();
+            }
+        });
+        btnExit.setPrefSize(190, 40);
+        btnExit.setCancelButton(true);
+        btnExit.setTranslateX(10.0);
+        sidePane.getChildren().add(btnExit);
+        AnchorPane.setBottomAnchor(btnExit, 10.0);
     }
 
+    //The buttons for different activities
     private void makeButtons() {
         Button btnSearch = new Button("Hente Bilder");
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
@@ -163,6 +168,7 @@ public class Menu {
         }
     }
 
+    //Changes the shown activity
     private void setActivityPane(Pane activityPane) {
         //Remember to +1 this if you have turned on GridLines
         if (root.getChildren().size() > 2) {
@@ -171,6 +177,10 @@ public class Menu {
         root.add(activityPane, 1, 0);
     }
 
+    /**
+     * This method generates the stage for the Menu
+     * Call this method to start the menu.
+     */
     public void generateStage() {
         stage = new Stage();
         stage.setScene(scene);

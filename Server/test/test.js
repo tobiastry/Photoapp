@@ -101,7 +101,7 @@ describe ('Test', function(){
 			urls.push({url: "zzz"});
 			request({
 				uri: url+ '/api/picture/delete',
-				method: 'DELETE',
+				method: 'POST',
 				headers: {'Content-Type': ct},
 				body: JSON.stringify(urls)
 				}, function(err, res, body){

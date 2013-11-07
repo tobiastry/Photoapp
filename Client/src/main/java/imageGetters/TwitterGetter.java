@@ -41,10 +41,9 @@ public class TwitterGetter {
 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.connect();
-                System.out.println(connection);
 
 		InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-                System.out.println(reader);
+              
 
 		parser = new TwitterParser();
 		jsonPictures = parser.parse(reader);

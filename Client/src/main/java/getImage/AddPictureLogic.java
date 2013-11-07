@@ -64,11 +64,6 @@ public class AddPictureLogic {
                                 int size=getPictures(tag);
                                   int i=1;
                                 AddPictureGUI.addingToList=true;
-                                System.out.println("test"+testlist.size());
-                                System.out.println("size"+size);
-                                System.out.println("insta"+testlist.get(0).size());
-                                System.out.println("insta"+testlist.get(1).size());
-                                System.out.println("twitter"+testlist.get(2).size());
                                 for(int t=0;t<testlist.size();t++){
                                     for(JsonElement j : testlist.get(t)) {
                                         Thread.sleep(50);

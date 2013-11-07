@@ -38,12 +38,9 @@ public class InstagramGetter {
  		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.connect();
-                System.out.println(connection);
 		InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-                System.out.println(reader);
 		parser = new InstagramParser();
 		jsonPictures = parser.parse(reader);
-		System.out.println(jsonPictures+""+2);
 
 		return jsonPictures;
 

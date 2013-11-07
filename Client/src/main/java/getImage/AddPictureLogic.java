@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import getImage.AddPictureGUI;
 import model.Picture;
 import imageGetters.*;
 
@@ -13,6 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import javafx.concurrent.Task;
+import repository.StorePicturesCom;
 
 public class AddPictureLogic {
         private ArrayList<Picture> pictureList = new ArrayList<Picture>();
@@ -53,7 +53,11 @@ public class AddPictureLogic {
                 return pictureList;
         }
         
-        public void exportList() {
+        public void exportList() throws IOException {
+            StorePicturesCom store = new StorePicturesCom();
+               store.storePictures(pictureList);
+               
+               testlist.clear();
                 pictureList.clear();
         }
 
@@ -69,11 +73,10 @@ public class AddPictureLogic {
                                         Thread.sleep(50);
                                         addPictureToList(j,t);
                                         updateProgress(i, size);
-                                        updateMessage(i+1+"/"+size);
+                                        updateMessage(i+"/"+size);
                                         i++;
                                     }
                                 }
-                                testlist.clear();
                                 exportList();
                                 AddPictureGUI.addingToList=false;
                                 return true;
@@ -94,4 +97,5 @@ public class AddPictureLogic {
          }
                 };
         }
+
 }

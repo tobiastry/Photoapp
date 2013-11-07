@@ -1,8 +1,25 @@
 package getImage;
 
+<<<<<<< HEAD
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+=======
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import getImage.AddPictureLogic;
+import model.Picture;
+import getImage.UpdateThread;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+>>>>>>> removePictures-J
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -15,10 +32,19 @@ import javafx.scene.layout.HBox;
 
 /**
  *
+<<<<<<< HEAD
  * @author Johan LG & T
+=======
+ * @web http://java-buddy.blogspot.com/
+>>>>>>> removePictures-J
  */
 public class AddPictureGUI extends GridPane{
 	private AddPictureLogic logic = new AddPictureLogic();
+<<<<<<< HEAD
+=======
+	private List<Picture> pictureList = new ArrayList<Picture>();
+	private  UpdateThread thread = logic.getThread();
+>>>>>>> removePictures-J
 	private Label statusLabel = new Label("");
 	private Label progressLabel = new Label("");
 	private ProgressBar progressBar = new ProgressBar(0);
@@ -31,7 +57,7 @@ public class AddPictureGUI extends GridPane{
 		setHgap(12);
 		setVgap(12);
 
-		Label searchLabel = new Label("Søk bilder etter tag:");
+		Label searchLabel = new Label("S�k bilder etter tag:");
 		add(searchLabel, 0, 0);
 		add(searchField, 1, 0);
 

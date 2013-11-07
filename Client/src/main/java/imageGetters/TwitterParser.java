@@ -1,41 +1,34 @@
 package imageGetters;
 
 import java.io.InputStreamReader;
-
-import com.google.gson.*;
 import model.Picture;
-import getImage.UpdateThread;
+import com.google.gson.*;
 
 public class TwitterParser {
-	private  UpdateThread thread;
 	private  JsonArray jsonPictures;
+	JsonObject obj;
 
-	public TwitterParser(UpdateThread thread) {
-		this.thread=thread;
-	}
-
-	public void parse(InputStreamReader reader) {
+	public JsonArray parse(InputStreamReader reader) {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = parser.parse(reader).getAsJsonObject();
 		jsonPictures = obj.get("images").getAsJsonArray();
-		thread.setSize(jsonPictures.size());
-
-		
-
+		return jsonPictures;
 	}
 
-	public void addToList(){
-		if(jsonPictures.size()!=0){
-			for(JsonElement j : jsonPictures) {
-				Picture picture = new Picture();
-				JsonObject jsonPicture = j.getAsJsonObject();
-				String images = jsonPicture.get("id").getAsString();
-				picture.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/" + images + ".jpg"; //thumb=150*150/large=?
-				picture.largeUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/large/" + images + ".jpg";
+/*	public String getNextUrl() {
+		JsonElement next_url = obj.get("pagination");
+		String url = next_url.getAsJsonObject().get("next_url").getAsString();
+		System.out.println(url);
+		return url;
+	}*/
 
-				thread.add(picture);
-				thread.addCount();
-			}
-		}
+	public Picture addToList(JsonElement j){
+		Picture picture = new Picture();
+		JsonObject jsonPicture = j.getAsJsonObject();
+		String images = jsonPicture.get("id").getAsString();
+		picture.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/" + images + ".jpg"; //thumb=150*150/large=?
+		picture.largeUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/large/" + images + ".jpg";
+
+		return picture;
 	}
 }

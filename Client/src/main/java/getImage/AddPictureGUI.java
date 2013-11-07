@@ -57,7 +57,7 @@ public class AddPictureGUI extends GridPane{
 		setHgap(12);
 		setVgap(12);
 
-		Label searchLabel = new Label("S�k bilder etter tag:");
+		Label searchLabel = new Label("Søk bilder etter tag:");
 		add(searchLabel, 0, 0);
 		add(searchField, 1, 0);
 

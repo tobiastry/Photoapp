@@ -22,7 +22,7 @@ import repository.DeletePicturesCom;
  *
  * @author Johan LG
  */
-public class RemovePictureGUI extends GridPane {
+public class RemoveImageGUI extends GridPane {
 
     private final ArrayList<Thumbnail> thumbnails;
     private final ThumbnailLoader pl;
@@ -32,7 +32,7 @@ public class RemovePictureGUI extends GridPane {
     private Button next, previous;
     private SelectedThumbnailLister lister;
 
-    public RemovePictureGUI() {
+    public RemoveImageGUI() {
         thumbnails = new ArrayList<>();
         lister = new SelectedThumbnailLister(thumbnails);
         int gap = 8;
@@ -86,7 +86,7 @@ public class RemovePictureGUI extends GridPane {
                 try {
                     delCom.deletePictures(lister.ListSelectedThumbnails());
                 } catch (IOException ex) {
-                    Logger.getLogger(RemovePictureGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -162,6 +162,10 @@ public class RemovePictureGUI extends GridPane {
         pl.loadPictures(0);
 
         thumbIndex = 0;
+
+        GridPane.setHgrow(this, Priority.ALWAYS);
+        GridPane.setVgrow(this, Priority.ALWAYS);
+
     }
 
     private void showNext() {

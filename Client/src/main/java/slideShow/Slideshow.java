@@ -132,7 +132,7 @@ public class Slideshow extends Application {
     public void start(Stage slideshowVindu) throws Exception {
         SlideShow SlideShow = new SlideShow();
         Scene scene = new Scene(SlideShow.getRoot(), 800, 800, Color.BLANCHEDALMOND);
-        slideshowVindu = SlideShowWindow.getSlideShowVindu();
+        slideshowVindu = SlideShowWindow.getSlideShowWindow();
         slideshowVindu.setScene(scene);
         slideshowVindu.show();
 

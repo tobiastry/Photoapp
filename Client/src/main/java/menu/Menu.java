@@ -1,6 +1,6 @@
 package menu;
 
-import getImage.AddPictureGUI;
+import addImage.AddImageGUI;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import removeImage.RemovePictureGUI;
+import removeImage.RemoveImageGUI;
 
 public class Menu {
 
@@ -30,8 +30,8 @@ public class Menu {
     private DelayNode delay;
     private double xPos, yPos;
     private Pane resize;
-    //Skal holde panes fra aktiviteter
-    private Pane getImagePane, removeImagePane;
+    //Keeps the panes for different activities
+    private Pane addImagePane, removeImagePane;
 
     public Menu() {
         buttons = new ArrayList<>();
@@ -54,14 +54,9 @@ public class Menu {
 
         root.add(resize, 2, 1);
 
-        removeImagePane = new RemovePictureGUI();
-        // TODO These "growers" should be moved to the their respective classes
-        GridPane.setHgrow(removeImagePane, Priority.ALWAYS);
-        GridPane.setVgrow(removeImagePane, Priority.ALWAYS);
-        getImagePane = new AddPictureGUI();
-        GridPane.setHgrow(getImagePane, Priority.ALWAYS);
-        GridPane.setVgrow(getImagePane, Priority.ALWAYS);
-        setActivityPane(getImagePane);
+        removeImagePane = new RemoveImageGUI();
+        addImagePane = new AddImageGUI();
+        setActivityPane(addImagePane);
 
         scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
         scene.getStylesheets().add(Menu.class.getResource("../stylesheets/Menu.css").toExternalForm());
@@ -150,7 +145,7 @@ public class Menu {
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                setActivityPane(getImagePane);
+                setActivityPane(addImagePane);
             }
         });
         Button btnDelete = new Button("Slette Bilder");

@@ -1,4 +1,4 @@
-package getImage;
+package addImage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,14 +14,14 @@ import com.google.gson.JsonElement;
 import javafx.concurrent.Task;
 import repository.StorePicturesCom;
 
-public class AddPictureLogic {
+public class AddImageLogic {
         private ArrayList<Picture> pictureList = new ArrayList<Picture>();
         private InstagramGetter instaGetter;
         private TwitterGetter twitterGetter;
         private JsonArray jsonPictures;
         private List<JsonArray> testlist = new ArrayList<>();
         
-        public AddPictureLogic(){
+        public AddImageLogic(){
                 instaGetter = new InstagramGetter();
                 twitterGetter = new TwitterGetter();
         }
@@ -67,7 +67,7 @@ public class AddPictureLogic {
                         protected Object call() throws Exception {
                                 int size=getPictures(tag);
                                   int i=1;
-                                AddPictureGUI.addingToList=true;
+                                AddImageGUI.addingToList=true;
                                 for(int t=0;t<testlist.size();t++){
                                     for(JsonElement j : testlist.get(t)) {
                                         Thread.sleep(50);
@@ -78,7 +78,7 @@ public class AddPictureLogic {
                                     }
                                 }
                                 exportList();
-                                AddPictureGUI.addingToList=false;
+                                AddImageGUI.addingToList=false;
                                 return true;
                         }
                         @Override protected void succeeded() {

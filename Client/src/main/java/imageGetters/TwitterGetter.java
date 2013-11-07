@@ -12,41 +12,42 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 public class TwitterGetter {
-	private  TwitterParser parser;
-	private  JsonArray jsonPictures;
+
+    private TwitterParser parser;
+    private JsonArray jsonPictures;
 //	int size;
-	public TwitterGetter() {
-		// TODO Auto-generated constructor stub
-	}
 
-	private String twittterUrl(String tag){
-		if(Pattern.matches("[a-zA-Z]+", tag)){ 
-			String twitterUrl = "https://api.twitpic.com/2/tags/show.json?tag="+tag; //client_id=af7c41b64a2419a8dfe31897f74f7fa2" (Only needed for uploading)
-                        return twitterUrl;
-		} 
-		else{ 
-			return null; 
-		} 
-	}
+    public TwitterGetter() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public JsonArray findPictures(String tag) throws IOException {
-		URL url = new URL(twittterUrl(tag));
-		findMorePictures(url);
+    private String twittterUrl(String tag) {
+        if (Pattern.matches("[a-zA-Z]+", tag)) {
+            String twitterUrl = "https://api.twitpic.com/2/tags/show.json?tag=" + tag; //client_id=af7c41b64a2419a8dfe31897f74f7fa2" (Only needed for uploading)
+            return twitterUrl;
+        } else {
+            return null;
+        }
+    }
+
+    public JsonArray findPictures(String tag) throws IOException {
+        URL url = new URL(twittterUrl(tag));
+        findMorePictures(url);
 //		System.out.println(jsonPictures);
-		return jsonPictures;
+        return jsonPictures;
 
-	}
+    }
 
-	public JsonArray findMorePictures(URL url) throws IOException{
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		connection.setRequestMethod("GET");
-		connection.connect();
+    public JsonArray findMorePictures(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
 
-		InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-              
+        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
 
-		parser = new TwitterParser();
-		jsonPictures = parser.parse(reader);
+
+        parser = new TwitterParser();
+        jsonPictures = parser.parse(reader);
 //		size+=jsonPictures.size();
 //		if(size<50){
 //			URL next_url = new URL(parser.getNextUrl());
@@ -54,13 +55,12 @@ public class TwitterGetter {
 //			return jsonPictures;
 //
 //		}
-		return jsonPictures;
+        return jsonPictures;
 
-	}
+    }
 
-	public Picture addToList(JsonElement j){
-		Picture picture = parser.addToList(j);
-		return picture;
-	}
-
+    public Picture addToList(JsonElement j) {
+        Picture picture = parser.addToList(j);
+        return picture;
+    }
 }

@@ -1,4 +1,3 @@
-
 package removeImage;
 
 import java.util.ArrayList;

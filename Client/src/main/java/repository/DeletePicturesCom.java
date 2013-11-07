@@ -46,7 +46,8 @@ public class DeletePicturesCom {
         outStream.writeBytes(body);
         outStream.flush();
         outStream.close();
-        
+        /*System.out.println(body);
+        System.out.println(connection.getResponseCode();*/
         return connection.getResponseCode();
     }
     

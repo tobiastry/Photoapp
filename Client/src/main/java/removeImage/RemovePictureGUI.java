@@ -1,5 +1,6 @@
 package removeImage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import repository.DeletePicturesCom;
 
 /**
  *
@@ -80,7 +82,12 @@ public class RemovePictureGUI extends GridPane {
         delete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                lister.ListSelectedThumbnails();
+                DeletePicturesCom delCom = new DeletePicturesCom();
+                try {
+                    delCom.deletePictures(lister.ListSelectedThumbnails());
+                } catch (IOException ex) {
+                    Logger.getLogger(RemovePictureGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         next.setOnAction(new EventHandler<ActionEvent>() {

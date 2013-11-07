@@ -22,6 +22,7 @@ public class RetrievePicturesCom {
      */
     public ArrayList getImageList() throws IOException {
         ArrayList imageList = new ArrayList();
+
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -42,22 +43,5 @@ public class RetrievePicturesCom {
             }
         }
         return imageList;
-    }
-}
-
-class Mainer {
-
-    public static void main(String[] args) {
-        RetrievePicturesCom com = new RetrievePicturesCom();
-
-        try {
-            ArrayList<String> list = com.getImageList();
-            for (String url : list) {
-                System.out.println(url);
-            }
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 }

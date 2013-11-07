@@ -17,13 +17,14 @@ public class SelectedThumbnailLister {
         urls = new ArrayList<>();
     }
     
-    public void ListSelectedThumbnails(){
+    public ArrayList<String> ListSelectedThumbnails(){
         urls.clear();
         for (Thumbnail thumbnail : thumbnails) {
             if(thumbnail.isSelected()){
                 urls.add(thumbnail.getUrl());
             }
         }
+        return urls;
     }
 
     public ArrayList<String> getUrls() {

@@ -1,40 +1,61 @@
 package imageGetters;
 
-import getImage.UpdateThread;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Pattern;
+
+import model.Picture;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InstagramGetter {
-	private  UpdateThread thread;
 	private  InstagramParser parser;
-	
-	public InstagramGetter(UpdateThread thread) {
-		this.thread=thread;
+	private  JsonArray jsonPictures;
+//	int size;
+	public InstagramGetter() {
+		// TODO Auto-generated constructor stub
 	}
 
-	private String instagramUrl(String tag){
-//		boolean isAscii = CharMatcher.ASCII.matchesAllOf(tag);
-//		if
-		String instagramUrl = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
-		return instagramUrl;
+	public String instagramUrl(String tag){
+		if(Pattern.matches("[a-zA-Z]+", tag)){ 
+			String instagramUrl = "https://api.instagram.com/v1/tags/"+tag+"/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
+			return instagramUrl;
+		} 
+		else{ 
+			return null; 
+		} 
 	}
 
-	public void getPictures(String tag) throws IOException {
-		URL url = new URL(instagramUrl(tag));
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+	public JsonArray findPictures(String surl) throws IOException {
+                URL url = new URL(surl);
+                System.out.println(url);
+ 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.connect();
-
+                System.out.println(connection);
 		InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-		parser = new InstagramParser(thread);
-		parser.parse(reader);
+                System.out.println(reader);
+		parser = new InstagramParser();
+		jsonPictures = parser.parse(reader);
+		System.out.println(jsonPictures+""+2);
+
+		return jsonPictures;
 
 	}
-	
-	public void addToList(){
-		parser.addToList();
+
+	public String getNextUrl(){
+            return parser.getNextUrl();	
+	}
+
+	public Picture addToList(JsonElement j){
+		Picture picture = parser.addToList(j);
+		return picture;
 	}
 
 }

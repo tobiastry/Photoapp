@@ -1,12 +1,12 @@
 package login;
 
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -28,6 +28,7 @@ public class LoginWindow {
     private Scene scene;
     private Stage stage;
     private final GridPane grid;
+    private double xPos, yPos;
 
     public LoginWindow() {
         Text header = new Text("Login");
@@ -53,6 +54,25 @@ public class LoginWindow {
         grid.add(txtBox, 0, 1);
         grid.add(btn, 1, 1);
         grid.add(denied, 0, 2);
+        
+        //Movement of login window
+        grid.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xPos = event.getX();
+                yPos = event.getY();
+            }
+        });
+
+        grid.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!stage.isFullScreen()) {
+                    scene.getWindow().setX(event.getScreenX() - xPos);
+                    scene.getWindow().setY(event.getScreenY() - yPos);
+                }
+            }
+        });
 
         scene = new Scene(grid, 300, 150);
         scene.getStylesheets().add(LoginWindow.class.getResource("../stylesheets/Login.css").toExternalForm());
@@ -76,9 +96,9 @@ public class LoginWindow {
             @Override
             public void handle(ActionEvent t) {
                 if (LoginLogic.checkLogin(txtBox.getText())) {
-                  Menu menu = new Menu();
-                  menu.generateStage();
-                  stage.close();
+                    Menu menu = new Menu();
+                    menu.generateStage();
+                    stage.close();
                 } else {
                     denied.setVisible(true);
                     txtBox.setText("");
@@ -86,11 +106,11 @@ public class LoginWindow {
             }
         });
     }
-   
-       public void generateStage() {
-                stage = new Stage();
-                stage.setScene(scene);
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.show();
+
+    public void generateStage() {
+        stage = new Stage();
+        stage.setScene(scene);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.show();
     }
 }

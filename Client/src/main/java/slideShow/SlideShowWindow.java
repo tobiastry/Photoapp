@@ -12,7 +12,7 @@ import javafx.stage.StageStyle;
 public class SlideShowWindow{
       Stage slideShowVindu = new Stage();
       
-    public static Stage getSlideShowVindu(){
+    public static Stage getSlideShowWindow(){
         Stage slideShowVindu = new Stage();
         slideShowVindu.initStyle(StageStyle.UNDECORATED);
         slideShowVindu.setFullScreen(true);

@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
+=======
+>>>>>>> c245efeed373033fa56c6eb5430525079e9d5403
 package login;
 
 import org.junit.Test;
@@ -28,5 +31,9 @@ public class LoginLogicTest {
         boolean result = LoginLogic.checkLogin(password);
         assertEquals(expResult, result);
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> c245efeed373033fa56c6eb5430525079e9d5403

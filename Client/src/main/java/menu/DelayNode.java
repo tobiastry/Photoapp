@@ -46,10 +46,11 @@ public class DelayNode extends GridPane {
         confirm.setVisible(false);
         confirm.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
 
+        delayField = new TextField();
         if (getDelay() == 0) {
             error.setVisible(true);
         } else {
-            delayField = new TextField(getDelay() + "");
+            delayField.setText(getDelay() + "");
         }
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);

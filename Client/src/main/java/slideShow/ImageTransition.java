@@ -13,6 +13,10 @@ import repository.DelayCom;
  * @author mhovdan
  */
 public class ImageTransition {
+    
+    private static int fadeTid =  1000;
+    private static boolean getNewDelay = true;
+    private static int delay = 1;
 
     //Setter sammen fade inn, pause og fade out til en fullhverdig overgang
     public SequentialTransition getFullOvergang(ImageView imageView) {
@@ -35,8 +39,7 @@ public class ImageTransition {
 
     //Fade inn, der fade effekt tar 2 sekunder
     public static FadeTransition getOvergangStart(ImageView imageView) {
-
-        FadeTransition overgangStart = new FadeTransition(Duration.millis(2000), imageView);
+        FadeTransition overgangStart = new FadeTransition(Duration.millis(fadeTid), imageView);
         overgangStart.setFromValue(0);
         overgangStart.setToValue(1);
         return overgangStart;
@@ -45,7 +48,7 @@ public class ImageTransition {
 
     public static FadeTransition getOvergangStopp(ImageView imageView) {
 
-        FadeTransition overgangStopp = new FadeTransition(Duration.millis(2000), imageView);
+        FadeTransition overgangStopp = new FadeTransition(Duration.millis(fadeTid), imageView);
         overgangStopp.setFromValue(1);
         overgangStopp.setToValue(0);
         return overgangStopp;
@@ -53,17 +56,33 @@ public class ImageTransition {
     //Pause mellom fade effekter for å vise bildet. Tid gitt av getTidMellomBilder()
 
     public static PauseTransition getOvergangPause() {
-
-        PauseTransition overgangPause = new PauseTransition(Duration.millis(getTidMellomBilder()));
+        if(getNewDelay){
+            delay = getTidMellomBilder();
+            getNewDelay = false;
+        }
+            
+        PauseTransition overgangPause = new PauseTransition(Duration.millis(delay));
         return overgangPause;
     }
     //Returnerer tid mellom bilder i millisec. Fungerer som en stub, da dette skal komme fra server i framtiden.
 
+    public int getFadeTid(){
+        return fadeTid;
+    }
+    
+    public int getDelay(){
+        return delay;
+    }
+    
+    public void setNewDelay(){
+        getNewDelay = true;
+    }
+    
     public static int getTidMellomBilder() {
-        DelayCom delay = new DelayCom();
+        DelayCom tempDelay = new DelayCom();
         int d;
         try {
-            d = delay.getDelay();
+            d = tempDelay.getDelay();
         } catch (IOException ex) {
             //Delay in seconds if delay can't be retrieved    
             return 5;

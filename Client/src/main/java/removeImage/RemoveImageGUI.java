@@ -88,6 +88,14 @@ public class RemoveImageGUI extends GridPane {
                 } catch (IOException ex) {
                     Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                ArrayList<Thumbnail> selected = new ArrayList<>();
+                for (Thumbnail thumbnail : thumbnails) {
+                    if (thumbnail.isSelected()) {
+                        selected.add(thumbnail);
+                    }
+                }
+                thumbnails.removeAll(selected);
+                uodateGrid();
             }
         });
         next.setOnAction(new EventHandler<ActionEvent>() {
@@ -107,7 +115,11 @@ public class RemoveImageGUI extends GridPane {
         markPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (int i = thumbIndex; i < thumbIndex + imagePerPane; i++) {
+                int range = imagePerPane;
+                if (maxImages == thumbIndex) {
+                    range = rem;
+                }
+                for (int i = thumbIndex; i < thumbIndex + range; i++) {
                     thumbnails.get(i).setSelected(true);
                 }
             }
@@ -115,7 +127,11 @@ public class RemoveImageGUI extends GridPane {
         unmarkPage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (int i = thumbIndex; i < thumbIndex + imagePerPane; i++) {
+                int range = imagePerPane;
+                if (maxImages == thumbIndex) {
+                    range = rem;
+                }
+                for (int i = thumbIndex; i < thumbIndex + range; i++) {
                     thumbnails.get(i).setSelected(false);
                 }
             }
@@ -140,8 +156,6 @@ public class RemoveImageGUI extends GridPane {
 
         if (maxImages < imagePerPane) {
             next.setDisable(true);
-            //markPage.setDisable(true);
-            //unmarkPage.setDisable(true);
         }
         //temp
         for (int i = 0; i < maxImages; i++) {
@@ -150,8 +164,9 @@ public class RemoveImageGUI extends GridPane {
         }
 
         rem = maxImages % imagePerPane;
+        maxImages -= rem;
+
         if (maxImages > imagePerPane) {
-            maxImages -= rem;
             for (int i = 0; i < imagePerPane; i++) {
                 grid.getChildren().add(thumbnails.get(i));
             }
@@ -178,7 +193,6 @@ public class RemoveImageGUI extends GridPane {
                     grid.getChildren().add(thumbnails.get(i));
                 }
                 next.setDisable(true);
-                return;
             } else {
                 for (int i = thumbIndex; i < (thumbIndex + imagePerPane); i++) {
                     previous.setDisable(false);
@@ -203,7 +217,31 @@ public class RemoveImageGUI extends GridPane {
         }
         if (thumbIndex == 0) {
             previous.setDisable(true);
-            thumbIndex = imagePerPane;
+        }
+    }
+
+    private void uodateGrid() {
+        maxImages = thumbnails.size();
+
+        grid.getChildren().clear();
+        rem = maxImages % imagePerPane;
+        maxImages -= rem;
+        if (thumbIndex == maxImages) {
+            if (rem == 0 && thumbIndex != 0) {
+                showPrevious();
+                next.setDisable(true);
+
+                return;
+            }
+            for (int i = maxImages; i < (maxImages + rem); i++) {
+                grid.getChildren().add(thumbnails.get(i));
+            }
+            next.setDisable(true);
+
+        } else {
+            for (int i = thumbIndex; i < (thumbIndex + imagePerPane); i++) {
+                grid.getChildren().add(thumbnails.get(i));
+            }
         }
     }
 }

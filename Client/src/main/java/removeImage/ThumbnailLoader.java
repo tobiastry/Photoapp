@@ -26,16 +26,16 @@ class ThumbnailLoader {
         } catch (IOException ex) {
             Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
-//temp:
-        /*for (int i = 0; i < 30; i++) {
-           String p = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/4150708" + (i / 10) + (i % 10) + ".jpg";
-            urls.add(p);
-        }*/
     }
 
     
-    //Loads pictures inn to 'thumbnails' from 'urls' starting at 'from'
-    //Use loadPictures(24) to load the second page if a page has 24 thumbnails
+  
+    /**
+     * Loads pictures inn to thumbnails field from urls fields starting at from parameter
+     * Use loadPictures(24) to load the second page if a page has 24 thumbnails
+     * 
+     * @param from 
+     */
     public void loadPictures(int from) {
         this.from = from;
         ImageListLoaderTask tl = new ImageListLoaderTask();

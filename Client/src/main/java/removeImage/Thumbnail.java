@@ -22,7 +22,6 @@ public class Thumbnail extends StackPane {
 
     private ImageView imageView;
     private CheckBox cb;
-    //private Picture picture;
     private Image image;
     private String url;
 

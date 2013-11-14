@@ -1,8 +1,10 @@
 package slideShow;
 
+import java.util.ArrayList;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
@@ -24,16 +26,19 @@ import login.LoginWindow;
 
 public class Slideshow extends Application {
 
-    StackPane root = new StackPane();
-    SequentialTransition slideshow;
-    ImageTransition imageTrans;
-    ImageView[] bildeListe;
+    private StackPane root = new StackPane();
+    private SequentialTransition slideshow;
+    private ImageTransition imageTrans;
+    private ArrayList<ImageView> bildeListe;
+    private ListOfImages imageViewSetter;
 
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("Start initiated");
 
-        bildeListe = ListOfImages.getImageViewList();
+        bildeListe = new ArrayList();
+        imageViewSetter = new ListOfImages();
+        imageViewSetter.getImageViewList(bildeListe);
 
         System.out.println("Gathered list of images");
 
@@ -92,7 +97,6 @@ public class Slideshow extends Application {
 
         //Legger alle bildene inn i slideshow transistion
         for (ImageView bilde : bildeListe) {
-
             bilde.setOpacity(0);
             this.root.getChildren().add(bilde);
         }
@@ -101,28 +105,18 @@ public class Slideshow extends Application {
         stage.setScene(new Scene(root, 800, 600, Color.BLANCHEDALMOND));
         stage.show();
 
-
         System.out.println("Starter slideshowlooping");
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
-        new Thread(addTransitions()).start();
+
+        //Legger inn overgang for alle bilder i bilde listen
+        for (ImageView bilde : bildeListe) {
+            slideshow.getChildren().add(imageTrans.getFullOvergang(bilde));
+        }
+        slideshow.setCycleCount(Timeline.INDEFINITE);
         slideshow.play();
     }
 
-    public Task addTransitions() {
-        return new Task() {
-            @Override
-            protected Object call() throws Exception {
-                    //Legger inn overgang for alle bilder i bilde listen
-                    for (ImageView bilde : bildeListe) {
-                        System.out.println("Legger til: " + bilde.toString());
-                        slideshow.getChildren().add(imageTrans.getFullOvergang(bilde));
-                        slideshow.play();
-                    }
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        };
-    }
     public static void main(String[] args) {
         launch(args);
     }

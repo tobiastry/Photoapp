@@ -15,7 +15,7 @@ import repository.DelayCom;
 public class ImageTransition {
     
     private static int fadeTid =  1000;
-    private static boolean getNewDelay = true;
+    private static boolean getNewDelay = false;
     private static int delay = 1;
 
     //Setter sammen fade inn, pause og fade out til en fullhverdig overgang
@@ -70,12 +70,12 @@ public class ImageTransition {
         return fadeTid;
     }
     
-    public int getDelay(){
-        return delay;
-    }
-    
     public void setNewDelay(){
         getNewDelay = true;
+    }
+    
+    public int getDelay(){
+        return delay;
     }
     
     public static int getTidMellomBilder() {

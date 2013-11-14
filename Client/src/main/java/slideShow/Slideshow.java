@@ -1,6 +1,7 @@
 package slideShow;
 
 import java.util.ArrayList;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -58,7 +59,8 @@ public class Slideshow extends Application {
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                LoginWindow login = new LoginWindow();
+                slideshow.pause();
+                LoginWindow login = new LoginWindow(getSlideshowObject());
                 login.generateStage();
             }
         });
@@ -109,12 +111,34 @@ public class Slideshow extends Application {
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
 
+        initiateNewSlideshow();
+    }
+
+    public void initiateNewSlideshow() {
+        Duration timestamp = slideshow.getCurrentTime();
+
         //Legger inn overgang for alle bilder i bilde listen
+        imageTrans.setNewDelay();
         for (ImageView bilde : bildeListe) {
             slideshow.getChildren().add(imageTrans.getFullOvergang(bilde));
         }
-        slideshow.setCycleCount(Timeline.INDEFINITE);
-        slideshow.play();
+        
+        /*
+         * The slideshow has to update all transitions and start from the same spot
+         * again, if the client has been used.
+         */
+        if (slideshow.getStatus() == Animation.Status.PAUSED) {
+            slideshow.stop();
+            slideshow.setCycleCount(Timeline.INDEFINITE);
+            slideshow.playFrom(timestamp);
+        } else {
+            slideshow.setCycleCount(Timeline.INDEFINITE);
+            slideshow.play();
+        }
+    }
+
+    public Slideshow getSlideshowObject() {
+        return this;
     }
 
     public static void main(String[] args) {

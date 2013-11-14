@@ -18,11 +18,6 @@ public class ListOfImages {
             "http://a.espncdn.com/media/motion/2010/1018/com_101019nba_warriors_preview_1v.jpg",
             "Tulle link for å teste tempbilde",
             "http://api.ning.com/files/K6cyghYfeIuNpS*n0Tp23PF-lsh3vX0Aq90MQrFEcty*6YzkT3S0Z4qyXw5WvYir4NzVPYHrjm76K-mt2OR00tq3BrAl*fhJ/NBA_Playoffs_Golden_State_Warriors_Wallpapers.png",
-            "http://sportige.com/wp-content/uploads/2011/12/Thunder-Cheerleaders-e1323953136526.jpg",
-            "http://sportige.com/wp-content/uploads/2011/12/Rockets-Cheerleaders-e1323951549986.jpg",
-            "http://sportige.com/wp-content/uploads/2011/12/Bulls-Cheerleaders-e1323950821246.jpg",
-            "http://sportige.com/wp-content/uploads/2011/12/Bobcats-Cheeleaders-e1323950695383.jpg",
-            "http://sportige.com/wp-content/uploads/2011/12/Celtics-Cheerleaders-e1323950598999.jpg"
         };
         return tempList;
     }
@@ -33,6 +28,7 @@ public class ListOfImages {
         for (int i = 0; i<getImageList().length; i++)
         {
             try{
+            System.out.println("Creating ImageView");
             tempImageView[i] = new ImageView(new Image(getImageList()[i]));
             } catch (Exception e){
                 //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.

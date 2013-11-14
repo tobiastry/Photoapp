@@ -51,6 +51,7 @@ public class DelayNode extends GridPane {
         } else {
             delayField = new TextField(getDelay() + "");
         }
+        delayField = new TextField(getDelay() + "");
         delayField.setPrefSize(80, 30);
         delayField.setAlignment(Pos.CENTER_RIGHT);
         delayField.setTooltip(new Tooltip("Delay må være 1 sekund eller mer"));

@@ -15,13 +15,13 @@ public class SlideShowWindow{
     public static Stage getSlideShowWindow(){
         Stage slideShowVindu = new Stage();
         slideShowVindu.initStyle(StageStyle.UNDECORATED);
-        slideShowVindu.setFullScreen(true);
+      /*  slideShowVindu.setFullScreen(true);
         slideShowVindu.setResizable(false);
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         slideShowVindu.setX(primaryScreenBounds.getMinX());
         slideShowVindu.setY(primaryScreenBounds.getMinY());
         slideShowVindu.setWidth(primaryScreenBounds.getWidth());
-        slideShowVindu.setHeight(primaryScreenBounds.getHeight());
+        slideShowVindu.setHeight(primaryScreenBounds.getHeight());*/
         slideShowVindu.initStyle(StageStyle.UNDECORATED);
         slideShowVindu.setTitle("Ultimate slideshow");
         return slideShowVindu;

@@ -1,6 +1,9 @@
 package slideShow;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -24,6 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.LoginWindow;
+import repository.RetrievePicturesCom;
 
 public class Slideshow extends Application {
 
@@ -32,14 +36,22 @@ public class Slideshow extends Application {
     private ImageTransition imageTrans;
     private ArrayList<ImageView> bildeListe;
     private ListOfImages imageViewSetter;
+    RetrievePicturesCom com;
+    private Task retrieveImages;
 
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("Start initiated");
-
+        slideshow = new SequentialTransition();
+        imageTrans = new ImageTransition();
         bildeListe = new ArrayList();
-        imageViewSetter = new ListOfImages();
-        imageViewSetter.getImageViewList(bildeListe);
+        com = new RetrievePicturesCom();
+        imageViewSetter = new ListOfImages(bildeListe,this);
+        //imageViewSetter.getImageViewList();
+        //getImageViewList();
+        retrieveImages = imageViewSetter.getImageViewList();
+        //getImageViewList();
+        retrieveImages.run();
 
         System.out.println("Gathered list of images");
 
@@ -96,50 +108,64 @@ public class Slideshow extends Application {
                 }
             }
         });
-
-        //Legger alle bildene inn i slideshow transistion
-        for (ImageView bilde : bildeListe) {
-            bilde.setOpacity(0);
-            this.root.getChildren().add(bilde);
-        }
+        //getImageViewList();
+        //Legger alle bildene inn i slideshow transition
 
         stage = SlideShowWindow.getSlideShowWindow();
-        stage.setScene(new Scene(root, 800, 600, Color.BLANCHEDALMOND));
+        stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.show();
-
-        System.out.println("Starter slideshowlooping");
-        slideshow = new SequentialTransition();
-        imageTrans = new ImageTransition();
-
-        initiateNewSlideshow();
+        
+      /*  for (ImageView bilde : bildeListe) {
+            bilde.setOpacity(0);
+            this.root.getChildren().add(bilde);
+        }*/
+        //getImageViewList();
     }
 
     public void initiateNewSlideshow() {
         Duration timestamp = slideshow.getCurrentTime();
-
+        
         //Legger inn overgang for alle bilder i bilde listen
         imageTrans.setNewDelay();
-        for (ImageView bilde : bildeListe) {
-            slideshow.getChildren().add(imageTrans.getFullOvergang(bilde));
-        }
+        slideshow.stop();
+        root.getChildren().clear();
+        slideshow.getChildren().clear();
         
-        /*
-         * The slideshow has to update all transitions and start from the same spot
-         * again, if the client has been used.
-         */
-        if (slideshow.getStatus() == Animation.Status.PAUSED) {
-            slideshow.stop();
-            slideshow.setCycleCount(Timeline.INDEFINITE);
-            slideshow.playFrom(timestamp);
-        } else {
-            slideshow.setCycleCount(Timeline.INDEFINITE);
-            slideshow.play();
+        for(int i = 0; i<bildeListe.size();i++) {
+            bildeListe.get(i).setOpacity(0);
+            this.root.getChildren().add(bildeListe.get(i));
+            slideshow.getChildren().add(imageTrans.getFullOvergang(bildeListe.get(i)));
         }
+        slideshow.setCycleCount(Timeline.INDEFINITE);
+        slideshow.playFrom(timestamp);
+        System.out.println("initated new slideshow");
     }
 
     public Slideshow getSlideshowObject() {
         return this;
     }
+
+    public void getImageViewList() {
+        int teller = 0;
+        ArrayList<String> imageList;
+        try {
+            imageList = com.getLargeImageList();
+            for (int i = 0; i < imageList.size(); i++) {
+                teller++;
+                if (teller % 10 == 0) {
+                    initiateNewSlideshow();
+                    break;
+                }
+                System.out.println("Creating ImageView #" + teller);
+                bildeListe.add(new ImageView(new Image(imageList.get(i))));
+            }
+        } catch (Exception e) {
+            //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.
+            bildeListe.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
+        }
+    }
+
+    
 
     public static void main(String[] args) {
         launch(args);

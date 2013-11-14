@@ -16,6 +16,7 @@ public class ImageTransition {
     
     private static int fadeTid =  1000;
     private static boolean getNewDelay = false;
+    /*Delay i millisekunder*/
     private static int delay = 1;
 
     //Setter sammen fade inn, pause og fade out til en fullhverdig overgang

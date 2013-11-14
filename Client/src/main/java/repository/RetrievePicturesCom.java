@@ -44,4 +44,29 @@ public class RetrievePicturesCom {
         }
         return imageList;
     }
+    
+    public ArrayList getLargeImageList() throws IOException {
+        ArrayList imageList = new ArrayList();
+
+        URL url = new URL(request);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/v1+json");
+        connection.connect();
+        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+
+        int respons = connection.getResponseCode();
+        
+        if (respons == 200) {
+            JsonParser parser = new JsonParser();
+
+            JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
+
+            for (JsonElement j : imageUrlArray) {
+                String imageUrl = j.getAsJsonObject().get("url").getAsString();
+                imageList.add(imageUrl);
+            }
+        }
+        return imageList;
+    }
 }

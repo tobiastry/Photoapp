@@ -174,7 +174,7 @@ public class RemoveImageGUI extends GridPane {
             grid.getChildren().addAll(thumbnails);
         }
 
-        pl.loadPictures(0);
+        pl.loadPictures(0, imagePerPane * 2);
 
         thumbIndex = 0;
 
@@ -204,12 +204,13 @@ public class RemoveImageGUI extends GridPane {
             if (thumbIndex > thumbnails.size() - 1) {
                 next.setDisable(true);
             }
+            //Loading the pictures for the next page
+            pl.loadPictures(thumbIndex + imagePerPane, imagePerPane);
         }
     }
 
     private void showPrevious() {
         thumbIndex -= imagePerPane;
-
         grid.getChildren().clear();
         for (int i = thumbIndex; i < ((thumbIndex) + imagePerPane); i++) {
             next.setDisable(false);

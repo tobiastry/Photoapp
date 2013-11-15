@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import removeImage.RemoveImageGUI;
+import slideShow.Slideshow;
 
 public class Menu {
 
@@ -32,8 +33,10 @@ public class Menu {
     private Pane resize;
     //Keeps the panes for different activities
     private Pane addImagePane, removeImagePane;
+    private Slideshow slideshow;
 
-    public Menu() {
+    public Menu(Slideshow slideshow) {
+        this.slideshow = slideshow;
         buttons = new ArrayList<>();
         makeButtons();
 
@@ -129,6 +132,7 @@ public class Menu {
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                slideshow.initiateNewSlideshow();
                 stage.close();
             }
         });

@@ -89,7 +89,8 @@ exports.getPictures = function (res, version, next){
 exports.deletePictures = function (res, version, body, next){
 	var deleted = 0;
 	var remove = function(pic, last){
-		Picture.remove({url: pic.url, version: version}, function(err){
+		Picture.findOneAndRemove({url: pic.url, version: version}, function(err){
+			console.log(err);
 			if (!err) deleted++;
 			if (last) {
 				res.send(200, {deletecount: deleted})

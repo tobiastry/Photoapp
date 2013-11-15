@@ -1,7 +1,5 @@
 package removeImage;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,14 +13,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 /**
- * 
+ *
  * @author Johan LG
  */
 public class Thumbnail extends StackPane {
 
     private ImageView imageView;
     private CheckBox cb;
-    //private Picture picture;
     private Image image;
     private String url;
 
@@ -59,30 +56,22 @@ public class Thumbnail extends StackPane {
         setCursor(Cursor.HAND);
     }
 
-    public boolean isSelected(){
+    public boolean isSelected() {
         return cb.isSelected();
     }
-    
-    public void setSelected(boolean selected){
+
+    public void setSelected(boolean selected) {
         cb.setSelected(selected);
     }
-    
-    public void loadImage(final String pic) {
-        url = pic;
-        Thread t = new Thread(new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        image = new Image(pic);
-                        imageView.setImage(image);
-                    }
-                });
-                return null;
-            }
-        });
-        t.start();
+
+    /**
+     * Method for loading the Image from a given url
+     * @param pic 
+     */
+    public void loadImage(String url) {
+        this.url = url;
+        image = new Image(url);
+        imageView.setImage(image);
     }
 
     public String getUrl() {

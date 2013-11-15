@@ -1,8 +1,5 @@
 package removeImage;
 
-import java.util.concurrent.ExecutorService;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

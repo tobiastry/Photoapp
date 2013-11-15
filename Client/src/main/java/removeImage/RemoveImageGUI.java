@@ -95,7 +95,7 @@ public class RemoveImageGUI extends GridPane {
                     }
                 }
                 thumbnails.removeAll(selected);
-                uodateGrid();
+                updateGrid();
             }
         });
         next.setOnAction(new EventHandler<ActionEvent>() {
@@ -221,7 +221,7 @@ public class RemoveImageGUI extends GridPane {
         }
     }
 
-    private void uodateGrid() {
+    private void updateGrid() {
         maxImages = thumbnails.size();
 
         grid.getChildren().clear();

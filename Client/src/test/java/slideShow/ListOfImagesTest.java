@@ -1,5 +1,6 @@
 package slideShow;
 
+import java.util.ArrayList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.Test;
@@ -10,13 +11,20 @@ import static org.junit.Assert.*;
  * @author mhovdan
  */
 public class ListOfImagesTest{
+    Slideshow slide = new Slideshow();
+    ArrayList<ImageView> imageViewList = new ArrayList<ImageView>();
+    ListOfImages list = new ListOfImages(imageViewList,slide);
     
     public ListOfImagesTest() {
     }
     
-    @Test
+    
+    /*
+     * MÅ LAGES NYE TESTER TIL KLASSEN!
+     */
+   /* @Test
     public void test1(){
-        assertTrue(ListOfImages.getImageList() instanceof String[]);
+        assertTrue(list.getImageList() instanceof String[]);
     }
     
     @Test
@@ -42,5 +50,5 @@ public class ListOfImagesTest{
         @Test
     public void test6(){
         assertTrue(ListOfImages.getImageViewList()[0].getImage() instanceof Image);
-    }
+    }*/
 }

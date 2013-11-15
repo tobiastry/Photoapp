@@ -21,9 +21,10 @@ public class ImageTransitionTest {
     @Test
     public void test1() 
     {
+        ImageTransition trans = new ImageTransition();
         Image image = new Image("test");
         ImageView imageview = new ImageView(image);
-        assertTrue(ImageTransition.getFullOvergang(imageview) instanceof SequentialTransition);
+        assertTrue(trans.getFullOvergang(imageview) instanceof SequentialTransition);
     }
     
     @Test

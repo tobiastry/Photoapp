@@ -16,10 +16,12 @@ public class StorePicturesCom {
     private String request = "http://pensolut.com:8084/api/picture/addpictures";
     private DataOutputStream outStream;
     
-    /*
+    /**
      * Takes a list of pictures as parameter, stores them in a JSON format and
      * sends it to server for storage.
-     * Returns: HTTP response
+     * @param pictureList ArrayList<Picture>
+     * @return HTTP responsecode (Integer)
+     * @throws IOException 
      */
     public int storePictures(ArrayList<Picture> pictureList) throws IOException{
         URL url = new URL(request);

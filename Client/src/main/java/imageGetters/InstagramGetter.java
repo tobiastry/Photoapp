@@ -15,13 +15,8 @@ public class InstagramGetter {
 
     private InstagramParser parser;
     private JsonArray jsonPictures;
-//	int size;
 
-    public InstagramGetter() {
-        // TODO Auto-generated constructor stub
-    }
-
-    public String instagramUrl(String tag) {
+    public String toUrl(String tag) {
         if (Pattern.matches("[a-zA-Z]+", tag)) {
             String instagramUrl = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
             return instagramUrl;

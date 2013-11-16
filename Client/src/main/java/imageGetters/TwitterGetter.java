@@ -1,66 +1,87 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package imageGetters;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.regex.Pattern;
-
-import model.Picture;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.net.ssl.HttpsURLConnection;
+import model.Picture;
+import repository.AuthenticationTwitter;
 
+/**
+ *
+ * @author John McEpic
+ */
 public class TwitterGetter {
 
     private TwitterParser parser;
     private JsonArray jsonPictures;
-//	int size;
 
-    public TwitterGetter() {
-        // TODO Auto-generated constructor stub
-    }
-
-    private String twittterUrl(String tag) {
-        if (Pattern.matches("[a-zA-Z]+", tag)) {
-            String twitterUrl = "https://api.twitpic.com/2/tags/show.json?tag=" + tag; //client_id=af7c41b64a2419a8dfe31897f74f7fa2" (Only needed for uploading)
-            return twitterUrl;
+    public String toUrl(String tag) {//http://www.vogella.com/articles/JavaRegularExpressions/article.html
+        if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
+            String TwitterUrl = "https://api.twitter.com/1.1/search/tweets.json?q=" + tag + "&result_type=recent&count=100";
+            return TwitterUrl;
         } else {
             return null;
         }
     }
 
-    public JsonArray findPictures(String tag) throws IOException {
-        URL url = new URL(twittterUrl(tag));
-        findMorePictures(url);
-//		System.out.println(jsonPictures);
-        return jsonPictures;
+    public JsonArray findPictures(String surl) throws IOException {
+        HttpsURLConnection connection = null;
+
+        try {
+            URL url = new URL(surl);
+            connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Host", "api.twitter.com");
+            connection.setRequestProperty("User-Agent", "Photoappdat210");
+            connection.setRequestProperty("Authorization", "Bearer " + requestBearerToken());
+            connection.setUseCaches(false);
+            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+            parser = new TwitterParser();
+            jsonPictures = parser.parse(reader);
+
+            if (jsonPictures != null) {
+                return jsonPictures;
+            }
+        } catch (MalformedURLException e) {
+            throw new IOException("Invalid URL specified.", e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return null;
 
     }
 
-    public JsonArray findMorePictures(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.connect();
-
-        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-
-
-        parser = new TwitterParser();
-        jsonPictures = parser.parse(reader);
-//		size+=jsonPictures.size();
-//		if(size<50){
-//			URL next_url = new URL(parser.getNextUrl());
-//			findMorePictures(next_url);
-//			return jsonPictures;
-//
-//		}
-        return jsonPictures;
-
+    public String getNextUrl() {
+        return parser.getNextUrl();
     }
 
     public Picture addToList(JsonElement j) {
         Picture picture = parser.addToList(j);
         return picture;
+    }
+
+    private String requestBearerToken() {
+        try {
+            AuthenticationTwitter auth = new AuthenticationTwitter();
+            return auth.requestBearerToken();
+        } catch (IOException ex) {
+            Logger.getLogger(TwitterGetter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

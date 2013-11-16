@@ -50,7 +50,7 @@ public class AddImageGUI extends GridPane {
             public void handle(ActionEvent e) {
                 searchButton.setDisable(true);
 
-                ProgressTask = logic.addPicturesToList(searchField.getText());
+                ProgressTask = logic.findPicturesTask(searchField.getText());
 
                 progressBar.progressProperty().unbind();
                 progressBar.progressProperty().bind(ProgressTask.progressProperty());

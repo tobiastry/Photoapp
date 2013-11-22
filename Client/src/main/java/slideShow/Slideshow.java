@@ -1,10 +1,6 @@
 package slideShow;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -12,13 +8,14 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -27,31 +24,29 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.LoginWindow;
-import repository.RetrievePicturesCom;
-
+/**
+ * 
+ * @author Morten
+ */
 public class Slideshow extends Application {
 
-    private StackPane root = new StackPane();
+    private StackPane root;
     private SequentialTransition slideshow;
     private ImageTransition imageTrans;
     private ArrayList<ImageView> bildeListe;
     private ListOfImages imageViewSetter;
-    RetrievePicturesCom com;
     private Task retrieveImages;
 
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("Start initiated");
+        root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
         bildeListe = new ArrayList();
-        com = new RetrievePicturesCom();
-        imageViewSetter = new ListOfImages(bildeListe,this);
-        //imageViewSetter.getImageViewList();
-        //getImageViewList();
+        imageViewSetter = new ListOfImages(bildeListe, this);
         retrieveImages = imageViewSetter.getImageViewList();
-        //getImageViewList();
-        retrieveImages.run();
+        new Thread(retrieveImages).start();
 
         System.out.println("Gathered list of images");
 
@@ -86,6 +81,9 @@ public class Slideshow extends Application {
 
         this.root.getChildren().add(box);
 
+        /*
+         * Listener on mouse movement for buttons
+         */
         this.root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -108,65 +106,55 @@ public class Slideshow extends Application {
                 }
             }
         });
-        //getImageViewList();
-        //Legger alle bildene inn i slideshow transition
 
+        /*
+         * Listening on ready signal from Task: retrieveImages
+         */
+        retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                initiateNewSlideshow();
+            }
+        });
+
+        /*
+         * Initiates stage and sets it visible
+         */
         stage = SlideShowWindow.getSlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.show();
-        
-      /*  for (ImageView bilde : bildeListe) {
-            bilde.setOpacity(0);
-            this.root.getChildren().add(bilde);
-        }*/
-        //getImageViewList();
+
     }
 
+    /*
+     * Creates a new slideshow with updated preferrences
+     */
     public void initiateNewSlideshow() {
         Duration timestamp = slideshow.getCurrentTime();
-        
-        //Legger inn overgang for alle bilder i bilde listen
         imageTrans.setNewDelay();
         slideshow.stop();
         root.getChildren().clear();
         slideshow.getChildren().clear();
-        
-        for(int i = 0; i<bildeListe.size();i++) {
+
+        for (int i = 0; i < bildeListe.size(); i++) {
             bildeListe.get(i).setOpacity(0);
-            this.root.getChildren().add(bildeListe.get(i));
+            root.getChildren().add(bildeListe.get(i));
             slideshow.getChildren().add(imageTrans.getFullOvergang(bildeListe.get(i)));
         }
+
         slideshow.setCycleCount(Timeline.INDEFINITE);
         slideshow.playFrom(timestamp);
-        System.out.println("initated new slideshow");
+        System.out.println("initated new slideshow with " + bildeListe.size() + " bilder");
     }
 
     public Slideshow getSlideshowObject() {
         return this;
     }
 
-    public void getImageViewList() {
-        int teller = 0;
-        ArrayList<String> imageList;
-        try {
-            imageList = com.getLargeImageList();
-            for (int i = 0; i < imageList.size(); i++) {
-                teller++;
-                if (teller % 10 == 0) {
-                    initiateNewSlideshow();
-                    break;
-                }
-                System.out.println("Creating ImageView #" + teller);
-                bildeListe.add(new ImageView(new Image(imageList.get(i))));
-            }
-        } catch (Exception e) {
-            //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.
-            bildeListe.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
-        }
-    }
-
-    
-
+    /*
+     * Main function
+     */
     public static void main(String[] args) {
         launch(args);
     }

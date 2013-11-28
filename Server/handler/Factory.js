@@ -90,22 +90,19 @@ exports.deletePictures = function (res, version, body, next){
 	var deleted = 0;
 	var remove = function(pic, last){
 		Picture.findOneAndRemove({url: pic.url, version: version}, function(err){
-			console.log(err);
+			//console.log(err);
 			if (!err) deleted++;
 			if (last) {
-				res.send(200, {deletecount: deleted})
+				
 			};
 		});
 	};
 	switch(version){
 		case "v1":
-			for (var i = body.length - 1; i >= 0; i--) {
-				if (i == 0) {
-					remove(body[i], true);
-				}else{
+			for (var i in body) {
 					remove(body[i]);
-				}
 			}
+			res.send(200, {deletecount: body.length})
 			break;
 		default:
 			return next(new VersionException("you must supply a Content-Type as shown in the documentation."));

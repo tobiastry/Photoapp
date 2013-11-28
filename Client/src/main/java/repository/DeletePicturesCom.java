@@ -27,16 +27,17 @@ public class DeletePicturesCom {
         connection.setDoOutput(true);
         connection.connect();
         
-        String body = "[{";
+        String body = "[";
         
         outStream = new DataOutputStream(connection.getOutputStream());
         for(int i=0; i<imageList.size();i++){
             if(i!=imageList.size()-1)
-                body = body+" \"url\": "+"\""+imageList.get(i)+"\",";
+                body = body+" {\"url\": "+"\""+imageList.get(i)+"\"},";
             else
-                 body = body+" \"url\": "+"\""+imageList.get(i)+"\"";
+                 body = body+" {\"url\": "+"\""+imageList.get(i)+"\"";
         }
         body = body+"}]";
+        body = body.replace("thumb", "large");
         outStream.writeBytes(body);
         outStream.flush();
         outStream.close();

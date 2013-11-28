@@ -1,6 +1,8 @@
 package slideShow;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -39,6 +41,7 @@ public class Slideshow extends Application {
     private CheckNewDelay checkNewDelay;
     private Task retrieveImages, checkDelay;
     private Thread retrieveImagesThread, checkDelayThread;
+    private boolean startup = true;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -47,7 +50,6 @@ public class Slideshow extends Application {
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
         bildeListe = new ArrayList();
-        imageViewSetter = new ListOfImages(bildeListe);
         checkNewDelay = new CheckNewDelay();
         checkDelay = checkNewDelay.checkNewDelay();
 
@@ -115,23 +117,13 @@ public class Slideshow extends Application {
         login.generateStage();
 
         /*
-         * Listening on ready signal from Task: checkDelay
-         */
-        checkDelay.messageProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
-                initiateNewSlideshow();
-            }
-        });
-
-        /*
          * Initiates stage and sets it visible
          */
         stage = SlideShowWindow.getSlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.show();
 
+        startup = false;
     }
 
     /*
@@ -159,10 +151,31 @@ public class Slideshow extends Application {
         checkDelayThread = new Thread(checkDelay);
         checkDelayThread.setDaemon(true);
         checkDelayThread.start();
+
+        /*
+         * Listening on ready signal from Task: checkDelay
+         */
+        checkDelay.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                initiateNewSlideshow();
+            }
+        });
     }
 
     public void initiateRetrieveImagesThread() {
+        System.out.println("Initiating new retreiveImagesThread");
+        if (!startup) {
+            imageViewSetter.setIsRunning(false);
+            try {
+                retrieveImagesThread.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         bildeListe.clear();
+        imageViewSetter = new ListOfImages(bildeListe);
         retrieveImages = imageViewSetter.getImageViewList();
         retrieveImagesThread = new Thread(retrieveImages);
         retrieveImagesThread.setDaemon(true);

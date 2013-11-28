@@ -12,8 +12,9 @@ import repository.RetrievePicturesCom;
  */
 public class ListOfImages {
 
-    ArrayList<ImageView> list;
-    RetrievePicturesCom com;
+    private ArrayList<ImageView> list;
+    private RetrievePicturesCom com;
+    private volatile boolean isRunning = true;
 
     public ListOfImages(ArrayList<ImageView> list) {
         this.list = list;
@@ -27,6 +28,12 @@ public class ListOfImages {
             protected Object call() throws Exception {
                 ArrayList<String> imageList = com.getLargeImageList();
                 for (int i = 0; i < imageList.size(); i++) {
+                   
+                    if(!isRunning){
+                        System.out.println("Ending task");
+                        return true;
+                    }
+                    
                     try {
                         System.out.println("Creating ImageView #" + i);
                         list.add(new ImageView(new Image(imageList.get(i))));
@@ -42,5 +49,9 @@ public class ListOfImages {
                 return true;
             }
         };
+    }
+    
+    public void setIsRunning(boolean state){
+        isRunning = state;
     }
 }

@@ -13,13 +13,20 @@ public class CheckNewDelay {
     private int delay = 5;
     private boolean loop = true;
     
+    /*
+     * Checks to see if the delay has been changed every 3 seconds.
+     * If it has, it runs updateMessage(), which Slideshow listens to.
+     */
+    
     public Task checkNewDelay(){
         return new Task(){
             @Override
             protected Object call() throws Exception {
                 while(loop){
                     Thread.sleep(3000);
-                    if(getDelay() != delay){
+                    int temp = getDelay();
+                    if(temp != delay){
+                        delay = temp;
                         updateMessage("New delay: "+delay);
                     }
                 }
@@ -29,6 +36,9 @@ public class CheckNewDelay {
         };
     }
     
+    /*
+     * Retrieves delay from server.
+     */
      public static int getDelay() {
         DelayCom tempDelay = new DelayCom();
         int d;

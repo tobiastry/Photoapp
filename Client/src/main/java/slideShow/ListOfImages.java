@@ -14,12 +14,10 @@ public class ListOfImages {
 
     ArrayList<ImageView> list;
     RetrievePicturesCom com;
-    Slideshow slideshow;
 
-    public ListOfImages(ArrayList<ImageView> list, Slideshow slideshow) {
+    public ListOfImages(ArrayList<ImageView> list) {
         this.list = list;
         com = new RetrievePicturesCom();
-        this.slideshow = slideshow;
     }
 
     //Lager en ImageView liste utifra string liste over, som brukes i slideshow    
@@ -40,6 +38,7 @@ public class ListOfImages {
                         list.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
                     }
                 }
+                updateMessage("Generate new slideshow SISTE");
                 return true;
             }
         };

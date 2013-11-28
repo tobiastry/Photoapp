@@ -45,8 +45,8 @@ public class ImageTransition {
         overgangStart.setToValue(1);
         return overgangStart;
     }
+    
     //Fade ut, der fade effekt varer i 2 sekunder 
-
     public static FadeTransition getOvergangStopp(ImageView imageView) {
 
         FadeTransition overgangStopp = new FadeTransition(Duration.millis(fadeTid), imageView);
@@ -54,8 +54,8 @@ public class ImageTransition {
         overgangStopp.setToValue(0);
         return overgangStopp;
     }
+    
     //Pause mellom fade effekter for å vise bildet. Tid gitt av getTidMellomBilder()
-
     public static PauseTransition getOvergangPause() {
         if(getNewDelay){
             delay = getTidMellomBilder();
@@ -65,8 +65,8 @@ public class ImageTransition {
         PauseTransition overgangPause = new PauseTransition(Duration.millis(delay));
         return overgangPause;
     }
+    
     //Returnerer tid mellom bilder i millisec. Fungerer som en stub, da dette skal komme fra server i framtiden.
-
     public int getFadeTid(){
         return fadeTid;
     }

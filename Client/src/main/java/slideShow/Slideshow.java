@@ -24,8 +24,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.LoginWindow;
+
 /**
- * 
+ *
  * @author Morten
  */
 public class Slideshow extends Application {
@@ -35,7 +36,9 @@ public class Slideshow extends Application {
     private ImageTransition imageTrans;
     private ArrayList<ImageView> bildeListe;
     private ListOfImages imageViewSetter;
-    private Task retrieveImages;
+    private CheckNewDelay checkNewDelay;
+    private Task retrieveImages, checkDelay;
+    private Thread retrieveImagesThread, checkDelayThread;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -44,11 +47,12 @@ public class Slideshow extends Application {
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
         bildeListe = new ArrayList();
-        imageViewSetter = new ListOfImages(bildeListe, this);
-        retrieveImages = imageViewSetter.getImageViewList();
-        new Thread(retrieveImages).start();
+        imageViewSetter = new ListOfImages(bildeListe);
+        checkNewDelay = new CheckNewDelay();
+        checkDelay = checkNewDelay.checkNewDelay();
 
-        System.out.println("Gathered list of images");
+        initiateRetrieveImagesThread();
+        initiateCheckDelayThread();
 
         final Button quit = new Button();
         quit.setText("Quit Slideshow");
@@ -107,10 +111,13 @@ public class Slideshow extends Application {
             }
         });
 
+        LoginWindow login = new LoginWindow(getSlideshowObject());
+        login.generateStage();
+
         /*
-         * Listening on ready signal from Task: retrieveImages
+         * Listening on ready signal from Task: checkDelay
          */
-        retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
+        checkDelay.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 System.out.println(newValue);
@@ -145,7 +152,32 @@ public class Slideshow extends Application {
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
         slideshow.playFrom(timestamp);
-        System.out.println("initated new slideshow with " + bildeListe.size() + " bilder");
+        System.out.println("initated new slideshow with " + bildeListe.size() + " images");
+    }
+
+    public void initiateCheckDelayThread() {
+        checkDelayThread = new Thread(checkDelay);
+        checkDelayThread.setDaemon(true);
+        checkDelayThread.start();
+    }
+
+    public void initiateRetrieveImagesThread() {
+        bildeListe.clear();
+        retrieveImages = imageViewSetter.getImageViewList();
+        retrieveImagesThread = new Thread(retrieveImages);
+        retrieveImagesThread.setDaemon(true);
+        retrieveImagesThread.start();
+
+        /*
+         * Listening on ready signal from Task: retrieveImages
+         */
+        retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                initiateNewSlideshow();
+            }
+        });
     }
 
     public Slideshow getSlideshowObject() {

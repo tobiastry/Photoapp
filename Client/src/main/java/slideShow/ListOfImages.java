@@ -6,10 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import repository.RetrievePicturesCom;
 
-/**
- *
- * @author mhovdan
- */
 public class ListOfImages {
 
     ArrayList<ImageView> list;
@@ -22,7 +18,7 @@ public class ListOfImages {
         this.slideshow = slideshow;
     }
 
-    //Lager en ImageView liste utifra string liste over, som brukes i slideshow    
+    //Creates and ArrayList of ImageViews from server    
     public Task getImageViewList() {
         return new Task() {
             @Override
@@ -36,7 +32,7 @@ public class ListOfImages {
                             updateMessage("Generate new slideshow "+i);
                         }
                     } catch (Exception e) {
-                        //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.
+                        //Incase of bad link, the image below will be used instead
                         list.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
                     }
                 }

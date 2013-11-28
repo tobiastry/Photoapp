@@ -1,16 +1,10 @@
 /* 
-    Document   : Login Style Sheet
+    Document   : Slideshow Style Sheet
     Created on : 14.okt.2013, 17:16:12
     Author     : Emil
     Description:
-        Styling certain parts of the login screen
+        Styling buttons in slideshow
 */
-
-.root { 
-    -fx-background-color: #878787;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-}
 
 .button {
     -fx-background-color: 

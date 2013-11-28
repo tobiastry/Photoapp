@@ -19,33 +19,44 @@ public class ImageTransition {
     /*Delay in milliseconds*/
     private static int delay = 1;
 
-    //Compines fade in, fade out and pause to a complete transition 
+    // 
+    /**
+     * Combines fade in, fade out and pause to a complete transition
+     * @param imageView
+     * @return A full image transition
+     */
     public SequentialTransition getFullTransition(ImageView imageView) {
         SequentialTransition fullTransition = new SequentialTransition();
         fullTransition.getChildren().addAll(getTransitionStart(imageView), getTransitionPause(), GetTransitionStop(imageView));
         return fullTransition;
     }
 
-    public static SequentialTransition getHalfTransition(ImageView imageView) {
-        SequentialTransition fullTransition = new SequentialTransition();
-        fullTransition.getChildren().addAll(getTransitionStart(imageView));
-        return fullTransition;
-    }
-
+    /**
+     *
+     * @return
+     */
     public static SequentialTransition getPause() {
         SequentialTransition fullTransition = new SequentialTransition();
         fullTransition.getChildren().add(getTransitionPause());
         return fullTransition;
     }
 
-    //Fade in, with 2 sec fade time
+    /**
+     * 
+     * @param imageView
+     * @return FadeTransition for the fade in of images
+     */
     public static FadeTransition getTransitionStart(ImageView imageView) {
         FadeTransition TransitionStart = new FadeTransition(Duration.millis(fadeTime), imageView);
         TransitionStart.setFromValue(0);
         TransitionStart.setToValue(1);
         return TransitionStart;
     }
-    //Fade out, with 2 sec fade time 
+    /**
+     * Fade out, with fade time from fadeTime
+     * @param imageView
+     * @return FadeTransition for the fade out of images
+     */
     public static FadeTransition GetTransitionStop(ImageView imageView) {
 
         FadeTransition TransitionStop = new FadeTransition(Duration.millis(fadeTime), imageView);
@@ -53,7 +64,11 @@ public class ImageTransition {
         TransitionStop.setToValue(0);
         return TransitionStop;
     }
-    //Pause between fade in and fade out, to show image. Time given by getTimeBetweenImages()
+    //
+    /**
+     * Pause between fade in and fade out, to show image. Time given by getTimeBetweenImages()
+     * @return 
+     */
     public static PauseTransition getTransitionPause() {
         if(getNewDelay){
             delay = getTimeBetweenImages();
@@ -64,18 +79,33 @@ public class ImageTransition {
         return transistionPause;
     }
     
+    /**
+     * Self explanatory
+     * @return
+     */
     public int getFadeTid(){
         return fadeTime;
     }
     
+    /**
+     * Self explanatory
+     */
     public void setNewDelay(){
         getNewDelay = true;
     }
     
+    /**
+     * Self explanatory
+     * @return
+     */
     public int getDelay(){
         return delay;
     }
     
+    /**
+     * Connects to server and returns the current delay. 
+     * If it can not connect to the server it returns 5 sec delay
+     */
     public static int getTimeBetweenImages() {
         DelayCom tempDelay = new DelayCom();
         int d;

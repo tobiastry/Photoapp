@@ -12,17 +12,22 @@ import javafx.stage.StageStyle;
 public class SlideShowWindow{
       Stage slideShowVindu = new Stage();
       
+    /**
+     * Measures the screen program is started on, and sets window size accordingly
+     * It also removes menu bars and resize options
+     * @return This is the main stage window, used for the slideshow
+     */
     public static Stage getSlideShowWindow(){
         Stage slideShowVindu = new Stage();
-//        slideShowVindu.initStyle(StageStyle.UNDECORATED);
-//        slideShowVindu.setFullScreen(true);
-//        slideShowVindu.setResizable(false);
-//        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//        slideShowVindu.setX(primaryScreenBounds.getMinX());
-//        slideShowVindu.setY(primaryScreenBounds.getMinY());
-//        slideShowVindu.setWidth(primaryScreenBounds.getWidth());
-//        slideShowVindu.setHeight(primaryScreenBounds.getHeight());
-//        slideShowVindu.initStyle(StageStyle.UNDECORATED);
+        slideShowVindu.initStyle(StageStyle.UNDECORATED);
+        slideShowVindu.setFullScreen(true);
+        slideShowVindu.setResizable(false);
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        slideShowVindu.setX(primaryScreenBounds.getMinX());
+        slideShowVindu.setY(primaryScreenBounds.getMinY());
+        slideShowVindu.setWidth(primaryScreenBounds.getWidth());
+        slideShowVindu.setHeight(primaryScreenBounds.getHeight());
+        slideShowVindu.initStyle(StageStyle.UNDECORATED);
         slideShowVindu.setTitle("Ultimate slideshow");
         return slideShowVindu;
     }

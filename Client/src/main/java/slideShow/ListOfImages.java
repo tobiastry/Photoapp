@@ -16,12 +16,23 @@ public class ListOfImages {
     private RetrievePicturesCom com;
     private volatile boolean isRunning = true;
 
+    /**
+     * ArrayList with Imageview Objects
+     * @param list
+     */
     public ListOfImages(ArrayList<ImageView> list) {
         this.list = list;
         com = new RetrievePicturesCom();
     }
 
-    //Lager en ImageView liste utifra string liste over, som brukes i slideshow    
+    //    
+    /**
+     * Extract image path from server, creates ImageViews and adds to ArrayList
+     * If individual paths from server are incorrect, a "Image not found" image is used instead
+     * However, this does not work when server does not return any value, then relevant ImageView remains blank.
+     * Also, for some other cases, replacement image does not work. I think this is due to path access rights
+     * @return
+     */
     public Task getImageViewList() {
         return new Task() {
             @Override
@@ -41,7 +52,7 @@ public class ListOfImages {
                             updateMessage("Generate new slideshow "+i);
                         }
                     } catch (Exception e) {
-                        //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.
+                        //If path is wrong, it returns image below
                         list.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
                     }
                 }

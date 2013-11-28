@@ -36,7 +36,7 @@ public class Slideshow extends Application {
     private StackPane root;
     private SequentialTransition slideshow;
     private ImageTransition imageTrans;
-    private ArrayList<ImageView> bildeListe;
+    private ArrayList<ImageView> ImageList;
     private ListOfImages imageViewSetter;
     private CheckNewDelay checkNewDelay;
     private Task retrieveImages, checkDelay;
@@ -49,13 +49,39 @@ public class Slideshow extends Application {
         root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
-        bildeListe = new ArrayList();
+        ImageList = new ArrayList();
         checkNewDelay = new CheckNewDelay();
         checkDelay = checkNewDelay.checkNewDelay();
 
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
 
+        
+
+        //LoginWindow login = new LoginWindow(getSlideshowObject());
+        //login.generateStage();
+
+        /*
+         * Initiates stage and sets it visible
+         */
+        stage = SlideShowWindow.getSlideShowWindow();
+        stage.setScene(new Scene(root, 800, 600, Color.BLACK));
+        stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
+        stage.show();
+
+        startup = false;
+    }
+
+    /*
+     * Creates a new slideshow with updated preferrences
+     */
+    public void initiateNewSlideshow() {
+        Duration timestamp = slideshow.getCurrentTime();
+        imageTrans.setNewDelay();
+        slideshow.stop();
+        root.getChildren().clear();
+        slideshow.getChildren().clear();
+        
         final Button quit = new Button();
         quit.setText("Quit Slideshow");
         quit.setLayoutX(500);
@@ -86,6 +112,7 @@ public class Slideshow extends Application {
         box.getChildren().add(menu);
 
         this.root.getChildren().add(box);
+        box.setStyle("../stylesheets/Menu.css");
 
         /*
          * Listener on mouse movement for buttons
@@ -113,38 +140,15 @@ public class Slideshow extends Application {
             }
         });
 
-        LoginWindow login = new LoginWindow(getSlideshowObject());
-        login.generateStage();
-
-        /*
-         * Initiates stage and sets it visible
-         */
-        stage = SlideShowWindow.getSlideShowWindow();
-        stage.setScene(new Scene(root, 800, 600, Color.BLACK));
-        stage.show();
-
-        startup = false;
-    }
-
-    /*
-     * Creates a new slideshow with updated preferrences
-     */
-    public void initiateNewSlideshow() {
-        Duration timestamp = slideshow.getCurrentTime();
-        imageTrans.setNewDelay();
-        slideshow.stop();
-        root.getChildren().clear();
-        slideshow.getChildren().clear();
-
-        for (int i = 0; i < bildeListe.size(); i++) {
-            bildeListe.get(i).setOpacity(0);
-            root.getChildren().add(bildeListe.get(i));
-            slideshow.getChildren().add(imageTrans.getFullOvergang(bildeListe.get(i)));
+        for (int i = 0; i < ImageList.size(); i++) {
+            ImageList.get(i).setOpacity(0);
+            root.getChildren().add(ImageList.get(i));
+            slideshow.getChildren().add(imageTrans.getFullTransition(ImageList.get(i)));
         }
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
         slideshow.playFrom(timestamp);
-        System.out.println("initated new slideshow with " + bildeListe.size() + " images");
+        System.out.println("initated new slideshow with " + ImageList.size() + " images");
     }
 
     public void initiateCheckDelayThread() {
@@ -174,8 +178,8 @@ public class Slideshow extends Application {
                 Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        bildeListe.clear();
-        imageViewSetter = new ListOfImages(bildeListe);
+        ImageList.clear();
+        imageViewSetter = new ListOfImages(ImageList);
         retrieveImages = imageViewSetter.getImageViewList();
         retrieveImagesThread = new Thread(retrieveImages);
         retrieveImagesThread.setDaemon(true);

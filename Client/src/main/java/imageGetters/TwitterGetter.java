@@ -28,7 +28,7 @@ public class TwitterGetter {
 
     public String toUrl(String tag) {//http://www.vogella.com/articles/JavaRegularExpressions/article.html
         if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
-            String TwitterUrl = "https://api.twitter.com/1.1/search/tweets.json?q=" + tag + "&result_type=recent&count=100";
+            String TwitterUrl = "https://api.twitter.com/1.1/search/tweets.json?q=" + tag + "&result_type=recent&count=25";
             return TwitterUrl;
         } else {
             return null;
@@ -37,7 +37,6 @@ public class TwitterGetter {
 
     public JsonArray findPictures(String surl) throws IOException {
         HttpsURLConnection connection = null;
-
         try {
             URL url = new URL(surl);
             connection = (HttpsURLConnection) url.openConnection();

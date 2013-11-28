@@ -10,6 +10,8 @@ import model.Picture;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import java.net.MalformedURLException;
+import javax.net.ssl.HttpsURLConnection;
 
 public class InstagramGetter {
 
@@ -17,7 +19,7 @@ public class InstagramGetter {
     private JsonArray jsonPictures;
 
     public String toUrl(String tag) {
-        if (Pattern.matches("[a-zA-Z]+", tag)) {
+        if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
             String instagramUrl = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
             return instagramUrl;
         } else {
@@ -26,17 +28,27 @@ public class InstagramGetter {
     }
 
     public JsonArray findPictures(String surl) throws IOException {
-        URL url = new URL(surl);
-        System.out.println(url);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.connect();
-        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-        parser = new InstagramParser();
-        jsonPictures = parser.parse(reader);
+        HttpsURLConnection connection = null;
+        try {
+            URL url = new URL(surl);
+            connection = (HttpsURLConnection) (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+            parser = new InstagramParser();
+            jsonPictures = parser.parse(reader);
 
-        return jsonPictures;
-
+            if (jsonPictures != null) {
+                return jsonPictures;
+            }
+        } catch (MalformedURLException e) {
+            throw new IOException("Invalid URL specified.", e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return null;
     }
 
     public String getNextUrl() {

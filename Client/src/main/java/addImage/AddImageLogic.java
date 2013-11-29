@@ -97,13 +97,13 @@ public class AddImageLogic {
         switch (source) {
             case "Instagram": {
                 Picture picture = instaGetter.addToList(j);
-                picture.tag = tag;
+                picture.setTag(tag);
                 pictureList.add(picture);
                 break;
             }
             case "Twitter": {
                 Picture picture = twitterGetter.addToList(j);
-                picture.tag = tag;
+                picture.setTag(tag);
                 pictureList.add(picture);
                 break;
             }

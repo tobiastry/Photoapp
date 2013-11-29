@@ -4,6 +4,8 @@ public class Picture {
 
 	private String thumbUrl;
 	private String largeUrl;
+        private String tag;
+        private String id;
         
         public Picture (String url, String thumb){
             this.largeUrl = url;
@@ -22,6 +24,34 @@ public class Picture {
      */
     public String getLargeUrl() {
         return largeUrl;
+    }
+
+    /**
+     * @return the tag
+     */
+    public String getTag() {
+        return tag;
+    }
+
+    /**
+     * @param tag the tag to set
+     */
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

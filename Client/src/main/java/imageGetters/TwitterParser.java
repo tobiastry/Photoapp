@@ -28,6 +28,7 @@ public class TwitterParser {
     /**
      * Finds the location of the pictures in the InputStreamReader, returns them
      * as a JsonArray.
+     *
      * @param reader (InputStreamReader)
      * @return jsonPictures (JsonArray)
      */
@@ -49,9 +50,10 @@ public class TwitterParser {
         }
         return tempArray;
     }
-    
+
     /**
      * Finds the next url in the InputStreamReader and returns it as a string.
+     *
      * @return next_url (String)
      */
     public String getNextUrl() {
@@ -71,19 +73,21 @@ public class TwitterParser {
 
     /**
      * Finds the URLs in the JsonElement and makes a type Picture out of them.
+     *
      * @param j (JsonElement)
      * @return picture (model.Picture)
      */
     public Picture addToList(JsonElement j) {
+        Picture picture = null;
         JsonObject jsonPicture = j.getAsJsonObject();
         JsonElement picTwitMedia = jsonPicture.getAsJsonObject().get("media");
         JsonElement otherMedia = jsonPicture.getAsJsonObject().get("urls");
-        Picture picture = new Picture();
         if (picTwitMedia != null) {
             picTwitMedia = ((JsonArray) picTwitMedia).get(0);
             String pictureUrl = picTwitMedia.getAsJsonObject().get("media_url").getAsString();
-            picture.thumbUrl = pictureUrl + ":thumb";
-            picture.largeUrl = pictureUrl + ":large";
+            picture = new Picture(
+                    pictureUrl + ":large",
+                    pictureUrl + ":thumb");
         } else if (otherMedia != null) {
             otherMedia = ((JsonArray) otherMedia).get(0);
             String pictureUrl = otherMedia.getAsJsonObject().get("expanded_url").getAsString();
@@ -95,9 +99,7 @@ public class TwitterParser {
                 try {
                     thumbUrl = expand.expand(thumbUrl);
                     largeUrl = expand.expand(largeUrl);
-                    picture.thumbUrl = thumbUrl;
-                    picture.largeUrl = largeUrl;
-
+                    picture = new Picture(largeUrl, thumbUrl);
 
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(TwitterParser.class

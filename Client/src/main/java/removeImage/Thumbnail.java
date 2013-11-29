@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import model.Picture;
 
 /**
  *
@@ -22,6 +23,7 @@ public class Thumbnail extends StackPane {
     private CheckBox cb;
     private Image image;
     private String url;
+    private Picture picture;
 
     public Thumbnail() {
         setPrefSize(150, 150);
@@ -68,13 +70,21 @@ public class Thumbnail extends StackPane {
      * Method for loading the Image from a given url
      * @param pic 
      */
-    public void loadImage(String url) {
-        this.url = url;
+    public void loadImage(Picture picture) {
+        this.picture = picture;
+        this.url = picture.getThumbUrl();
         image = new Image(url);
         imageView.setImage(image);
     }
 
     public String getUrl() {
         return url;
+    }
+
+    /**
+     * @return the picture
+     */
+    public Picture getPicture() {
+        return picture;
     }
 }

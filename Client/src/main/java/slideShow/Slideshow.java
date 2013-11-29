@@ -42,6 +42,8 @@ public class Slideshow extends Application {
     private Task retrieveImages, checkDelay;
     private Thread retrieveImagesThread, checkDelayThread;
     private boolean startup = true;
+    private Button quit, menu;
+    private HBox box;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -56,44 +58,7 @@ public class Slideshow extends Application {
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
 
-        
-
-        //LoginWindow login = new LoginWindow(getSlideshowObject());
-        //login.generateStage();
-
-        /*
-         * Initiates stage and sets it visible
-         */
-        stage = SlideShowWindow.getSlideShowWindow();
-        stage.setScene(new Scene(root, 800, 600, Color.BLACK));
-        stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
-        stage.show();
-
-        startup = false;
-    }
-
-    /*
-     * Creates a new slideshow with updated preferrences
-     */
-    public void initiateNewSlideshow() {
-        Duration timestamp = slideshow.getCurrentTime();
-        imageTrans.setNewDelay();
-        slideshow.stop();
-        root.getChildren().clear();
-        slideshow.getChildren().clear();
-        
-        final Button quit = new Button();
-        quit.setText("Quit Slideshow");
-        quit.setLayoutX(500);
-        quit.setLayoutY(500);
-        quit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                Platform.exit();
-            }
-        });
-
-        final Button menu = new Button();
+        menu = new Button();
         menu.setText("Admin Menu");
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -104,20 +69,29 @@ public class Slideshow extends Application {
             }
         });
 
+        quit = new Button();
+        quit.setText("Quit Slideshow");
+        quit.setLayoutX(500);
+        quit.setLayoutY(500);
+        quit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Platform.exit();
+            }
+        });
 
-        final HBox box = new HBox(20);
+        box = new HBox(20);
         box.setAlignment(Pos.BOTTOM_RIGHT);
         box.setOpacity(0.0);
         box.getChildren().add(quit);
         box.getChildren().add(menu);
 
-        this.root.getChildren().add(box);
         box.setStyle("../stylesheets/Menu.css");
 
-        /*
+                /*
          * Listener on mouse movement for buttons
          */
-        this.root.setOnMouseMoved(new EventHandler<MouseEvent>() {
+        root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), box);
@@ -139,6 +113,29 @@ public class Slideshow extends Application {
                 }
             }
         });
+        
+        /*
+         * Initiates stage and sets it visible
+         */
+        stage = SlideShowWindow.getSlideShowWindow();
+        stage.setScene(new Scene(root, 800, 600, Color.BLACK));
+        stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
+        stage.show();
+
+        startup = false;
+    }
+
+    /*
+     * Creates a new slideshow with updated preferrences
+     */
+    public void initiateNewSlideshow() {
+        Duration timestamp = slideshow.getCurrentTime();
+        imageTrans.setNewDelay();
+        slideshow.stop();
+        root.getChildren().clear();
+        slideshow.getChildren().clear();
+
+        root.getChildren().add(box);        
 
         for (int i = 0; i < ImageList.size(); i++) {
             ImageList.get(i).setOpacity(0);

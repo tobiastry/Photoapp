@@ -2,7 +2,26 @@ package model;
 
 public class Picture {
 
-	public String thumbUrl;
-	public String largeUrl;
+	private String thumbUrl;
+	private String largeUrl;
+        
+        public Picture (String url, String thumb){
+            this.largeUrl = url;
+            this.thumbUrl = thumb;
+        }
+
+    /**
+     * @return the thumbUrl
+     */
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    /**
+     * @return the largeUrl
+     */
+    public String getLargeUrl() {
+        return largeUrl;
+    }
 
 }

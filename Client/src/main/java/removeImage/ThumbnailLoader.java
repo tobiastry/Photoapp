@@ -13,12 +13,12 @@ import repository.RetrievePicturesCom;
  */
 class ThumbnailLoader {
 
-    private final ArrayList<Thumbnail> thumbnails;
+    //private final ArrayList<Thumbnail> thumbnails;
     private ArrayList<Picture> images;
     private int thumbsLoaded = 0;
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
-        this.thumbnails = thumbnails;
+        //this.thumbnails = thumbnails;
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
             images = retriver.getImageList();
@@ -39,7 +39,7 @@ class ThumbnailLoader {
      * @param fromIndex
      * @param numberOfImages
      */
-    public void loadPictures(final int from, final int number) {
+    public void loadPictures(final ArrayList<Thumbnail> thumbnails, final int from, final int number) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,5 +66,14 @@ class ThumbnailLoader {
 
     public int imageListSize() {
         return images.size();
+    }
+    
+    public void updateImages(){
+        RetrievePicturesCom retriver = new RetrievePicturesCom();
+        try {
+            images = retriver.getImageList();
+        } catch (IOException ex) {
+            Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

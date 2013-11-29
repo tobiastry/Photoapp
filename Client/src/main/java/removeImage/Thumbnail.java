@@ -22,7 +22,6 @@ public class Thumbnail extends StackPane {
     private ImageView imageView;
     private CheckBox cb;
     private Image image;
-    private String url;
     private Picture picture;
 
     public Thumbnail() {
@@ -72,13 +71,8 @@ public class Thumbnail extends StackPane {
      */
     public void loadImage(Picture picture) {
         this.picture = picture;
-        this.url = picture.getThumbUrl();
-        image = new Image(url);
+        image = new Image(picture.getThumbUrl());
         imageView.setImage(image);
-    }
-
-    public String getUrl() {
-        return url;
     }
 
     /**

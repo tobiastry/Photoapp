@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class ListOfImagesTest{
     Slideshow slide = new Slideshow();
     ArrayList<ImageView> imageViewList = new ArrayList<ImageView>();
-    ListOfImages list = new ListOfImages(imageViewList,slide);
+    ListOfImages list = new ListOfImages(imageViewList);
     
     public ListOfImagesTest() {
     }

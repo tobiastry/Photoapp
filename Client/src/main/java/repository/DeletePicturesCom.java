@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import model.Picture;
 
 /**
  *
@@ -19,7 +20,7 @@ public class DeletePicturesCom {
      * format to the server, for deletion.
      * Returns the HTTP respons code
      */
-    public int deletePictures(ArrayList<String> imageList) throws IOException{
+    public int deletePictures(ArrayList<Picture> imageList) throws IOException{
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -32,12 +33,12 @@ public class DeletePicturesCom {
         outStream = new DataOutputStream(connection.getOutputStream());
         for(int i=0; i<imageList.size();i++){
             if(i!=imageList.size()-1)
-                body = body+" {\"url\": "+"\""+imageList.get(i)+"\"},";
+                body = body+" {\"url\": "+"\""+imageList.get(i).getLargeUrl()+"\"},";
             else
-                 body = body+" {\"url\": "+"\""+imageList.get(i)+"\"";
+                 body = body+" {\"url\": "+"\""+imageList.get(i).getLargeUrl()+"\"";
         }
         body = body+"}]";
-        body = body.replace("thumb", "large");
+        System.out.println(body);
         outStream.writeBytes(body);
         outStream.flush();
         outStream.close();

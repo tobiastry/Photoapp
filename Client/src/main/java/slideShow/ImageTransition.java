@@ -14,72 +14,99 @@ import repository.DelayCom;
  */
 public class ImageTransition {
     
-    private static int fadeTid =  1000;
+    private static int fadeTime =  1000;
     private static boolean getNewDelay = false;
-    /*Delay i millisekunder*/
+    /*Delay in milliseconds*/
     private static int delay = 1;
 
-    //Setter sammen fade inn, pause og fade out til en fullhverdig overgang
-    public SequentialTransition getFullOvergang(ImageView imageView) {
-        SequentialTransition fullOvergang = new SequentialTransition();
-        fullOvergang.getChildren().addAll(getOvergangStart(imageView), getOvergangPause(), getOvergangStopp(imageView));
-        return fullOvergang;
+    // 
+    /**
+     * Combines fade in, fade out and pause to a complete transition
+     * @param imageView
+     * @return A full image transition
+     */
+    public SequentialTransition getFullTransition(ImageView imageView) {
+        SequentialTransition fullTransition = new SequentialTransition();
+        fullTransition.getChildren().addAll(getTransitionStart(imageView), getTransitionPause(), GetTransitionStop(imageView));
+        return fullTransition;
     }
 
-    public static SequentialTransition getHalvOvergang(ImageView imageView) {
-        SequentialTransition fullOvergang = new SequentialTransition();
-        fullOvergang.getChildren().addAll(getOvergangStart(imageView));
-        return fullOvergang;
-    }
-
+    /**
+     *
+     * @return
+     */
     public static SequentialTransition getPause() {
-        SequentialTransition fullOvergang = new SequentialTransition();
-        fullOvergang.getChildren().add(getOvergangPause());
-        return fullOvergang;
+        SequentialTransition fullTransition = new SequentialTransition();
+        fullTransition.getChildren().add(getTransitionPause());
+        return fullTransition;
     }
 
-    //Fade inn, der fade effekt tar 2 sekunder
-    public static FadeTransition getOvergangStart(ImageView imageView) {
-        FadeTransition overgangStart = new FadeTransition(Duration.millis(fadeTid), imageView);
-        overgangStart.setFromValue(0);
-        overgangStart.setToValue(1);
-        return overgangStart;
+    /**
+     * 
+     * @param imageView
+     * @return FadeTransition for the fade in of images
+     */
+    public static FadeTransition getTransitionStart(ImageView imageView) {
+        FadeTransition TransitionStart = new FadeTransition(Duration.millis(fadeTime), imageView);
+        TransitionStart.setFromValue(0);
+        TransitionStart.setToValue(1);
+        return TransitionStart;
     }
-    //Fade ut, der fade effekt varer i 2 sekunder 
+    /**
+     * Fade out, with fade time from fadeTime
+     * @param imageView
+     * @return FadeTransition for the fade out of images
+     */
+    public static FadeTransition GetTransitionStop(ImageView imageView) {
 
-    public static FadeTransition getOvergangStopp(ImageView imageView) {
-
-        FadeTransition overgangStopp = new FadeTransition(Duration.millis(fadeTid), imageView);
-        overgangStopp.setFromValue(1);
-        overgangStopp.setToValue(0);
-        return overgangStopp;
+        FadeTransition TransitionStop = new FadeTransition(Duration.millis(fadeTime), imageView);
+        TransitionStop.setFromValue(1);
+        TransitionStop.setToValue(0);
+        return TransitionStop;
     }
-    //Pause mellom fade effekter for å vise bildet. Tid gitt av getTidMellomBilder()
-
-    public static PauseTransition getOvergangPause() {
+    //
+    /**
+     * Pause between fade in and fade out, to show image. Time given by getTimeBetweenImages()
+     * @return 
+     */
+    public static PauseTransition getTransitionPause() {
         if(getNewDelay){
-            delay = getTidMellomBilder();
+            delay = getTimeBetweenImages();
             getNewDelay = false;
         }
             
-        PauseTransition overgangPause = new PauseTransition(Duration.millis(delay));
-        return overgangPause;
-    }
-    //Returnerer tid mellom bilder i millisec. Fungerer som en stub, da dette skal komme fra server i framtiden.
-
-    public int getFadeTid(){
-        return fadeTid;
+        PauseTransition transistionPause = new PauseTransition(Duration.millis(delay));
+        return transistionPause;
     }
     
+    /**
+     * Self explanatory
+     * @return
+     */
+    public int getFadeTid(){
+        return fadeTime;
+    }
+    
+    /**
+     * Self explanatory
+     */
     public void setNewDelay(){
         getNewDelay = true;
     }
     
+    /**
+     * Self explanatory
+     * @return
+     */
     public int getDelay(){
         return delay;
     }
     
-    public static int getTidMellomBilder() {
+    /**
+     * Connects to server and returns the current delay. 
+     * If it can not connect to the server it returns 5 sec delay
+     */
+    public static int getTimeBetweenImages() {
         DelayCom tempDelay = new DelayCom();
         int d;
         try {

@@ -62,7 +62,7 @@ public class Menu {
         setActivityPane(addImagePane);
 
         scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
-        scene.getStylesheets().add(Menu.class.getResource("../stylesheets/Menu.css").toExternalForm());
+        scene.getStylesheets().add(Menu.class.getResource("/stylesheets/Menu.css").toExternalForm());
 
         //Toggle Fullscreen
         sidePane.setOnMouseClicked(new EventHandler<MouseEvent>() {

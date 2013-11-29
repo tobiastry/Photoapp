@@ -1,10 +1,8 @@
 package slideShow;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -12,13 +10,14 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -27,35 +26,49 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.LoginWindow;
-import repository.RetrievePicturesCom;
 
+/**
+ *
+ * @author Morten
+ */
 public class Slideshow extends Application {
 
-    private StackPane root = new StackPane();
+    private StackPane root;
     private SequentialTransition slideshow;
     private ImageTransition imageTrans;
-    private ArrayList<ImageView> bildeListe;
+    private ArrayList<ImageView> ImageList;
     private ListOfImages imageViewSetter;
-    RetrievePicturesCom com;
-    private Task retrieveImages;
+    private CheckNewDelay checkNewDelay;
+    private Task retrieveImages, checkDelay;
+    private Thread retrieveImagesThread, checkDelayThread;
+    private boolean startup = true;
+    private Button quit, menu;
+    private HBox box;
+    private double delayDiffFactor = 1.0;
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("Start initiated");
+        root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
-        bildeListe = new ArrayList();
-        com = new RetrievePicturesCom();
-        imageViewSetter = new ListOfImages(bildeListe,this);
-        //imageViewSetter.getImageViewList();
-        //getImageViewList();
-        retrieveImages = imageViewSetter.getImageViewList();
-        //getImageViewList();
-        retrieveImages.run();
+        ImageList = new ArrayList();
+        checkNewDelay = new CheckNewDelay();
+        checkDelay = checkNewDelay.checkNewDelay();
 
-        System.out.println("Gathered list of images");
+        initiateRetrieveImagesThread();
+        initiateCheckDelayThread();
 
-        final Button quit = new Button();
+        menu = new Button();
+        menu.setText("Admin Menu");
+        menu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                LoginWindow login = new LoginWindow(getSlideshowObject());
+                login.generateStage();
+            }
+        });
+
+        quit = new Button();
         quit.setText("Quit Slideshow");
         quit.setLayoutX(500);
         quit.setLayoutY(500);
@@ -66,34 +79,25 @@ public class Slideshow extends Application {
             }
         });
 
-        final Button menu = new Button();
-        menu.setText("Admin Menu");
-        menu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                slideshow.pause();
-                LoginWindow login = new LoginWindow(getSlideshowObject());
-                login.generateStage();
-            }
-        });
-
-
-        final HBox box = new HBox(20);
+        box = new HBox(20);
         box.setAlignment(Pos.BOTTOM_RIGHT);
         box.setOpacity(0.0);
         box.getChildren().add(quit);
         box.getChildren().add(menu);
 
-        this.root.getChildren().add(box);
+        box.setStyle("../stylesheets/Menu.css");
 
-        this.root.setOnMouseMoved(new EventHandler<MouseEvent>() {
+                /*
+         * Listener on mouse movement for buttons
+         */
+        root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), box);
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
 
-                PauseTransition pause = new PauseTransition(Duration.millis(5000));
+                PauseTransition pause = new PauseTransition(Duration.millis(2000));
 
                 FadeTransition fadeOut = new FadeTransition(Duration.millis(1000), box);
                 fadeOut.setFromValue(1.0);
@@ -101,6 +105,7 @@ public class Slideshow extends Application {
 
                 SequentialTransition sequence = new SequentialTransition();
                 sequence.getChildren().addAll(fadeIn, pause, fadeOut);
+                
                 if (box.getOpacity() > 0.1) {
                     //Do nothing
                 } else {
@@ -108,65 +113,99 @@ public class Slideshow extends Application {
                 }
             }
         });
-        //getImageViewList();
-        //Legger alle bildene inn i slideshow transition
-
+        
+        root.getChildren().add(box);
+        
+        /*
+         * Initiates stage and sets it visible
+         */
         stage = SlideShowWindow.getSlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
+        stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
         stage.show();
-        
-      /*  for (ImageView bilde : bildeListe) {
-            bilde.setOpacity(0);
-            this.root.getChildren().add(bilde);
-        }*/
-        //getImageViewList();
+
+        startup = false;
     }
 
+    /*
+     * Creates a new slideshow with updated preferrences
+     */
     public void initiateNewSlideshow() {
         Duration timestamp = slideshow.getCurrentTime();
-        
-        //Legger inn overgang for alle bilder i bilde listen
         imageTrans.setNewDelay();
         slideshow.stop();
         root.getChildren().clear();
         slideshow.getChildren().clear();
-        
-        for(int i = 0; i<bildeListe.size();i++) {
-            bildeListe.get(i).setOpacity(0);
-            this.root.getChildren().add(bildeListe.get(i));
-            slideshow.getChildren().add(imageTrans.getFullOvergang(bildeListe.get(i)));
+
+        root.getChildren().add(box);        
+
+        for (int i = 0; i < ImageList.size(); i++) {
+            ImageList.get(i).setOpacity(0);
+            root.getChildren().add(ImageList.get(i));
+            slideshow.getChildren().add(imageTrans.getFullTransition(ImageList.get(i)));
         }
+
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        slideshow.playFrom(timestamp);
-        System.out.println("initated new slideshow");
+        double tempDuration = timestamp.toMillis()*delayDiffFactor;
+        slideshow.playFrom(new Duration(tempDuration));
+        delayDiffFactor = 1.0;
+        System.out.println("initated new slideshow with " + ImageList.size() + " images");
+    }
+
+    public void initiateCheckDelayThread() {
+        checkDelayThread = new Thread(checkDelay);
+        checkDelayThread.setDaemon(true);
+        checkDelayThread.start();
+
+        /*
+         * Listening on ready signal from Task: checkDelay
+         */
+        checkDelay.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                delayDiffFactor = Double.parseDouble(checkDelay.messageProperty().getValue().split(" ")[4]);
+                initiateNewSlideshow();
+            }
+        });
+    }
+
+    public void initiateRetrieveImagesThread() {
+        System.out.println("Initiating new retreiveImagesThread");
+        if (!startup) {
+            imageViewSetter.setIsRunning(false);
+            try {
+                retrieveImagesThread.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        ImageList.clear();
+        imageViewSetter = new ListOfImages(ImageList);
+        retrieveImages = imageViewSetter.getImageViewList();
+        retrieveImagesThread = new Thread(retrieveImages);
+        retrieveImagesThread.setDaemon(true);
+        retrieveImagesThread.start();
+
+        /*
+         * Listening on ready signal from Task: retrieveImages
+         */
+        retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println(newValue);
+                initiateNewSlideshow();
+            }
+        });
     }
 
     public Slideshow getSlideshowObject() {
         return this;
     }
 
-    public void getImageViewList() {
-        int teller = 0;
-        ArrayList<String> imageList;
-        try {
-            imageList = com.getLargeImageList();
-            for (int i = 0; i < imageList.size(); i++) {
-                teller++;
-                if (teller % 10 == 0) {
-                    initiateNewSlideshow();
-                    break;
-                }
-                System.out.println("Creating ImageView #" + teller);
-                bildeListe.add(new ImageView(new Image(imageList.get(i))));
-            }
-        } catch (Exception e) {
-            //Dersom link eller path ikke stemmer, så viser programmet et placeholder bilde.
-            bildeListe.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
-        }
-    }
-
-    
-
+    /*
+     * Main function
+     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Picture;
 import repository.RetrievePicturesCom;
 
 /**
@@ -12,16 +13,15 @@ import repository.RetrievePicturesCom;
  */
 class ThumbnailLoader {
 
-    private final ArrayList<Thumbnail> thumbnails;
-    private ArrayList<String> urls;
+    //private final ArrayList<Thumbnail> thumbnails;
+    private ArrayList<Picture> images;
     private int thumbsLoaded = 0;
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
-        this.thumbnails = thumbnails;
-        urls = new ArrayList<>();
+        //this.thumbnails = thumbnails;
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
-            urls = retriver.getImageList();
+            images = retriver.getImageList();
         } catch (IOException ex) {
             Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -39,7 +39,7 @@ class ThumbnailLoader {
      * @param fromIndex
      * @param numberOfImages
      */
-    public void loadPictures(final int from, final int number) {
+    public void loadPictures(final ArrayList<Thumbnail> thumbnails, final int from, final int number) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -47,15 +47,15 @@ class ThumbnailLoader {
                     if (from + 1 > thumbsLoaded) {
                         thumbsLoaded += number;
                         for (int i = from; i < from + number; i++) {
-                            if (urls.get(i).endsWith(".jpg")) {
-                                thumbnails.get(i).loadImage(urls.get(i));
+                            if (images.get(i).getThumbUrl().endsWith(".jpg")) {
+                                thumbnails.get(i).loadImage(images.get(i));
                             }
                         }
                     }
                 } else {
                     for (int i = from; i < imageListSize() - 1; i++) {
-                        if (urls.get(i).endsWith(".jpg")) {
-                            thumbnails.get(i).loadImage(urls.get(i));
+                        if (images.get(i).getThumbUrl().endsWith(".jpg")) {
+                            thumbnails.get(i).loadImage(images.get(i));
                         }
                     }
                     thumbsLoaded += (imageListSize() - from);
@@ -65,6 +65,15 @@ class ThumbnailLoader {
     }
 
     public int imageListSize() {
-        return urls.size();
+        return images.size();
+    }
+    
+    public void updateImages(){
+        RetrievePicturesCom retriver = new RetrievePicturesCom();
+        try {
+            images = retriver.getImageList();
+        } catch (IOException ex) {
+            Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

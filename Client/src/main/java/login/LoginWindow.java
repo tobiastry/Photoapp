@@ -78,7 +78,7 @@ public class LoginWindow {
         });
 
         scene = new Scene(grid, 300, 150);
-        scene.getStylesheets().add(LoginWindow.class.getResource("../stylesheets/Login.css").toExternalForm());
+        scene.getStylesheets().add(LoginWindow.class.getResource("/stylesheets/Login.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT);
 
         /*

@@ -132,7 +132,7 @@ public class Menu {
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                slideshow.initiateNewSlideshow();
+                slideshow.initiateRetrieveImagesThread();
                 stage.close();
             }
         });

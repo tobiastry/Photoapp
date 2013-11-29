@@ -47,7 +47,6 @@ public class Slideshow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("Start initiated");
         root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();

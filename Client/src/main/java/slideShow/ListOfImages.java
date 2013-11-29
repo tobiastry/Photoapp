@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Picture;
 import repository.RetrievePicturesCom;
 
 /**
@@ -15,6 +16,7 @@ public class ListOfImages {
     private ArrayList<ImageView> list;
     private RetrievePicturesCom com;
     private volatile boolean isRunning = true;
+    private ArrayList<Picture> imageList;
 
     /**
      * ArrayList with Imageview Objects
@@ -37,7 +39,7 @@ public class ListOfImages {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                ArrayList<String> imageList = com.getLargeImageList();
+                imageList = com.getImageList();
                 for (int i = 0; i < imageList.size(); i++) {
                    
                     if(!isRunning){
@@ -47,7 +49,7 @@ public class ListOfImages {
                     
                     try {
                         System.out.println("Creating ImageView #" + i);
-                        list.add(new ImageView(new Image(imageList.get(i))));
+                        list.add(new ImageView(new Image(imageList.get(i).getLargeUrl())));
                         if (i%10 == 0 && i!=0) {
                             updateMessage("Generate new slideshow "+i);
                         }

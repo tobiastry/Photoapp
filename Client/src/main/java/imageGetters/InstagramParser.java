@@ -25,16 +25,16 @@ public class InstagramParser {
     public Picture addToList(JsonElement j) {
         JsonObject jsonPicture = j.getAsJsonObject();
 
-        Picture picture = new Picture();
+        
 
         JsonElement images = jsonPicture.get("images");
         JsonElement thumbImage = images.getAsJsonObject().get("thumbnail"); //thumbnail=150*150/standard_resolution=612*612
-        String url = thumbImage.getAsJsonObject().get("url").getAsString();
-        picture.thumbUrl = url;
+        String thumbUrl = thumbImage.getAsJsonObject().get("url").getAsString();
 
         JsonElement largeImage = images.getAsJsonObject().get("standard_resolution");
         String largeUrl = largeImage.getAsJsonObject().get("url").getAsString();
-        picture.largeUrl = largeUrl;
+
+        Picture picture = new Picture(largeUrl, thumbUrl);
 
         return picture;
     }

@@ -23,11 +23,13 @@ public class TwitterParser {
      return url;
      }*/
     public Picture addToList(JsonElement j) {
-        Picture picture = new Picture();
+
         JsonObject jsonPicture = j.getAsJsonObject();
         String images = jsonPicture.get("id").getAsString();
-        picture.thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/" + images + ".jpg"; //thumb=150*150/large=?
-        picture.largeUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/large/" + images + ".jpg";
+        String thumbUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/" + images + ".jpg"; //thumb=150*150/large=?
+        String largeUrl = "http://d3j5vwomefv46c.cloudfront.net/photos/large/" + images + ".jpg";
+        
+        Picture picture = new Picture(largeUrl, thumbUrl);
 
         return picture;
     }

@@ -37,11 +37,11 @@ public class StorePicturesCom {
         outStream = new DataOutputStream(connection.getOutputStream());
         for(int i=0; i<pictureList.size();i++){
             if(i < pictureList.size()-1){
-                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).thumbUrl+"\",\n";
-                body = body+" \"url\": "+"\""+pictureList.get(i).largeUrl+"\"\n},";
+                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
+                body = body+" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\"\n},";
             }else{
-                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).thumbUrl+"\",\n";
-                body = body+" \"url\": "+"\""+pictureList.get(i).largeUrl+"\"\n}";
+                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
+                body = body+" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\"\n}";
             }
         }
 

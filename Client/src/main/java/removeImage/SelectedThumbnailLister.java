@@ -1,6 +1,7 @@
 package removeImage;
 
 import java.util.ArrayList;
+import model.Picture;
 
 /**
  *
@@ -9,24 +10,21 @@ import java.util.ArrayList;
 public class SelectedThumbnailLister {
 
     private ArrayList<Thumbnail> thumbnails;
-    private ArrayList<String> urls;
+    private ArrayList<Picture> images;
     
     public SelectedThumbnailLister(ArrayList<Thumbnail> thumbnails) {
         this.thumbnails = thumbnails;
-        urls = new ArrayList<>();
+        images = new ArrayList();
     }
     
-    public ArrayList<String> ListSelectedThumbnails(){
-        urls.clear();
+    public ArrayList<Picture> ListSelectedThumbnails(){
+        images.clear();
         for (Thumbnail thumbnail : thumbnails) {
             if(thumbnail.isSelected()){
-                urls.add(thumbnail.getUrl());
+                images.add(thumbnail.getPicture());
             }
         }
-        return urls;
+        return images;
     }
 
-    public ArrayList<String> getUrls() {
-        return urls;
-    }
 }

@@ -88,7 +88,7 @@ public class RemoveImageGUI extends GridPane {
                 } catch (IOException ex) {
                     Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                ArrayList<Thumbnail> selected = new ArrayList<>();
+                ArrayList<Thumbnail> selected = new ArrayList();
                 for (Thumbnail thumbnail : thumbnails) {
                     if (thumbnail.isSelected()) {
                         selected.add(thumbnail);
@@ -174,7 +174,7 @@ public class RemoveImageGUI extends GridPane {
             grid.getChildren().addAll(thumbnails);
         }
 
-        pl.loadPictures(0, imagePerPane * 2);
+        pl.loadPictures(thumbnails, 0, imagePerPane * 2);
 
         thumbIndex = 0;
 
@@ -205,7 +205,7 @@ public class RemoveImageGUI extends GridPane {
                 next.setDisable(true);
             }
             //Loading the pictures for the next page
-            pl.loadPictures(thumbIndex + imagePerPane, imagePerPane);
+            pl.loadPictures(thumbnails, thumbIndex + imagePerPane, imagePerPane);
         }
     }
 
@@ -223,6 +223,7 @@ public class RemoveImageGUI extends GridPane {
 
     private void updateGrid() {
         maxImages = thumbnails.size();
+        pl.updateImages();
 
         grid.getChildren().clear();
         rem = maxImages % imagePerPane;

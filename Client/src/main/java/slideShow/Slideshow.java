@@ -94,11 +94,11 @@ public class Slideshow extends Application {
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(1000), box);
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
 
-                PauseTransition pause = new PauseTransition(Duration.millis(5000));
+                PauseTransition pause = new PauseTransition(Duration.millis(2000));
 
                 FadeTransition fadeOut = new FadeTransition(Duration.millis(1000), box);
                 fadeOut.setFromValue(1.0);
@@ -106,6 +106,7 @@ public class Slideshow extends Application {
 
                 SequentialTransition sequence = new SequentialTransition();
                 sequence.getChildren().addAll(fadeIn, pause, fadeOut);
+                
                 if (box.getOpacity() > 0.1) {
                     //Do nothing
                 } else {
@@ -113,6 +114,8 @@ public class Slideshow extends Application {
                 }
             }
         });
+        
+        root.getChildren().add(box);
         
         /*
          * Initiates stage and sets it visible

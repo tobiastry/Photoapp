@@ -10,9 +10,15 @@ import java.io.InputStreamReader;
 
 /**
  *
- * @author John McEpic
+ * @author T
  */
 public class AuthenticationParser {
+
+    /**
+     * Parses the InputStreamReader to find the access_token/bearer_token, returns the token.
+     * @param reader (InputStreamReader)
+     * @return bearerToken (String)
+     */
     public String parse(InputStreamReader reader) {
         JsonParser parser = new JsonParser();
         JsonObject obj = parser.parse(reader).getAsJsonObject();

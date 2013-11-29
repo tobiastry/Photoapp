@@ -11,10 +11,17 @@ import java.net.URL;
 
 /**
  *
- * @author John McEpic
+ * @author T
  */
 public class ExpandUrl {
 
+    /**
+     * Takes an shorted URL, expands it and returns the expanded URL.
+     * @param pictureUrl
+     * @return URL (String)
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     public String expand(String pictureUrl) throws MalformedURLException, IOException {
         final URL url = new URL(pictureUrl);
         final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

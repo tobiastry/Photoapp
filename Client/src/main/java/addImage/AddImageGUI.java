@@ -2,10 +2,7 @@ package addImage;
 
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.beans.value.ChangeListener;
-import model.Picture;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -19,14 +16,11 @@ import javafx.scene.layout.Priority;
 
 /**
  *
- * @author Johan LG & T
- * @web http://java-buddy.blogspot.com/
+ * @author Johan LG
  */
 public class AddImageGUI extends GridPane {
 
     private AddImageLogic logic = new AddImageLogic();
-    private List<Picture> pictureList = new ArrayList<Picture>();
-    //private UpdateThread thread = logic.getThread();
     private Label statusLabel = new Label("");
     private Label progressLabel = new Label("");
     private ProgressBar progressBar = new ProgressBar(0);

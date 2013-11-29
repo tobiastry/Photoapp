@@ -18,13 +18,19 @@ import repository.ExpandUrl;
 
 /**
  *
- * @author John McEpic
+ * @author T
  */
 public class TwitterParser {
 
     private JsonArray jsonPictures;
     JsonObject obj;
 
+    /**
+     * Finds the location of the pictures in the InputStreamReader, returns them
+     * as a JsonArray.
+     * @param reader (InputStreamReader)
+     * @return jsonPictures (JsonArray)
+     */
     public JsonArray parse(InputStreamReader reader) {
         JsonParser parser = new JsonParser();
         obj = parser.parse(reader).getAsJsonObject();
@@ -43,7 +49,11 @@ public class TwitterParser {
         }
         return tempArray;
     }
-
+    
+    /**
+     * Finds the next url in the InputStreamReader and returns it as a string.
+     * @return next_url (String)
+     */
     public String getNextUrl() {
         JsonElement next_url = obj.get("search_metadata");
         if (next_url != null) {
@@ -59,6 +69,11 @@ public class TwitterParser {
 
     }
 
+    /**
+     * Finds the URLs in the JsonElement and makes a type Picture out of them.
+     * @param j (JsonElement)
+     * @return picture (model.Picture)
+     */
     public Picture addToList(JsonElement j) {
         JsonObject jsonPicture = j.getAsJsonObject();
         JsonElement picTwitMedia = jsonPicture.getAsJsonObject().get("media");

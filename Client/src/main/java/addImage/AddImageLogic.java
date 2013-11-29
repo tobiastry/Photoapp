@@ -9,14 +9,17 @@ import imageGetters.*;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import javafx.concurrent.Task;
 import repository.StorePicturesCom;
 
+/**
+ *
+ * @author T
+ */
 public class AddImageLogic {
-    //32104414142school
+    //32104414142school <--Selfmade tag for testing
 
     private ArrayList<Picture> pictureList = new ArrayList<>();
     private List<JsonArray> jsonArrayList = new ArrayList<>();
@@ -30,6 +33,12 @@ public class AddImageLogic {
     private JsonPrimitive fromSource = null;
     private final int pictureLimit = 100;
 
+    /**
+     * Takes a tag, finds pictures from Instagram and Twitter, returns amount of pictures found.
+     * @param tag (String)
+     * @return picturesFound (Integer)
+     * @throws IOException
+     */
     private int getPictures(String tag) throws IOException {
         instaGetter = new InstagramGetter();
         twitterGetter = new TwitterGetter();
@@ -38,7 +47,13 @@ public class AddImageLogic {
         picturesFound = getMore();
         return picturesFound;
     }
-
+    
+    /**
+     * Finds the size and adds the source(Twitter/Instagram) of the JsonArray, returns size of array. 
+     * @param jsonList (JsonArray)
+     * @param source (String)
+     * @return jsonList size (Integer) 
+     */
     private int getSizeAndAdd(JsonArray jsonList, String source) {
         if (jsonList.size() != 0) {
             fromSource = new JsonPrimitive(source);
@@ -49,6 +64,11 @@ public class AddImageLogic {
         return jsonList.size();
     }
 
+    /**
+     * Makes sure we get all or enough pictures, returns amount of pictures found.
+     * @return picturesFound (Integer)
+     * @throws IOException
+     */
     private int getMore() throws IOException {
         if (instagramPicFound != 0 && picturesFound <= pictureLimit) {
             String next_url = instaGetter.getNextUrl();
@@ -68,6 +88,11 @@ public class AddImageLogic {
         return picturesFound;
     }
 
+    /**
+     * Decides where the JsonElements source, finds the url and adds to list.
+     * @param j (JsonElement)
+     * @param source (String)
+     */
     private void addPictureToList(JsonElement j, String source) {
         switch (source) {
             case "Instagram": {
@@ -85,6 +110,11 @@ public class AddImageLogic {
         }
     }
 
+    /**
+     * Sends the list to server for storage.
+     * @return boolean
+     * @throws IOException
+     */
     private boolean exportList() throws IOException {
         StorePicturesCom store = new StorePicturesCom();
         if (store.storePictures(pictureList) != 200) {
@@ -98,6 +128,11 @@ public class AddImageLogic {
         }
     }
 
+    /**
+     * Takes a tag, starts a new task which finds pictures from Instagram and Twitter, and updates GUI.
+     * @param tag (string)
+     * @return Task
+     */
     public Task findPicturesTask(final String tag) {
         this.tag = tag;
         return new Task() {

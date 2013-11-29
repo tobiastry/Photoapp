@@ -16,10 +16,11 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- *
+ * 
  * @author John McEpic
  */
 public class AuthenticationTwitter {
+
     static String encodedCredentials = encodeKeys("HjMvuT341pNEGvodae75Ig", "LgU2yoVAkYuRKGLbez8k5PwwuBGQjQ75JfupN1zL38");
 
     private static String encodeKeys(String consumerKey, String consumerSecret) {
@@ -35,6 +36,11 @@ public class AuthenticationTwitter {
         }
     }
 
+    /**
+     * Requests a bearer_token from Twitters api, returns the token as a string.
+     * @return bearer_token (String)
+     * @throws IOException
+     */
     public String requestBearerToken() throws IOException {
         HttpsURLConnection connection = null;
         //String encodedCredentials = encodeKeys("HjMvuT341pNEGvodae75Ig","LgU2yoVAkYuRKGLbez8k5PwwuBGQjQ75JfupN1zL38");
@@ -71,7 +77,6 @@ public class AuthenticationTwitter {
         }
     }
 
-// Writes a request to a connection
     private static boolean writeRequest(HttpsURLConnection connection, String textBody) {
         try {
             BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));

@@ -19,14 +19,20 @@ import repository.AuthenticationTwitter;
 
 /**
  *
- * @author John McEpic
+ * @author T
  */
 public class TwitterGetter {
 
     private TwitterParser parser;
     private JsonArray jsonPictures;
 
-    public String toUrl(String tag) {//http://www.vogella.com/articles/JavaRegularExpressions/article.html
+    /**
+     * Takes a tag and makes a valid URL out of it.
+     * @param tag
+     * @return
+     */
+    public String toUrl(String tag) {
+        //http://www.vogella.com/articles/JavaRegularExpressions/article.html
         if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
             String TwitterUrl = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + tag + "&result_type=recent&count=100";
             return TwitterUrl;
@@ -35,6 +41,13 @@ public class TwitterGetter {
         }
     }
 
+    /**
+     * Sends a request to the site with the given URL receives a JSON reply parses it
+     * and returns a JsonArray which contains the pictures.
+     * @param surl (URL(String))
+     * @return jsonPictures (JsonArray)
+     * @throws IOException
+     */
     public JsonArray findPictures(String surl) throws IOException {
         HttpsURLConnection connection = null;
         try {

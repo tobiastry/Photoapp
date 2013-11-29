@@ -28,14 +28,13 @@ public class AddImageLogic {
     private int twitterPicFound = 0;
     private int instagramPicFound = 0;
     private JsonPrimitive fromSource = null;
-    private final int pictureLimit = 30;
+    private final int pictureLimit = 100;
 
     private int getPictures(String tag) throws IOException {
         instaGetter = new InstagramGetter();
         twitterGetter = new TwitterGetter();
         instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaGetter.toUrl(tag)), "Instagram");
         twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterGetter.toUrl(tag)), "Twitter");
-
         picturesFound = getMore();
         return picturesFound;
     }
@@ -45,7 +44,7 @@ public class AddImageLogic {
             fromSource = new JsonPrimitive(source);
             jsonList.add(fromSource);
             jsonArrayList.add(jsonList);
-            picturesFound += jsonList.size();
+            picturesFound += jsonList.size() - 1;
         }
         return jsonList.size();
     }
@@ -75,18 +74,15 @@ public class AddImageLogic {
                 Picture picture = instaGetter.addToList(j);
                 picture.tag = tag;
                 pictureList.add(picture);
-                System.out.println(picture.largeUrl);
                 break;
             }
             case "Twitter": {
                 Picture picture = twitterGetter.addToList(j);
                 picture.tag = tag;
                 pictureList.add(picture);
-                System.out.println(picture.largeUrl);
                 break;
             }
         }
-
     }
 
     private boolean exportList() throws IOException {
@@ -108,28 +104,35 @@ public class AddImageLogic {
             @Override
             protected Object call() throws Exception {
                 int size = getPictures(tag);
-                int i = 1;
-                AddImageGUI.addingToList = true;
-                for (int t = 0; t < jsonArrayList.size(); t++) {
-                    String source = jsonArrayList.get(t).get(jsonArrayList.get(t).size() - 1).getAsString();
-                    for (int j = 0; j < jsonArrayList.get(t).size() - 1; j++) {
-                        JsonElement json = jsonArrayList.get(t).get(j);
-                        Thread.sleep(50);
-                        System.out.println(source);
-                        addPictureToList(json, source);
-                        updateProgress(i, size);
-                        updateMessage(i + "/" + size);
-                        i++;
+                if (size != 0) {
+                    int i = 1;
+                    AddImageGUI.addingToList = true;
+                    for (int t = 0; t < jsonArrayList.size(); t++) {
+                        String source = jsonArrayList.get(t).get(jsonArrayList.get(t).size() - 1).getAsString();
+                        for (int j = 0; j < jsonArrayList.get(t).size() - 1; j++) {
+                            JsonElement json = jsonArrayList.get(t).get(j);
+                            Thread.sleep(50);
+                            addPictureToList(json, source);
+                            updateProgress(i, size);
+                            updateMessage(i + "/" + size);
+                            i++;
+                        }
                     }
-                }
-                if (!exportList()) {
-                    AddImageGUI.addingToList = false;
-                    failedMsg = "Klarte ikke legge bilder inn på server";
-                    return false;
+                    if (!exportList()) {
+                        AddImageGUI.addingToList = false;
+                        failedMsg = "Klarte ikke legge bilder inn på server";
+                        failed();
+                        return false;
+                    } else {
+                        picturesFound = 0;
+                        AddImageGUI.addingToList = false;
+                        return true;
+                    }
                 } else {
-                    picturesFound = 0;
                     AddImageGUI.addingToList = false;
-                    return true;
+                    failedMsg = "Fant ingen bilder";
+                    failed();
+                    return false;
                 }
             }
 

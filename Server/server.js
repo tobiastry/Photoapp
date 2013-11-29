@@ -18,7 +18,17 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-	app.use(express.errorHandler({dumpExceptions: true, showStack: true }));
+	//app.use(express.errorHandler({dumpExceptions: true, showStack: true }));
+	app.use(function(err, req, res, next){
+		console.error(err.stack);
+		try {
+        	JSON.parse(req.body);
+    	} catch (e) {
+        	res.send(400, err);
+        	return;
+    	}
+		res.send(500, err);
+	});
 });
 
 app.configure('production', function(){

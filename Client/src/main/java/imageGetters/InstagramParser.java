@@ -4,11 +4,21 @@ import java.io.InputStreamReader;
 import model.Picture;
 import com.google.gson.*;
 
+/**
+ *
+ * @author T
+ */
 public class InstagramParser {
 
     private JsonArray jsonPictures;
     JsonObject obj;
 
+    /**
+     * Finds the location of the pictures in the InputStreamReader, returns them
+     * as a JsonArray.
+     * @param reader (InputStreamReader)
+     * @return jsonPictures (JsonArray)
+     */
     public JsonArray parse(InputStreamReader reader) {
         JsonParser parser = new JsonParser();
         obj = parser.parse(reader).getAsJsonObject();
@@ -16,12 +26,29 @@ public class InstagramParser {
         return jsonPictures;
     }
 
+    /**
+     * Finds the next url in the InputStreamReader and returns it as a string.
+     * @return next_url (String)
+     */
     public String getNextUrl() {
         JsonElement next_url = obj.get("pagination");
-        String url = next_url.getAsJsonObject().get("next_url").getAsString();
-        return url;
+        if (next_url != null) {
+            String url = next_url.getAsJsonObject().get("next_url").getAsString();
+            if (url != null) {
+                return url;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
+    /**
+     * Finds the URLs in the JsonElement and makes a type Picture out of them.
+     * @param j (JsonElement)
+     * @return picture (model.Picture)
+     */
     public Picture addToList(JsonElement j) {
         JsonObject jsonPicture = j.getAsJsonObject();
 

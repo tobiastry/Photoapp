@@ -21,6 +21,9 @@ public class DeletePicturesCom {
      * Returns the HTTP respons code
      */
     public int deletePictures(ArrayList<Picture> imageList) throws IOException{
+        if(imageList.size() < 1){
+            return 0;
+        }
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

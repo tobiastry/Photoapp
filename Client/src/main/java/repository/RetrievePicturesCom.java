@@ -20,8 +20,9 @@ public class RetrievePicturesCom {
 
     /**
      * Retrieves a list of Pictures from the Server
+     *
      * @return An Arraylist of Picture objects.
-     * @throws IOException 
+     * @throws IOException
      */
     public ArrayList<Picture> getImageList() throws IOException {
         ArrayList<Picture> imageList = new ArrayList();
@@ -34,20 +35,19 @@ public class RetrievePicturesCom {
         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
 
         int respons = connection.getResponseCode();
-        
+
         if (respons == 200) {
             JsonParser parser = new JsonParser();
 
             JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
 
             for (JsonElement j : imageUrlArray) {
-                Picture picture = new Picture(j.getAsJsonObject().get("url").getAsString(), 
+                Picture picture = new Picture(
+                        j.getAsJsonObject().get("url").getAsString(),
                         j.getAsJsonObject().get("thumburl").getAsString());
                 imageList.add(picture);
-                System.out.println(picture.getLargeUrl());
             }
         }
         return imageList;
     }
-    
 }

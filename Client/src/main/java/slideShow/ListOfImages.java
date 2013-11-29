@@ -40,6 +40,7 @@ public class ListOfImages {
             @Override
             protected Object call() throws Exception {
                 imageList = com.getImageList();
+                System.out.println("Number of images on server: "+imageList.size());
                 for (int i = 0; i < imageList.size(); i++) {
                    
                     if(!isRunning){
@@ -48,7 +49,6 @@ public class ListOfImages {
                     }
                     
                     try {
-                        System.out.println("Creating ImageView #" + i);
                         list.add(new ImageView(new Image(imageList.get(i).getLargeUrl())));
                         if (i%10 == 0 && i!=0) {
                             updateMessage("Generate new slideshow "+i);

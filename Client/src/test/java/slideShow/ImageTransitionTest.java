@@ -28,14 +28,6 @@ public class ImageTransitionTest {
     }
     
     @Test
-    public void test2() 
-    {
-        Image image = new Image("test");
-        ImageView imageview = new ImageView(image);
-        assertTrue(ImageTransition.getHalfTransition(imageview) instanceof SequentialTransition);
-    }
-    
-    @Test
     public void test3() 
     {
         assertEquals(ImageTransition.getTimeBetweenImages(), 2000 );

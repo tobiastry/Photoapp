@@ -10,7 +10,7 @@ import repository.DelayCom;
  */
 public class CheckNewDelay {
     
-    private int delay = 5;
+    private int delay = getDelay();
     private boolean loop = true;
     
     /*
@@ -24,10 +24,13 @@ public class CheckNewDelay {
             protected Object call() throws Exception {
                 while(loop){
                     Thread.sleep(3000);
-                    int temp = getDelay();
-                    if(temp != delay){
-                        delay = temp;
-                        updateMessage("New delay: "+delay);
+                    int newDelay = getDelay();
+                    if(newDelay != delay){
+                        double diffFactor = (double)newDelay/(double)delay;
+                        delay = newDelay;
+                        System.out.println("BLABLABLABLABLABLABLABLABLABLABLABLABLA:   "+ diffFactor);
+                        updateMessage("New delay: "+delay+" DiffFactor: "+diffFactor);
+                        
                     }
                 }
                 return true;

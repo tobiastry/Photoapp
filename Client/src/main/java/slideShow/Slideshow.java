@@ -44,6 +44,7 @@ public class Slideshow extends Application {
     private boolean startup = true;
     private Button quit, menu;
     private HBox box;
+    private double delayDiffFactor = 1.0;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -62,7 +63,6 @@ public class Slideshow extends Application {
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                slideshow.pause();
                 LoginWindow login = new LoginWindow(getSlideshowObject());
                 login.generateStage();
             }
@@ -146,7 +146,9 @@ public class Slideshow extends Application {
         }
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        slideshow.playFrom(timestamp);
+        double tempDuration = timestamp.toMillis()*delayDiffFactor;
+        slideshow.playFrom(new Duration(tempDuration));
+        delayDiffFactor = 1.0;
         System.out.println("initated new slideshow with " + ImageList.size() + " images");
     }
 
@@ -162,6 +164,7 @@ public class Slideshow extends Application {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 System.out.println(newValue);
+                delayDiffFactor = Double.parseDouble(checkDelay.messageProperty().getValue().split(" ")[4]);
                 initiateNewSlideshow();
             }
         });

@@ -23,12 +23,14 @@ public class Thumbnail extends StackPane {
     private CheckBox cb;
     private Image image;
     private Picture picture;
+    private boolean loaded;
 
     public Thumbnail() {
         setPrefSize(150, 150);
         Rectangle frame = new Rectangle(152, 152);
         getChildren().add(frame);
         imageView = new ImageView();
+        loaded = false;
 
 
         setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -67,12 +69,16 @@ public class Thumbnail extends StackPane {
 
     /**
      * Method for loading the Image from a given url
-     * @param pic 
+     *
+     * @param pic
      */
-    public void loadImage(Picture picture) {
-        this.picture = picture;
-        image = new Image(picture.getThumbUrl());
-        imageView.setImage(image);
+    public void loadImage(/*Picture picture*/) {
+        //this.setPicture(picture);
+        if (!loaded) {
+            image = new Image(picture.getThumbUrl());
+            imageView.setImage(image);
+            loaded = true;
+        }
     }
 
     /**
@@ -80,5 +86,12 @@ public class Thumbnail extends StackPane {
      */
     public Picture getPicture() {
         return picture;
+    }
+
+    /**
+     * @param picture the picture to set
+     */
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 }

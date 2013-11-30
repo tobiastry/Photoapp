@@ -5,6 +5,7 @@
 package repository;
 
 import java.util.ArrayList;
+import model.Picture;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,8 +21,8 @@ public class DeletePicturesComTest {
     @Test
     public void testDeletePictures() throws Exception {
         System.out.println("deletePictures");
-        ArrayList<String> imageList = new ArrayList();
-        imageList.add("http://d3j5vwomefv46c.cloudfront.net/photos/large/415070043.jpg");
+        ArrayList<Picture> imageList = new ArrayList();
+        imageList.add(new Picture("http://d3j5vwomefv46c.cloudfront.net/photos/large/415070043.jpg", ""));
         DeletePicturesCom instance = new DeletePicturesCom();
         int result = instance.deletePictures(imageList);
         assertEquals(result, 200);

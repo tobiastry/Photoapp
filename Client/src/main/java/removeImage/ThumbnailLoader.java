@@ -13,12 +13,10 @@ import repository.RetrievePicturesCom;
  */
 class ThumbnailLoader {
 
-    //private final ArrayList<Thumbnail> thumbnails;
     private ArrayList<Picture> images;
     private int thumbsLoaded = 0;
 
     ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
-        //this.thumbnails = thumbnails;
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
             images = retriver.getImageList();
@@ -33,30 +31,26 @@ class ThumbnailLoader {
     }
 
     /**
-     * Loads a number of images given by numberOfImages starting from the index
-     * fromIndex
-     *
-     * @param fromIndex
-     * @param numberOfImages
+     * Loads a number of images given by number starting from the index
+     * from
+     * @param thumbnails
+     * @param from
+     * @param number 
      */
     public void loadPictures(final ArrayList<Thumbnail> thumbnails, final int from, final int number) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if (from + number < imageListSize()) {
-                    if (from + 1 > thumbsLoaded) {
+                    if (from >= thumbsLoaded) {
                         thumbsLoaded += number;
                         for (int i = from; i < from + number; i++) {
-                            if (images.get(i).getThumbUrl().endsWith(".jpg")) {
-                                thumbnails.get(i).loadImage(images.get(i));
-                            }
+                            thumbnails.get(i).loadImage(images.get(i));
                         }
                     }
                 } else {
-                    for (int i = from; i < imageListSize() - 1; i++) {
-                        if (images.get(i).getThumbUrl().endsWith(".jpg")) {
-                            thumbnails.get(i).loadImage(images.get(i));
-                        }
+                    for (int i = from; i < imageListSize(); i++) {
+                        thumbnails.get(i).loadImage(images.get(i));
                     }
                     thumbsLoaded += (imageListSize() - from);
                 }
@@ -67,8 +61,8 @@ class ThumbnailLoader {
     public int imageListSize() {
         return images.size();
     }
-    
-    public void updateImages(){
+
+    public void updateImages() {
         RetrievePicturesCom retriver = new RetrievePicturesCom();
         try {
             images = retriver.getImageList();

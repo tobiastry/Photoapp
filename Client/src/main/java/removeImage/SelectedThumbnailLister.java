@@ -18,13 +18,21 @@ public class SelectedThumbnailLister {
     }
     
     public ArrayList<Picture> ListSelectedThumbnails(){
-        images.clear();
+        getImages().clear();
         for (Thumbnail thumbnail : thumbnails) {
             if(thumbnail.isSelected()){
-                images.add(thumbnail.getPicture());
+                getImages().add(thumbnail.getPicture());
             }
         }
+        return getImages();
+    }
+
+    /**
+     * @return the images
+     */
+    public ArrayList<Picture> getImages() {
         return images;
     }
+    
 
 }

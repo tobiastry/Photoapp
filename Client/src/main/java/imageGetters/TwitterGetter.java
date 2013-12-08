@@ -32,8 +32,7 @@ public class TwitterGetter {
      * @return
      */
     public String toUrl(String tag) {
-        //http://www.vogella.com/articles/JavaRegularExpressions/article.html
-        if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
+        if (Pattern.matches("[\\wÆØÅæøå]+", tag)) {
             String TwitterUrl = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + tag + "&result_type=recent&count=100";
             return TwitterUrl;
         } else {

@@ -28,7 +28,7 @@ public class InstagramGetter {
      * @return
      */
     public String toUrl(String tag) {
-        if (Pattern.matches("[a-zA-Z0-9]+", tag)) {
+        if (Pattern.matches("[\\wÆØÅæøå]+", tag)) {
             String instagramUrl = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
             return instagramUrl;
         } else {

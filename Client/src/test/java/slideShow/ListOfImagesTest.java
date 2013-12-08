@@ -1,7 +1,8 @@
 package slideShow;
 
 import java.util.ArrayList;
-import javafx.scene.image.Image;
+import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.scene.image.ImageView;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,40 +16,30 @@ public class ListOfImagesTest{
     ArrayList<ImageView> imageViewList = new ArrayList<ImageView>();
     ListOfImages list = new ListOfImages(imageViewList);
     
+    
     public ListOfImagesTest() {
     }
     
     
-    /*
-     * MÅ LAGES NYE TESTER TIL KLASSEN!
-     */
-   /* @Test
+    @Test
     public void test1(){
-        assertTrue(list.getImageList() instanceof String[]);
+        assertTrue(list.getImageViewList() instanceof Task);
     }
     
     @Test
     public void test2(){
-        assertTrue(ListOfImages.getImageList()[0] instanceof String);
+        assertTrue(list instanceof ListOfImages);
     }
     
     @Test
     public void test3(){
-        String imagePath1 = ListOfImages.getImageList()[0];
-        assertEquals(imagePath1, ListOfImages.getImageList()[0]);
+        assertTrue(slide instanceof Application);
     }
     
     @Test
     public void test4(){
-        assertTrue(ListOfImages.getImageViewList() instanceof ImageView[]);
+        assertEquals(slide.getSlideshowObject(), slide);
     }
     
-    @Test
-    public void test5(){
-        assertTrue(ListOfImages.getImageViewList()[0] instanceof ImageView);
-    }
-        @Test
-    public void test6(){
-        assertTrue(ListOfImages.getImageViewList()[0].getImage() instanceof Image);
-    }*/
+
 }

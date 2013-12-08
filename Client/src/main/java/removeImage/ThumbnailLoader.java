@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Picture;
+import model.PictureList;
 import repository.RetrievePicturesCom;
+import menu.Menu;
 
 /**
  *
@@ -13,22 +15,7 @@ import repository.RetrievePicturesCom;
  */
 class ThumbnailLoader {
 
-    private ArrayList<Picture> images;
     private int thumbsLoaded = 0;
-
-    ThumbnailLoader(ArrayList<Thumbnail> thumbnails) {
-        RetrievePicturesCom retriver = new RetrievePicturesCom();
-        try {
-            images = retriver.getImageList();
-        } catch (IOException ex) {
-            Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//for testing if server is down:
-        /*for (int i = 0; i < 200; i++) {
-         String p = "http://d3j5vwomefv46c.cloudfront.net/photos/thumb/415070" + (i / 100) + (i % 100) + ".jpg";
-         urls.add(p);
-         }*/
-    }
 
     /**
      * Loads a number of images given by number starting from the index from
@@ -37,7 +24,7 @@ class ThumbnailLoader {
      * @param from
      * @param number
      */
-    public void loadPictures(final ArrayList<Thumbnail> thumbnails, final int from, final int number) {
+    public void loadPictures(final ArrayList<SelectableThumbnail> thumbnails, final int from, final int number) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -58,22 +45,13 @@ class ThumbnailLoader {
         }).start();
     }
 
-    public void addPictures(ArrayList<Thumbnail> thumbs) {
+    public void addPictures(ArrayList<SelectableThumbnail> thumbs) {
         for (int i = 0; i < thumbs.size(); i++) {
-            thumbs.get(i).setPicture(images.get(i));
+            thumbs.get(i).setPicture(Menu.getPictureList().get(i));
         }
     }
 
     public int imageListSize() {
-        return images.size();
-    }
-
-    public void updateImages() {
-        RetrievePicturesCom retriver = new RetrievePicturesCom();
-        try {
-            images = retriver.getImageList();
-        } catch (IOException ex) {
-            Logger.getLogger(ThumbnailLoader.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return Menu.getPictureList().size();
     }
 }

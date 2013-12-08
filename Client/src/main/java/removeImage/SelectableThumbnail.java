@@ -17,7 +17,7 @@ import model.Picture;
  *
  * @author Johan LG
  */
-public class Thumbnail extends StackPane {
+public class SelectableThumbnail extends StackPane {
 
     private ImageView imageView;
     private CheckBox cb;
@@ -25,7 +25,7 @@ public class Thumbnail extends StackPane {
     private Picture picture;
     private boolean loaded;
 
-    public Thumbnail() {
+    public SelectableThumbnail() {
         setPrefSize(150, 150);
         Rectangle frame = new Rectangle(152, 152);
         getChildren().add(frame);

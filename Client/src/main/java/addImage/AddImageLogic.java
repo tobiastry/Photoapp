@@ -19,8 +19,6 @@ import repository.StorePicturesCom;
  * @author T
  */
 public class AddImageLogic {
-    //32104414142school <--Selfmade tag for testing
-
     private ArrayList<Picture> pictureList = new ArrayList<>();
     private List<JsonArray> jsonArrayList = new ArrayList<>();
     private InstagramGetter instaGetter = null;
@@ -157,8 +155,8 @@ public class AddImageLogic {
             @Override
             protected Object call() throws Exception {
                 int size = getPictures(tag);
-                if (size > 100) {
-                    int tmp = size - 100;
+                if (size > pictureLimit) {
+                    int tmp = size - pictureLimit;
                     size = size - tmp;
                 }
                 if (size != 0) {

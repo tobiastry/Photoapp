@@ -27,4 +27,10 @@ public class SelectedThumbnailLister {
         return images;
     }
 
+/**
+     * @return the images
+     */
+    public ArrayList<Picture> getImages() {
+        return images;
+    }
 }

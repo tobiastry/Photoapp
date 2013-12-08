@@ -12,11 +12,16 @@ public class CheckNewDelay {
     
     private int delay = getDelay();
     private boolean loop = true;
+    private int fadeTime;
     
     /*
      * Checks to see if the delay has been changed every 3 seconds.
      * If it has, it runs updateMessage(), which Slideshow listens to.
      */
+    
+    public CheckNewDelay(int fadeTimeInSec){
+            fadeTime = fadeTimeInSec*2;
+}
     
     public Task checkNewDelay(){
         return new Task(){
@@ -26,9 +31,8 @@ public class CheckNewDelay {
                     Thread.sleep(3000);
                     int newDelay = getDelay();
                     if(newDelay != delay){
-                        double diffFactor = (double)newDelay/(double)delay;
+                        double diffFactor = ((double)newDelay+fadeTime)/((double)delay+fadeTime);
                         delay = newDelay;
-                        System.out.println("BLABLABLABLABLABLABLABLABLABLABLABLABLA:   "+ diffFactor);
                         updateMessage("New delay: "+delay+" DiffFactor: "+diffFactor);
                         
                     }

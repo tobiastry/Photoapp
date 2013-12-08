@@ -5,6 +5,7 @@
 package repository;
 
 import java.util.ArrayList;
+import model.Picture;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,10 +21,9 @@ public class RetrievePicturesComTest {
     public void testGetImageList() throws Exception {
         System.out.println("getImageList");
         RetrievePicturesCom instance = new RetrievePicturesCom();
-        ArrayList<String> expResult = new ArrayList<String>();
-        ArrayList result = instance.getImageList();
+        ArrayList<Picture> result = instance.getImageList();
         if(result.size()>0){
-            String firstElement = result.get(0).toString();
+            String firstElement = result.get(0).getLargeUrl();
             assertTrue(firstElement.contains("http"));
             assertTrue(firstElement.contains(".jpg"));
         }else{

@@ -104,7 +104,6 @@ public class TwitterParser {
             String date = jsonPicture.get("created_at").getAsString();
             long unix_timestamp = strDateToUnixTimestamp(date);
             picture.setUnixDate(unix_timestamp);
-            System.out.println(picture.getUnixDate());
         } else if (otherMedia != null) {
             otherMedia = ((JsonArray) otherMedia).get(0);
             String pictureUrl = otherMedia.getAsJsonObject().get("expanded_url").getAsString();

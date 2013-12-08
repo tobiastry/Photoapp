@@ -179,7 +179,6 @@ public class AddImageLogic {
                                 break;
                             }
                             i++;
-                            System.out.println(i);
                         }
                     }
                     if (!exportList()) {

@@ -46,9 +46,12 @@ public class Slideshow extends Application {
     private HBox box;
     private double delayDiffFactor = 1.0;
     private int delay;
+    private Stage stage;
+    private double yPos, xPos;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage1) throws Exception {
+        this.stage = stage1;
         root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
@@ -116,7 +119,7 @@ public class Slideshow extends Application {
                 }
             }
         });
-        
+                
         root.getChildren().add(box);
         
         /*
@@ -125,6 +128,37 @@ public class Slideshow extends Application {
         stage = SlideShowWindow.getSlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
+        
+        //Toggle Fullscreen
+        root.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2 && !event.isConsumed()) {
+                    event.consume();
+                    stage.setFullScreen(!stage.isFullScreen());
+                }
+            }
+        });
+        
+        //Moving the window
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xPos = event.getX();
+                yPos = event.getY();
+            }
+        });
+
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!stage.isFullScreen()) {
+                    stage.getScene().getWindow().setX(event.getScreenX() - xPos);
+                    stage.getScene().getWindow().setY(event.getScreenY() - yPos);
+                }
+            }
+        });
+        
         stage.show();
 
         startup = false;

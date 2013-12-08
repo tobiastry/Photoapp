@@ -132,16 +132,16 @@ public class AddImageLogic {
      * @throws IOException
      */
     private boolean exportList() throws IOException {
-        /*StorePicturesCom store = new StorePicturesCom();
-         if (store.storePictures(pictureList) != 200) {
-         jsonArrayList.clear();
-         pictureList.clear();
-         return false;
-         } else {
-         jsonArrayList.clear();
-         pictureList.clear();*/
-        return true;
-        //  }
+        StorePicturesCom store = new StorePicturesCom();
+        if (store.storePictures(pictureList) != 200) {
+            jsonArrayList.clear();
+            pictureList.clear();
+            return false;
+        } else {
+            jsonArrayList.clear();
+            pictureList.clear();
+            return true;
+        }
     }
 
     /**
@@ -171,7 +171,7 @@ public class AddImageLogic {
                             Thread.sleep(25);
                             addPictureToList(json, source);
                             updateProgress(i, size);
-                            updateMessage(i+1 + "/" + size);
+                            updateMessage(i + 1 + "/" + size);
 
                             if (i >= size) {
                                 updateProgress(size, size);

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import java.util.ArrayList;
@@ -12,10 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Stian
- */
 public class TagComTest {
     private ArrayList<String> tags;
     private TagCom instance;

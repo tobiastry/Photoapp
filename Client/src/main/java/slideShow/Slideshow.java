@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.LoginWindow;
+import model.Picture;
 
 /**
  *
@@ -37,10 +38,12 @@ public class Slideshow extends Application {
     private SequentialTransition slideshow;
     private ImageTransition imageTrans;
     private ArrayList<ImageView> imageList;
+    private ArrayList<Picture> oldImageList;
     private ListOfImages imageViewSetter;
     private CheckNewDelay checkNewDelay;
-    private Task retrieveImages, checkDelay;
-    private Thread retrieveImagesThread, checkDelayThread;
+    private UpdatePictureListTimer updatePicture;
+    private Task retrieveImagesTask, checkDelayTask, pictureTimerTask;
+    private Thread retrieveImagesThread, checkDelayThread, updatePictureTimerThread;
     private boolean startup = true;
     private Button quit, menu;
     private HBox box;
@@ -56,13 +59,17 @@ public class Slideshow extends Application {
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
         imageList = new ArrayList();
-        checkNewDelay = new CheckNewDelay(imageTrans.getFadeTime()/1000);
-        checkDelay = checkNewDelay.checkNewDelay();
+        oldImageList = new ArrayList();
+        updatePicture = new UpdatePictureListTimer();
+        pictureTimerTask = updatePicture.timerTask();
+        checkNewDelay = new CheckNewDelay(imageTrans.getFadeTime() / 1000);
+        checkDelayTask = checkNewDelay.checkNewDelay();
 
         delay = imageTrans.getDelay();
-        
+
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
+        initiateUpdatePictureTimerThread();
 
         menu = new Button();
         menu.setText("Admin Menu");
@@ -93,7 +100,7 @@ public class Slideshow extends Application {
 
         box.setStyle("../stylesheets/Menu.css");
 
-                /*
+        /*
          * Listener on mouse movement for buttons
          */
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
@@ -111,7 +118,7 @@ public class Slideshow extends Application {
 
                 SequentialTransition sequence = new SequentialTransition();
                 sequence.getChildren().addAll(fadeIn, pause, fadeOut);
-                
+
                 if (box.getOpacity() > 0.1) {
                     //Do nothing
                 } else {
@@ -119,9 +126,9 @@ public class Slideshow extends Application {
                 }
             }
         });
-                
+
         root.getChildren().add(box);
-        
+
         /*
          * Initiates stage and sets it visible
          */
@@ -169,12 +176,13 @@ public class Slideshow extends Application {
      */
     public void initiateNewSlideshow() {
         Duration timestamp = slideshow.getCurrentTime();
+        System.out.println(timestamp);
         imageTrans.setNewDelay();
         slideshow.stop();
         root.getChildren().clear();
         slideshow.getChildren().clear();
 
-        root.getChildren().add(box);        
+        root.getChildren().add(box);
 
         for (int i = 0; i < imageList.size(); i++) {
             imageList.get(i).setOpacity(0);
@@ -183,7 +191,7 @@ public class Slideshow extends Application {
         }
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        double tempDuration = (timestamp.toMillis()*delayDiffFactor);
+        double tempDuration = (timestamp.toMillis() * delayDiffFactor);
         slideshow.playFrom(new Duration(tempDuration));
         delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;
@@ -191,18 +199,18 @@ public class Slideshow extends Application {
     }
 
     public void initiateCheckDelayThread() {
-        checkDelayThread = new Thread(checkDelay);
+        checkDelayThread = new Thread(checkDelayTask);
         checkDelayThread.setDaemon(true);
         checkDelayThread.start();
 
         /*
          * Listening on ready signal from Task: checkDelay
          */
-        checkDelay.messageProperty().addListener(new ChangeListener<String>() {
+        checkDelayTask.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 System.out.println(newValue);
-                delayDiffFactor = Double.parseDouble(checkDelay.messageProperty().getValue().split(" ")[4]);
+                delayDiffFactor = Double.parseDouble(checkDelayTask.messageProperty().getValue().split(" ")[4]);
                 initiateNewSlideshow();
             }
         });
@@ -218,20 +226,41 @@ public class Slideshow extends Application {
                 Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        imageList.clear();
-        imageViewSetter = new ListOfImages(imageList);
-        retrieveImages = imageViewSetter.getImageViewList();
-        retrieveImagesThread = new Thread(retrieveImages);
+        //imageList.clear();
+        imageViewSetter = new ListOfImages(imageList, oldImageList);
+        retrieveImagesTask = imageViewSetter.getImageViewList();
+        retrieveImagesThread = new Thread(retrieveImagesTask);
         retrieveImagesThread.setDaemon(true);
         retrieveImagesThread.start();
 
         /*
          * Listening on ready signal from Task: retrieveImages
          */
-        retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
+        retrieveImagesTask.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                initiateNewSlideshow();
+                System.out.println(newValue);
+                double timeStamp = slideshow.getCurrentTime().toMillis();
+                int fadeTime = imageTrans.getFadeTime() * 2;
+                double bilderVist = timeStamp / (delay + fadeTime);
+                String[] split = newValue.split(" ");
+                int numberOfImagesGenerated = Integer.parseInt(split[3]);
+                if (numberOfImagesGenerated > bilderVist || split.length == 5) {
+                    initiateNewSlideshow();
+                }
+            }
+        });
+    }
+
+    public void initiateUpdatePictureTimerThread() {
+        updatePictureTimerThread = new Thread(pictureTimerTask);
+        updatePictureTimerThread.setDaemon(true);
+        updatePictureTimerThread.start();
+
+        pictureTimerTask.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                initiateRetrieveImagesThread();
             }
         });
     }

@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import model.Picture;
 
 /**
  *
@@ -13,7 +14,8 @@ import static org.junit.Assert.*;
 public class ListOfImagesTest{
     Slideshow slide = new Slideshow();
     ArrayList<ImageView> imageViewList = new ArrayList<ImageView>();
-    ListOfImages list = new ListOfImages(imageViewList);
+    ArrayList<Picture> oldImageList = new ArrayList();
+    ListOfImages list = new ListOfImages(imageViewList, oldImageList);
     
     public ListOfImagesTest() {
     }

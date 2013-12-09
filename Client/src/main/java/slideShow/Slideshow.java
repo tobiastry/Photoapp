@@ -113,9 +113,10 @@ public class Slideshow extends Application {
                 } else {
                     //Do nothing
                 }
-
-                if (timeline != null || fadeOut != null) {
+                if (timeline != null) {
                     timeline.stop();
+                }
+                if (fadeOut != null){
                     fadeOut.stop();
                 }
                 timeline = new Timeline(

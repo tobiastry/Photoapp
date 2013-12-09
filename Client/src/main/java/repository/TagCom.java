@@ -17,6 +17,13 @@ import java.util.ArrayList;
 public class TagCom {
     private String tagUrl = "http://pensolut.com:8084/api/tag";
 
+    
+    /**
+     * Retrieves a list of tags from the server and stores them as strings in 
+     * an ArrayList
+     * @return ArrayList of the tags
+     * @throws IOException 
+     */
     public ArrayList<String> getTags() throws IOException {
         ArrayList<String> tagList = new ArrayList();
 
@@ -41,6 +48,12 @@ public class TagCom {
         return tagList;
     }
 
+    /**
+     * Stores the given tag on the server
+     * @param tag
+     * @return The response code from the server.
+     * @throws IOException 
+     */
     public int storeTag(String tag) throws IOException {
         URL url = new URL(tagUrl + "/addtag");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -59,6 +72,12 @@ public class TagCom {
         return connection.getResponseCode();
     }
     
+    /**
+     * Sends an ArrayList of tags to the server for removal
+     * @param tags
+     * @return The response code from the server.
+     * @throws IOException 
+     */
     public int removeTag(ArrayList<String> tags)throws IOException {
         if(tags.size() < 1){
             return 0;

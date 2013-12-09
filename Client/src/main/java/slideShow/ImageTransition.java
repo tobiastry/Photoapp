@@ -62,7 +62,6 @@ public class ImageTransition {
      * @return FadeTransition for the fade out of images
      */
     public static FadeTransition GetTransitionStop(ImageView imageView) {
-
         FadeTransition TransitionStop = new FadeTransition(Duration.millis(fadeTime), imageView);
         TransitionStop.setFromValue(1);
         TransitionStop.setToValue(0);

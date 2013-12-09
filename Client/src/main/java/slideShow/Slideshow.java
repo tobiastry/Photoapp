@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
@@ -16,6 +17,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -46,6 +48,8 @@ public class Slideshow extends Application {
     private HBox box;
     private double delayDiffFactor = 1.0;
     private int delay;
+    private Timeline timeline = null;
+    private FadeTransition fadeOut = null;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -53,11 +57,11 @@ public class Slideshow extends Application {
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
         imageList = new ArrayList();
-        checkNewDelay = new CheckNewDelay(imageTrans.getFadeTime()/1000);
+        checkNewDelay = new CheckNewDelay(imageTrans.getFadeTime() / 1000);
         checkDelay = checkNewDelay.checkNewDelay();
 
         delay = imageTrans.getDelay();
-        
+
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
 
@@ -90,35 +94,47 @@ public class Slideshow extends Application {
 
         box.setStyle("../stylesheets/Menu.css");
 
-                /*
+        /*
          * Listener on mouse movement for buttons
          */
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                root.setCursor(Cursor.DEFAULT);
+                
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
 
-                PauseTransition pause = new PauseTransition(Duration.millis(2000));
-
-                FadeTransition fadeOut = new FadeTransition(Duration.millis(1000), box);
-                fadeOut.setFromValue(1.0);
-                fadeOut.setToValue(0.0);
-
-                SequentialTransition sequence = new SequentialTransition();
-                sequence.getChildren().addAll(fadeIn, pause, fadeOut);
-                
-                if (box.getOpacity() > 0.1) {
-                    //Do nothing
+                if (box.getOpacity() <= 0.1) {
+                    fadeIn.play();
                 } else {
-                    sequence.play();
+                    //Do nothing
                 }
+
+                if (timeline != null || fadeOut != null) {
+                    timeline.stop();
+                    fadeOut.stop();
+                }
+                timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(3),
+                        new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        root.setCursor(Cursor.NONE);
+                        fadeOut = new FadeTransition(Duration.millis(1000), box);
+                        fadeOut.setFromValue(1.0);
+                        fadeOut.setToValue(0.0);
+                        fadeOut.play();
+                    }
+                }));
+                timeline.play();
+
             }
         });
-        
+
         root.getChildren().add(box);
-        
+
         /*
          * Initiates stage and sets it visible
          */
@@ -140,7 +156,7 @@ public class Slideshow extends Application {
         root.getChildren().clear();
         slideshow.getChildren().clear();
 
-        root.getChildren().add(box);        
+        root.getChildren().add(box);
 
         for (int i = 0; i < imageList.size(); i++) {
             imageList.get(i).setOpacity(0);
@@ -149,7 +165,7 @@ public class Slideshow extends Application {
         }
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        double tempDuration = (timestamp.toMillis()*delayDiffFactor);
+        double tempDuration = (timestamp.toMillis() * delayDiffFactor);
         slideshow.playFrom(new Duration(tempDuration));
         delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;

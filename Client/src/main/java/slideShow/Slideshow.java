@@ -103,7 +103,7 @@ public class Slideshow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 root.setCursor(Cursor.DEFAULT);
-
+                box.toFront();
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);

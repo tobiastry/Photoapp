@@ -135,7 +135,7 @@ public class Slideshow extends Application {
         stage = new SlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
-        
+
         //Toggle Fullscreen
         root.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -146,7 +146,7 @@ public class Slideshow extends Application {
                 }
             }
         });
-        
+
         //Moving the window
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -165,7 +165,7 @@ public class Slideshow extends Application {
                 }
             }
         });
-        
+
         stage.show();
 
         startup = false;
@@ -260,7 +260,9 @@ public class Slideshow extends Application {
         pictureTimerTask.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                initiateRetrieveImagesThread();
+                if (!retrieveImagesThread.isAlive()) {
+                    initiateRetrieveImagesThread();
+                }
             }
         });
     }

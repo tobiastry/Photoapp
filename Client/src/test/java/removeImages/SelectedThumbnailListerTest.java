@@ -5,6 +5,7 @@
 package removeImages;
 
 import java.util.ArrayList;
+import model.Picture;
 import org.junit.Test;
 import removeImage.SelectedThumbnailLister;
 import removeImage.Thumbnail;
@@ -22,21 +23,22 @@ public class SelectedThumbnailListerTest {
         ArrayList<Thumbnail> thumbnails = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Thumbnail tn = new Thumbnail();
-            tn.loadImage(i + "" + i + "" + i);
+            Picture pic = new Picture(i + "" + i + "" + i, i + "" + i + "" + i);
+            tn.setPicture(pic);
             thumbnails.add(tn);
         }
         SelectedThumbnailLister lister = new SelectedThumbnailLister(thumbnails);
-        lister.ListSelectedThumbnails();
-        assertTrue(lister.getUrls().isEmpty());
+        ArrayList<Picture> images = lister.ListSelectedThumbnails();
+        assertTrue(lister.getImages().isEmpty());
         
         thumbnails.get(1).setSelected(true);
         thumbnails.get(3).setSelected(true);
         thumbnails.get(5).setSelected(true);
         thumbnails.get(1).setSelected(false);
         thumbnails.get(2).setSelected(false);
-        lister.ListSelectedThumbnails();
-        assertTrue(lister.getUrls().size() == 2);
-        assertTrue(lister.getUrls().get(0).equals("555") || lister.getUrls().get(1).equals("555"));
+        images = lister.ListSelectedThumbnails();
+        assertTrue(lister.getImages().size() == 2);
+        assertTrue(lister.getImages().get(0).getLargeUrl().equals("555") || lister.getImages().get(1).getLargeUrl().equals("555"));
 
     }
 }

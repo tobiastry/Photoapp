@@ -36,7 +36,7 @@ public class Slideshow extends Application {
     private StackPane root;
     private SequentialTransition slideshow;
     private ImageTransition imageTrans;
-    private ArrayList<ImageView> ImageList;
+    private ArrayList<ImageView> imageList;
     private ListOfImages imageViewSetter;
     private CheckNewDelay checkNewDelay;
     private Task retrieveImages, checkDelay;
@@ -45,16 +45,19 @@ public class Slideshow extends Application {
     private Button quit, menu;
     private HBox box;
     private double delayDiffFactor = 1.0;
+    private int delay;
 
     @Override
     public void start(Stage stage) throws Exception {
         root = new StackPane();
         slideshow = new SequentialTransition();
         imageTrans = new ImageTransition();
-        ImageList = new ArrayList();
-        checkNewDelay = new CheckNewDelay();
+        imageList = new ArrayList();
+        checkNewDelay = new CheckNewDelay(imageTrans.getFadeTime()/1000);
         checkDelay = checkNewDelay.checkNewDelay();
 
+        delay = imageTrans.getDelay();
+        
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
 
@@ -139,17 +142,18 @@ public class Slideshow extends Application {
 
         root.getChildren().add(box);        
 
-        for (int i = 0; i < ImageList.size(); i++) {
-            ImageList.get(i).setOpacity(0);
-            root.getChildren().add(ImageList.get(i));
-            slideshow.getChildren().add(imageTrans.getFullTransition(ImageList.get(i)));
+        for (int i = 0; i < imageList.size(); i++) {
+            imageList.get(i).setOpacity(0);
+            root.getChildren().add(imageList.get(i));
+            slideshow.getChildren().add(imageTrans.getFullTransition(imageList.get(i)));
         }
 
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        double tempDuration = timestamp.toMillis()*delayDiffFactor;
+        double tempDuration = (timestamp.toMillis()*delayDiffFactor);
         slideshow.playFrom(new Duration(tempDuration));
+        delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;
-        System.out.println("initated new slideshow with " + ImageList.size() + " images");
+        System.out.println("initated new slideshow with " + imageList.size() + " images");
     }
 
     public void initiateCheckDelayThread() {
@@ -180,8 +184,8 @@ public class Slideshow extends Application {
                 Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        ImageList.clear();
-        imageViewSetter = new ListOfImages(ImageList);
+        imageList.clear();
+        imageViewSetter = new ListOfImages(imageList);
         retrieveImages = imageViewSetter.getImageViewList();
         retrieveImagesThread = new Thread(retrieveImages);
         retrieveImagesThread.setDaemon(true);
@@ -193,7 +197,6 @@ public class Slideshow extends Application {
         retrieveImages.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
                 initiateNewSlideshow();
             }
         });

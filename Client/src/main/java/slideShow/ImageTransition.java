@@ -17,8 +17,12 @@ public class ImageTransition {
     private static int fadeTime =  1000;
     private static boolean getNewDelay = false;
     /*Delay in milliseconds*/
-    private static int delay = 1;
+    private static int delay;
 
+    public ImageTransition(){
+       delay = getTimeBetweenImages();
+    }
+    
     // 
     /**
      * Combines fade in, fade out and pause to a complete transition
@@ -83,7 +87,7 @@ public class ImageTransition {
      * Self explanatory
      * @return
      */
-    public int getFadeTid(){
+    public int getFadeTime(){
         return fadeTime;
     }
     

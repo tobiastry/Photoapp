@@ -194,7 +194,6 @@ public class Slideshow extends Application {
      */
     public void initiateNewSlideshow() {
         Duration timestamp = slideshow.getCurrentTime();
-        System.out.println(timestamp);
         imageTrans.setNewDelay();
         slideshow.stop();
         root.getChildren().clear();
@@ -257,7 +256,6 @@ public class Slideshow extends Application {
         retrieveImagesTask.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
                 double timeStamp = slideshow.getCurrentTime().toMillis();
                 int fadeTime = imageTrans.getFadeTime() * 2;
                 double bilderVist = timeStamp / (delay + fadeTime);

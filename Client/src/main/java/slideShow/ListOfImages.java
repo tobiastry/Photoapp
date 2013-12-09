@@ -51,17 +51,17 @@ public class ListOfImages {
                  * on client.
                  */
                 if (newImageList.size() == oldImageList.size()) {
-                    System.out.println("Same size");
                     for (int i = 0; i < newImageList.size(); i++) {
                         if (!newImageList.get(i).getLargeUrl().equals(oldImageList.get(i).getLargeUrl())) {
                             break;
                         }else if(i == newImageList.size()-1){
+                            System.out.println("No changes in image list from server");
                             return true;
                         }
                     }
                 }
                 imageViewList.clear();
-                System.out.println("Number of images on server: " + newImageList.size());
+                System.out.println("Gathering new Imges. Number of images on server: " + newImageList.size());
                 for (int i = 0; i < newImageList.size(); i++) {
 
                     if (!isRunning) {

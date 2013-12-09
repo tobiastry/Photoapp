@@ -39,12 +39,12 @@ public class StorePicturesCom {
             if(i < pictureList.size()-1){
                 body +="{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
                 body +=" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\",\n";
-                body +=" \"url\": "+"\""+pictureList.get(i).getId()+"\",\n";
+                body +=" \"date\": "+"\""+pictureList.get(i).getUnixDate()+"\",\n";
                 body +=" \"tag\": "+"\""+pictureList.get(i).getTag()+"\"\n},";
             }else{
                 body +="{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
                 body +=" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\",\n";
-                body +=" \"url\": "+"\""+pictureList.get(i).getId()+"\",\n";
+                body +=" \"date\": "+"\""+pictureList.get(i).getUnixDate()+"\",\n";
                 body +=" \"tag\": "+"\""+pictureList.get(i).getTag()+"\"\n}";
             }
         }

@@ -27,7 +27,7 @@ public class DeletePicturesCom {
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/v1+json");
+        connection.setRequestProperty("Content-Type", "application/v2+json");
         connection.setDoOutput(true);
         connection.connect();
         

@@ -30,7 +30,7 @@ public class RetrievePicturesCom {
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Content-Type", "application/v1+json");
+        connection.setRequestProperty("Content-Type", "application/v2+json");
         connection.connect();
         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
 
@@ -45,6 +45,37 @@ public class RetrievePicturesCom {
                 Picture picture = new Picture(
                         j.getAsJsonObject().get("url").getAsString(),
                         j.getAsJsonObject().get("thumburl").getAsString());
+                picture.setId(j.getAsJsonObject().get("date").getAsString());
+                picture.setTag(j.getAsJsonObject().get("tag").getAsString());
+                imageList.add(picture);
+            }
+        }
+        return imageList;
+    }
+    
+    public ArrayList<Picture> getImageListByTag(String tag) throws IOException {
+        ArrayList<Picture> imageList = new ArrayList();
+
+        URL url = new URL(request + "/" + tag);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/v2+json");
+        connection.connect();
+        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
+
+        int respons = connection.getResponseCode();
+
+        if (respons == 200) {
+            JsonParser parser = new JsonParser();
+
+            JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
+
+            for (JsonElement j : imageUrlArray) {
+                Picture picture = new Picture(
+                        j.getAsJsonObject().get("url").getAsString(),
+                        j.getAsJsonObject().get("thumburl").getAsString());
+                picture.setId(j.getAsJsonObject().get("date").getAsString());
+                picture.setTag(j.getAsJsonObject().get("tag").getAsString());
                 imageList.add(picture);
             }
         }

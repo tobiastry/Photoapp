@@ -154,7 +154,7 @@ public class RemoveImageGUI extends GridPane {
 
         maxImages = pl.imageListSize();
 
-        if (maxImages < imagePerPane) {
+        if (maxImages <= imagePerPane) {
             next.setDisable(true);
         }
         //temp

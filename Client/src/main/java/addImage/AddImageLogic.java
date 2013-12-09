@@ -19,8 +19,6 @@ import repository.StorePicturesCom;
  * @author T
  */
 public class AddImageLogic {
-    //32104414142school <--Selfmade tag for testing
-
     private ArrayList<Picture> pictureList = new ArrayList<>();
     private List<JsonArray> jsonArrayList = new ArrayList<>();
     private InstagramGetter instaGetter = null;
@@ -32,9 +30,12 @@ public class AddImageLogic {
     private int instagramPicFound = 0;
     private JsonPrimitive fromSource = null;
     private final int pictureLimit = 100;
+    private int picCountTmp = 0;
 
     /**
-     * Takes a tag, finds pictures from Instagram and Twitter, returns amount of pictures found.
+     * Takes a tag, finds pictures from Instagram and Twitter, returns amount of
+     * pictures found.
+     *
      * @param tag (String)
      * @return picturesFound (Integer)
      * @throws IOException
@@ -42,17 +43,24 @@ public class AddImageLogic {
     private int getPictures(String tag) throws IOException {
         instaGetter = new InstagramGetter();
         twitterGetter = new TwitterGetter();
-        instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaGetter.toUrl(tag)), "Instagram");
-        twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterGetter.toUrl(tag)), "Twitter");
+        String instaUrl = instaGetter.toUrl(tag);
+        String twitterUrl = twitterGetter.toUrl(tag);
+        if (instaUrl == null || twitterUrl == null) {
+            failedMsg = "Ugyldig tag";
+        }
+        instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaUrl), "Instagram");
+        twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl), "Twitter");
         picturesFound = getMore();
         return picturesFound;
     }
-    
+
     /**
-     * Finds the size and adds the source(Twitter/Instagram) of the JsonArray, returns size of array. 
+     * Finds the size and adds the source(Twitter/Instagram) of the JsonArray,
+     * returns size of array.
+     *
      * @param jsonList (JsonArray)
      * @param source (String)
-     * @return jsonList size (Integer) 
+     * @return jsonList size (Integer)
      */
     private int getSizeAndAdd(JsonArray jsonList, String source) {
         if (jsonList.size() != 0) {
@@ -65,7 +73,9 @@ public class AddImageLogic {
     }
 
     /**
-     * Makes sure we get all or enough pictures, returns amount of pictures found.
+     * Makes sure we get all or enough pictures, returns amount of pictures
+     * found.
+     *
      * @return picturesFound (Integer)
      * @throws IOException
      */
@@ -82,7 +92,8 @@ public class AddImageLogic {
                 twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(next_url), "Twitter");
             }
         }
-        if (picturesFound <= pictureLimit && (instagramPicFound + twitterPicFound) != 0) {
+        if (picturesFound <= pictureLimit && (instagramPicFound + twitterPicFound) != picCountTmp) {
+            picCountTmp = instagramPicFound + twitterPicFound;
             return getMore();
         }
         return picturesFound;
@@ -90,6 +101,7 @@ public class AddImageLogic {
 
     /**
      * Decides where the JsonElements source, finds the url and adds to list.
+     *
      * @param j (JsonElement)
      * @param source (String)
      */
@@ -112,6 +124,7 @@ public class AddImageLogic {
 
     /**
      * Sends the list to server for storage.
+     *
      * @return boolean
      * @throws IOException
      */
@@ -129,7 +142,9 @@ public class AddImageLogic {
     }
 
     /**
-     * Takes a tag, starts a new task which finds pictures from Instagram and Twitter, and updates GUI.
+     * Takes a tag, starts a new task which finds pictures from Instagram and
+     * Twitter, and updates GUI.
+     *
      * @param tag (string)
      * @return Task
      */
@@ -139,6 +154,10 @@ public class AddImageLogic {
             @Override
             protected Object call() throws Exception {
                 int size = getPictures(tag);
+                if (size > pictureLimit) {
+                    int tmp = size - pictureLimit;
+                    size = size - tmp;
+                }
                 if (size != 0) {
                     int i = 1;
                     AddImageGUI.addingToList = true;
@@ -146,10 +165,15 @@ public class AddImageLogic {
                         String source = jsonArrayList.get(t).get(jsonArrayList.get(t).size() - 1).getAsString();
                         for (int j = 0; j < jsonArrayList.get(t).size() - 1; j++) {
                             JsonElement json = jsonArrayList.get(t).get(j);
-                            Thread.sleep(50);
+                            Thread.sleep(25);
                             addPictureToList(json, source);
                             updateProgress(i, size);
-                            updateMessage(i + "/" + size);
+                            updateMessage(i + 1 + "/" + size);
+                            if (i >= size) {
+                                updateProgress(size, size);
+                                updateMessage(size + "/" + size);
+                                break;
+                            }
                             i++;
                         }
                     }

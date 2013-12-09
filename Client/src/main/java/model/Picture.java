@@ -1,11 +1,13 @@
 package model;
 
+
 public class Picture {
 
 	private String thumbUrl;
 	private String largeUrl;
         private String tag;
         private String id;
+        private String unixDate;
         
         public Picture (String url, String thumb){
             this.largeUrl = url;
@@ -52,6 +54,20 @@ public class Picture {
      */
     public void setId(String id) {
         this.id = id;
+    }
+    
+     /**
+     * @return the unixDate
+     */
+    public String getUnixDate() {
+        return unixDate;
+    }
+
+    /**
+     * @param unixDate the unixDate to set
+     */
+    public void setUnixDate(String unixDate) {
+        this.unixDate = unixDate;
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -53,6 +54,8 @@ public class Slideshow extends Application {
     private int delay;
     private Stage stage;
     private double yPos, xPos;
+    private FadeTransition fadeOut = null;
+    private Timeline timeline = null;
 
     @Override
     public void start(Stage stage1) throws Exception {
@@ -94,8 +97,8 @@ public class Slideshow extends Application {
             }
         });
 
-        box = new HBox(1100);
-        box.setPadding(new Insets(15,15,15,15));
+        box = new HBox(1000);
+        box.setPadding(new Insets(15, 15, 15, 15));
         box.setAlignment(Pos.BOTTOM_CENTER);
         box.getChildren().add(quit);
         box.getChildren().add(menu);
@@ -108,25 +111,37 @@ public class Slideshow extends Application {
         root.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                root.setCursor(Cursor.DEFAULT);
+                box.toFront();
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
 
-                PauseTransition pause = new PauseTransition(Duration.millis(2000));
-
-                FadeTransition fadeOut = new FadeTransition(Duration.millis(1000), box);
-                fadeOut.setFromValue(1.0);
-                fadeOut.setToValue(0.0);
-
-                SequentialTransition sequence = new SequentialTransition();
-                sequence.getChildren().addAll(fadeIn, pause, fadeOut);
-
-                if (box.getOpacity() > 0.1) {
-                    //Do nothing
+                if (box.getOpacity() <= 0.8) {
+                    fadeIn.play();
                 } else {
-                    box.toFront();
-                    sequence.play();
+                    //Do nothing
                 }
+                if (timeline != null) {
+                    timeline.stop();
+                }
+                if (fadeOut != null) {
+                    fadeOut.stop();
+                }
+                timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(3),
+                                new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent actionEvent) {
+                                        root.setCursor(Cursor.NONE);
+                                        fadeOut = new FadeTransition(Duration.millis(500), box);
+                                        fadeOut.setFromValue(1.0);
+                                        fadeOut.setToValue(0.0);
+                                        fadeOut.play();
+                                    }
+                                }));
+                timeline.play();
+
             }
         });
 

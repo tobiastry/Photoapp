@@ -1,6 +1,7 @@
 package slideShow;
 
 import java.util.ArrayList;
+import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.Test;

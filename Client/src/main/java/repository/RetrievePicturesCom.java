@@ -45,7 +45,6 @@ public class RetrievePicturesCom {
                 Picture picture = new Picture(
                         j.getAsJsonObject().get("url").getAsString(),
                         j.getAsJsonObject().get("thumburl").getAsString());
-                picture.setId(j.getAsJsonObject().get("date").getAsString());
                 picture.setTag(j.getAsJsonObject().get("tag").getAsString());
                 imageList.add(picture);
             }
@@ -74,7 +73,6 @@ public class RetrievePicturesCom {
                 Picture picture = new Picture(
                         j.getAsJsonObject().get("url").getAsString(),
                         j.getAsJsonObject().get("thumburl").getAsString());
-                picture.setId(j.getAsJsonObject().get("date").getAsString());
                 picture.setTag(j.getAsJsonObject().get("tag").getAsString());
                 imageList.add(picture);
             }

@@ -22,15 +22,21 @@ public class ImageTransitionTest {
     public void test1() 
     {
         ImageTransition trans = new ImageTransition();
-        Image image = new Image("test");
+        Image image = new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg");
         ImageView imageview = new ImageView(image);
         assertTrue(trans.getFullTransition(imageview) instanceof SequentialTransition);
     }
     
     @Test
+    public void test2() 
+    {
+        assertTrue(ImageTransition.getTimeBetweenImages() < 60000);
+    }
+      
+    @Test
     public void test3() 
     {
-        assertEquals(ImageTransition.getTimeBetweenImages(), 2000 );
+        assertTrue(ImageTransition.getTimeBetweenImages() > 0);
     }
     
     @Test
@@ -42,12 +48,12 @@ public class ImageTransitionTest {
     @Test
     public void test5() 
     {
-        assertTrue(ImageTransition.getTransitionStart(new ImageView(new Image("test"))) instanceof FadeTransition);
+        assertTrue(ImageTransition.getTransitionStart(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
     }
         
     @Test
     public void test6() 
     {
-        assertTrue(ImageTransition.GetTransitionStop(new ImageView(new Image("test"))) instanceof FadeTransition);
+        assertTrue(ImageTransition.GetTransitionStop(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
     }
 }

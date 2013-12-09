@@ -108,7 +108,7 @@ public class Slideshow extends Application {
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
 
-                if (box.getOpacity() <= 0.1) {
+                if (box.getOpacity() <= 0.8) {
                     fadeIn.play();
                 } else {
                     //Do nothing
@@ -124,7 +124,7 @@ public class Slideshow extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         root.setCursor(Cursor.NONE);
-                        fadeOut = new FadeTransition(Duration.millis(1000), box);
+                        fadeOut = new FadeTransition(Duration.millis(500), box);
                         fadeOut.setFromValue(1.0);
                         fadeOut.setToValue(0.0);
                         fadeOut.play();

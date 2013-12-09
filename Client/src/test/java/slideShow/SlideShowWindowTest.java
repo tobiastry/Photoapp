@@ -16,20 +16,20 @@ public class SlideShowWindowTest {
     @Test
     public void test1() 
     {
-        assertTrue(SlideShowWindow.getSlideShowWindow() instanceof Stage);
+        assertTrue(new SlideShowWindow() instanceof Stage);
     }
     
     @Test
     public void test2() 
     {
-        Stage slideshowvindu = SlideShowWindow.getSlideShowWindow();
+        Stage slideshowvindu = new SlideShowWindow();
         assertTrue(slideshowvindu.isFullScreen());
     }
     
     @Test
     public void test3() 
     {
-        Stage slideshowvindu = SlideShowWindow.getSlideShowWindow();
+        Stage slideshowvindu = new SlideShowWindow();
         assertTrue(slideshowvindu.isResizable());
     } 
 }

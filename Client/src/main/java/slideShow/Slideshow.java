@@ -125,7 +125,7 @@ public class Slideshow extends Application {
         /*
          * Initiates stage and sets it visible
          */
-        stage = SlideShowWindow.getSlideShowWindow();
+        stage = new SlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
         

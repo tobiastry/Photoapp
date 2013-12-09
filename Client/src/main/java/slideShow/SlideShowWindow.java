@@ -7,19 +7,15 @@ import javafx.stage.StageStyle;
  *
  * @author mhovdan
  */
-public class SlideShowWindow{
-      Stage slideShowVindu = new Stage();
-      
+public class SlideShowWindow extends Stage {
+
     /**
-     * Measures the screen program is started on, and sets window size accordingly
-     * It also removes menu bars and resize options
-     * @return This is the main stage window, used for the slideshow
+     * Creates the stage for the slideshow
      */
-    public static Stage getSlideShowWindow(){
-        Stage slideShowVindu = new Stage();
-        slideShowVindu.initStyle(StageStyle.UNDECORATED);
-        slideShowVindu.setFullScreen(true);
-        slideShowVindu.setTitle("Ultimate slideshow");
-        return slideShowVindu;
+    public SlideShowWindow() {
+        super();
+        initStyle(StageStyle.UNDECORATED);
+        setFullScreen(true);
+        setTitle("Ultimate slideshow");
     }
 }

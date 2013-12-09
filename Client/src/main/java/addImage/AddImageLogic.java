@@ -94,7 +94,6 @@ public class AddImageLogic {
         }
         if (picturesFound <= pictureLimit && (instagramPicFound + twitterPicFound) != picCountTmp) {
             picCountTmp = instagramPicFound + twitterPicFound;
-            System.out.println(picCountTmp);
             return getMore();
         }
         return picturesFound;
@@ -170,7 +169,6 @@ public class AddImageLogic {
                             addPictureToList(json, source);
                             updateProgress(i, size);
                             updateMessage(i + 1 + "/" + size);
-
                             if (i >= size) {
                                 updateProgress(size, size);
                                 updateMessage(size + "/" + size);

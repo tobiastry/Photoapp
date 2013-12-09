@@ -13,7 +13,7 @@ import model.Picture;
  */
 public class StorePicturesCom {
     
-    private String request = "http://pensolut.com:8084/api/picture/addpictures";
+    private String request = GlobalVariables.baseUrl+"picture/addpictures";
     private DataOutputStream outStream;
     
     /**

@@ -13,7 +13,7 @@ import com.google.gson.*;
  */
 public class DelayCom {
 
-    private String delayUrl = "http://pensolut.com:8084/api/delay";
+    private String delayUrl = GlobalVariables.baseUrl+"delay";
 
     /**
      * Retrieves the delay from the server

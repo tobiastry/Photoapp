@@ -12,7 +12,8 @@ import model.Picture;
  */
 public class DeletePicturesCom {
     
-    private String request = "http://pensolut.com:8084/api/picture/delete";
+    private String request = GlobalVariables.baseUrl+"picture/delete";
+
     private DataOutputStream outStream;
     
     /*

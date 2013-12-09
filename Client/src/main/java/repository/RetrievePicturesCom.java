@@ -16,8 +16,7 @@ import model.Picture;
  */
 public class RetrievePicturesCom {
 
-    private String request = "http://pensolut.com:8084/api/picture/getpictures";
-
+    private String request = GlobalVariables.baseUrl+"picture/getpictures";
     /**
      * Retrieves a list of Pictures from the Server
      *

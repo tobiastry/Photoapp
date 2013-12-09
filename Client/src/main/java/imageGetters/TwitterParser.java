@@ -169,8 +169,7 @@ public class TwitterParser {
             date = formatter.parse(dt);
         } catch (ParseException ex) {
         }
-        unixtime = date.getTime();
-        System.out.println(unixtime);
+        unixtime = date.getTime()/1000;
         return unixtime;
     }
     

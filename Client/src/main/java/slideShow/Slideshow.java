@@ -49,6 +49,8 @@ public class Slideshow extends Application {
     private int delay;
     private Stage stage;
     private double yPos, xPos;
+    private Timeline timeline = null;
+    private FadeTransition fadeOut = null;
 
     @Override
     public void start(Stage stage1) throws Exception {
@@ -101,7 +103,7 @@ public class Slideshow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 root.setCursor(Cursor.DEFAULT);
-                
+
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(1), box);
                 fadeIn.setFromValue(0.0);
                 fadeIn.setToValue(1.0);
@@ -132,7 +134,7 @@ public class Slideshow extends Application {
 
             }
         });
-                
+
         root.getChildren().add(box);
 
         /*
@@ -141,7 +143,7 @@ public class Slideshow extends Application {
         stage = SlideShowWindow.getSlideShowWindow();
         stage.setScene(new Scene(root, 800, 600, Color.BLACK));
         stage.getScene().getStylesheets().add(this.getClass().getResource("/stylesheets/Slideshow.css").toExternalForm());
-        
+
         //Toggle Fullscreen
         root.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,7 +154,7 @@ public class Slideshow extends Application {
                 }
             }
         });
-        
+
         //Moving the window
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -171,7 +173,7 @@ public class Slideshow extends Application {
                 }
             }
         });
-        
+
         stage.show();
 
         startup = false;

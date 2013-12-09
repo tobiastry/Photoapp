@@ -37,15 +37,19 @@ public class StorePicturesCom {
         outStream = new DataOutputStream(connection.getOutputStream());
         for(int i=0; i<pictureList.size();i++){
             if(i < pictureList.size()-1){
-                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
-                body = body+" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\"\n},";
+                body +="{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
+                body +=" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\",\n";
+                body +=" \"url\": "+"\""+pictureList.get(i).getId()+"\",\n";
+                body +=" \"tag\": "+"\""+pictureList.get(i).getTag()+"\"\n},";
             }else{
-                body = body+"{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
-                body = body+" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\"\n}";
+                body +="{\n \"thumburl\": "+"\""+pictureList.get(i).getThumbUrl()+"\",\n";
+                body +=" \"url\": "+"\""+pictureList.get(i).getLargeUrl()+"\",\n";
+                body +=" \"url\": "+"\""+pictureList.get(i).getId()+"\",\n";
+                body +=" \"tag\": "+"\""+pictureList.get(i).getTag()+"\"\n}";
             }
         }
 
-        body = body+"]";
+        body +="]";
 
         outStream.writeBytes(body);
         outStream.flush();

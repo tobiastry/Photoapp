@@ -15,10 +15,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -73,6 +75,7 @@ public class Slideshow extends Application {
 
         menu = new Button();
         menu.setText("Admin Menu");
+        menu.setMaxSize(200, 50);
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -83,8 +86,7 @@ public class Slideshow extends Application {
 
         quit = new Button();
         quit.setText("Quit Slideshow");
-        quit.setLayoutX(500);
-        quit.setLayoutY(500);
+        quit.setMaxSize(200, 50);
         quit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -92,9 +94,9 @@ public class Slideshow extends Application {
             }
         });
 
-        box = new HBox(20);
-        box.setAlignment(Pos.BOTTOM_RIGHT);
-        box.setOpacity(0.0);
+        box = new HBox(1100);
+        box.setPadding(new Insets(15,15,15,15));
+        box.setAlignment(Pos.BOTTOM_CENTER);
         box.getChildren().add(quit);
         box.getChildren().add(menu);
 
@@ -122,6 +124,7 @@ public class Slideshow extends Application {
                 if (box.getOpacity() > 0.1) {
                     //Do nothing
                 } else {
+                    box.toFront();
                     sequence.play();
                 }
             }

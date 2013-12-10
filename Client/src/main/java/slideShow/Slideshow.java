@@ -20,9 +20,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -49,6 +51,7 @@ public class Slideshow extends Application {
     private Thread retrieveImagesThread, checkDelayThread, updatePictureTimerThread;
     private boolean startup = true;
     private Button quit, menu;
+    private CheckBox resetChk;
     private HBox box;
     private double delayDiffFactor = 1.0;
     private int delay;
@@ -56,6 +59,7 @@ public class Slideshow extends Application {
     private double yPos, xPos;
     private FadeTransition fadeOut = null;
     private Timeline timeline = null;
+    private boolean isAddingImages = false;
 
     @Override
     public void start(Stage stage1) throws Exception {
@@ -72,24 +76,34 @@ public class Slideshow extends Application {
 
         delay = imageTrans.getDelay();
 
+        /*
+        * Initiate picture while loading
+        */
+        ImageView loadImage = new ImageView (new Image("/images/loading_screen.png"));
+        root.getChildren().add(loadImage);      
+        /*
+        */
+        
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
         initiateUpdatePictureTimerThread();
 
+        resetChk = new CheckBox("Restart slideshow if new images are added!");
+        
         menu = new Button();
         menu.setText("Admin Menu");
-        menu.setMaxSize(200, 50);
+        menu.setMaxSize(200, 100);               
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                LoginWindow login = new LoginWindow(getSlideshowObject());
+                LoginWindow login = new LoginWindow();
                 login.generateStage();
             }
         });
 
         quit = new Button();
         quit.setText("Quit Slideshow");
-        quit.setMaxSize(200, 50);
+        quit.setMaxSize(200, 100);
         quit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -97,14 +111,24 @@ public class Slideshow extends Application {
             }
         });
 
-        box = new HBox(1000);
-        box.setPadding(new Insets(15, 15, 15, 15));
+        box = new HBox();
+        box.setPadding(new Insets(10, 10, 10, 10));
         box.setAlignment(Pos.BOTTOM_CENTER);
-        box.getChildren().add(quit);
-        box.getChildren().add(menu);
-
+        
         box.setStyle("../stylesheets/Menu.css");
-
+        
+        // Layout of buttons and checkbox related to window
+        AnchorPane anchorpane = new AnchorPane();
+        anchorpane.setLeftAnchor(quit, 300.0);
+        anchorpane.setBottomAnchor(quit, 30.0);
+        anchorpane.setRightAnchor(menu, 300.0);
+        anchorpane.setBottomAnchor(menu, 30.0);
+        anchorpane.setBottomAnchor(resetChk, 10.0);
+        anchorpane.setRightAnchor(resetChk, 20.0);
+        anchorpane.setLeftAnchor(resetChk, 100.0);
+        anchorpane.getChildren().addAll(quit, menu, resetChk);
+        box.getChildren().add(anchorpane);
+        
         /*
          * Listener on mouse movement for buttons
          */
@@ -201,24 +225,19 @@ public class Slideshow extends Application {
 
         root.getChildren().add(box);
 
-        /*
-        * Initiate picture while loading
-        */
-        ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
-        root.getChildren().add(loadImage);
-        slideshow.getChildren().add(imageTrans.getLoadingScreenTransition(loadImage));
-        /*
-        */
-        
         for (int i = 0; i < imageList.size(); i++) {
             imageList.get(i).setOpacity(0);
             root.getChildren().add(imageList.get(i));
             slideshow.getChildren().add(imageTrans.getFullTransition(imageList.get(i)));
         }
-
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        double tempDuration = (timestamp.toMillis() * delayDiffFactor);
-        slideshow.playFrom(new Duration(tempDuration));
+        if(!checkRestartOnNewImages() || delayDiffFactor != 1.0 || isAddingImages){
+            double tempDuration = (timestamp.toMillis() * delayDiffFactor);
+            slideshow.playFrom(new Duration(tempDuration));
+        }else{
+            slideshow.play();
+        }
+        isAddingImages = true;
         delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;
         System.out.println("initated new slideshow with " + imageList.size() + " images");
@@ -252,7 +271,7 @@ public class Slideshow extends Application {
                 Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //imageList.clear();
+        isAddingImages = false;
         imageViewSetter = new ListOfImages(imageList, oldImageList);
         retrieveImagesTask = imageViewSetter.getImageViewList();
         retrieveImagesThread = new Thread(retrieveImagesTask);
@@ -294,6 +313,13 @@ public class Slideshow extends Application {
 
     public Slideshow getSlideshowObject() {
         return this;
+    }
+    /*
+     * Checks if checkbox is selected, and returns true or false
+     * 
+     */
+    public boolean checkRestartOnNewImages(){
+        return resetChk.isSelected();
     }
 
     /*

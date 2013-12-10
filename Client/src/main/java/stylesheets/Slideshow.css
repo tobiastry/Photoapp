@@ -33,3 +33,8 @@
 .button:pressed{
     -fx-background-color:#090a0c;
 }
+
+.check-box{
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+
+}

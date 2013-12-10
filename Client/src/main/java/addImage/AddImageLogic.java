@@ -32,6 +32,11 @@ public class AddImageLogic {
     private JsonPrimitive fromSource = null;
     private final int pictureLimit = 100;
     private int picCountTmp = 0;
+    private String minTagID = null;
+
+    public String getMinTagID() {
+        return minTagID;
+    }
 
     /**
      * Takes a tag, finds pictures from Instagram and Twitter, returns amount of
@@ -50,8 +55,10 @@ public class AddImageLogic {
         if (instaUrl == null || twitterUrl == null) {
             failedMsg = "Ugyldig tag";
         }
+
         instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaUrl), "Instagram");
         twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl), "Twitter");
+        minTagID = instaGetter.getMinID();
         picturesFound = getMore();
         return picturesFound;
     }
@@ -157,6 +164,7 @@ public class AddImageLogic {
             @Override
             protected Object call() throws Exception {
                 int size = getPictures(tag);
+                updateMessage(getMinTagID());
                 if (size > pictureLimit) {
                     int tmp = size - pictureLimit;
                     size = size - tmp;
@@ -171,15 +179,14 @@ public class AddImageLogic {
                             Thread.sleep(25);
                             addPictureToList(json, source);
                             updateProgress(i, size);
-                            updateMessage(i + 1 + "/" + size);
                             if (i >= size) {
                                 updateProgress(size, size);
-                                updateMessage(size + "/" + size);
                                 break;
                             }
                             i++;
                         }
                     }
+                    
                     if (!exportList()) {
                         AddImageGUI.addingToList = false;
                         failedMsg = "Klarte ikke legge bilder inn på server";
@@ -202,7 +209,6 @@ public class AddImageLogic {
             protected void succeeded() {
                 super.succeeded();
                 updateMessage("-Ferdig-");
-
             }
 
             @Override
@@ -230,6 +236,7 @@ public class AddImageLogic {
                 updateMessage("");
                 updateProgress(0, 0);
             }
+            
         };
     }
 }

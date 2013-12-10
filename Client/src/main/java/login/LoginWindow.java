@@ -1,5 +1,8 @@
 package login;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -30,10 +33,9 @@ public class LoginWindow {
     private Stage stage;
     private final GridPane grid;
     private double xPos, yPos;
-    private final Slideshow slideshow;
 
-    public LoginWindow(final Slideshow slideshow) {
-        this.slideshow = slideshow;
+    public LoginWindow() {
+
         Text header = new Text("Login");
         header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 50));
         header.setFill(Color.web("#0E485E"));
@@ -57,7 +59,7 @@ public class LoginWindow {
         grid.add(txtBox, 0, 1);
         grid.add(btn, 1, 1);
         grid.add(denied, 0, 2);
-        
+
         //Movement of login window
         grid.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -99,8 +101,13 @@ public class LoginWindow {
             @Override
             public void handle(ActionEvent t) {
                 if (LoginLogic.checkLogin(txtBox.getText())) {
-                    Menu menu = new Menu(slideshow);
-                    menu.generateStage();
+                    Menu menu;
+                    try {
+                        menu = new Menu();
+                        menu.generateStage();
+                    } catch (IOException ex) {
+                        Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     stage.close();
                 } else {
                     denied.setVisible(true);

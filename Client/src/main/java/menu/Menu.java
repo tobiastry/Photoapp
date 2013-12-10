@@ -1,6 +1,7 @@
 package menu;
 
 import addImage.AddImageGUI;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.PictureList;
 import removeImage.RemoveImageGUI;
 import slideShow.Slideshow;
 
@@ -34,10 +36,11 @@ public class Menu {
     //Keeps the panes for different activities
     private AddImageGUI addImagePane;
     private RemoveImageGUI removeImagePane;
-    private Slideshow slideshow;
+    private static PictureList pictureList;
 
-    public Menu(Slideshow slideshow) {
-        this.slideshow = slideshow;
+    public Menu() throws IOException {
+        pictureList = new PictureList();
+        
         buttons = new ArrayList<>();
         makeButtons();
 
@@ -62,7 +65,8 @@ public class Menu {
         addImagePane = new AddImageGUI();
         setActivityPane(addImagePane);
 
-        scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
+        //Here the default size can be changed
+        scene = new Scene(root, 1000, 720, Color.TRANSPARENT);
         scene.getStylesheets().add(Menu.class.getResource("/stylesheets/Menu.css").toExternalForm());
 
         //Toggle Fullscreen
@@ -102,10 +106,11 @@ public class Menu {
                 if (!stage.isFullScreen()) {
                     double x = event.getScreenX();
                     double y = event.getScreenY();
-                    if (x - scene.getWindow().getX() > 1280) {
+                    //Minimum size can be set here
+                    if (x - scene.getWindow().getX() > 800) {
                         scene.getWindow().setWidth(event.getScreenX() - scene.getWindow().getX());
                     }
-                    if (y - scene.getWindow().getY() > 720) {
+                    if (y - scene.getWindow().getY() > 600) {
                         scene.getWindow().setHeight(event.getScreenY() - scene.getWindow().getY());
                     }
                 }
@@ -133,7 +138,6 @@ public class Menu {
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                slideshow.initiateRetrieveImagesThread();
                 stage.close();
             }
         });
@@ -146,7 +150,7 @@ public class Menu {
 
     //The buttons for different activities
     private void makeButtons() {
-        Button btnSearch = new Button("Hente Bilder");
+        Button btnSearch = new Button("Behandle Tags");
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -191,4 +195,9 @@ public class Menu {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
     }
+
+    public static PictureList getPictureList() {
+        return pictureList;
+    }
+    
 }

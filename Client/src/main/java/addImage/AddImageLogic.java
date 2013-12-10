@@ -176,10 +176,8 @@ public class AddImageLogic {
                             Thread.sleep(25);
                             addPictureToList(json, source);
                             updateProgress(i, size);
-                            updateMessage(i + 1 + "/" + size);
                             if (i >= size) {
                                 updateProgress(size, size);
-                                updateMessage(size + "/" + size);
                                 break;
                             }
                             i++;

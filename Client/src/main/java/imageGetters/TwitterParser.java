@@ -120,7 +120,7 @@ public class TwitterParser {
                     picture.setId(id);
                     String date = jsonPicture.get("created_at").getAsString();
                     long unix_timestamp = strDateToUnixTimestamp(date);
-                    picture.setUnixDate(unix_timestamp +"");
+                    picture.setUnixDate(unix_timestamp + "");
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(TwitterParser.class
                             .getName()).log(Level.SEVERE, null, ex);
@@ -168,10 +168,10 @@ public class TwitterParser {
         try {
             date = formatter.parse(dt);
         } catch (ParseException ex) {
+            Logger.getLogger(TwitterParser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        unixtime = date.getTime()/1000;
+        unixtime = date.getTime() / 1000;
         return unixtime;
     }
-    
-    
+
 }

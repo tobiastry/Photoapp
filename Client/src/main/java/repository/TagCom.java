@@ -51,11 +51,12 @@ public class TagCom {
 
     /**
      * Stores the given tag on the server
-     * @param tag
+     * @param tag (string)
+     * @param id (long)
      * @return The response code from the server.
      * @throws IOException 
      */
-    public int storeTag(String tag, int id) throws IOException {
+    public int storeTag(String tag, long id) throws IOException {
         URL url = new URL(tagUrl + "/addtag");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");

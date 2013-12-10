@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.beans.value.ChangeListener;
@@ -34,7 +35,6 @@ public class AddImageGUI extends GridPane {
 
     private AddImageLogic logic = new AddImageLogic();
     private Label statusLabel = new Label("");
-    private Label progressLabel = new Label("");
     private ProgressBar progressBar = new ProgressBar(0);
     private final TextField searchField = new TextField();
     public static boolean addingToList = false;
@@ -49,6 +49,7 @@ public class AddImageGUI extends GridPane {
     private int selectedTagIndex = 0;
     private Label gridLabel = new Label("");
     private final Button searchButton;
+    private long minTagID;
 
     public AddImageGUI() throws IOException {
 
@@ -93,13 +94,6 @@ public class AddImageGUI extends GridPane {
         progressBar.setPrefWidth(300);
         pbHBox.getChildren().add(progressBar);
         statuBox.add(pbHBox, 0, 1, 2, 1);
-
-        HBox progressLabelHbox = new HBox();
-
-        progressLabelHbox.setAlignment(Pos.CENTER_RIGHT);
-        progressLabelHbox.getChildren().add(progressLabel);
-
-        statuBox.add(progressLabelHbox, 1, 2);
 
         statuBox.setAlignment(Pos.CENTER);
 
@@ -175,43 +169,50 @@ public class AddImageGUI extends GridPane {
 
     private void addTag() {
         if (!searchField.getText().equals("")) {
-            try {
-                tagCom.storeTag(searchField.getText(), 1);
-            } catch (IOException ex) {
-                Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
+            if (!pictureList.getTags().toString().toLowerCase().contains(searchField.getText().toLowerCase())) {
+
+                searchButton.setDisable(true);
+                searchField.setDisable(true);
+
+                ProgressTask = logic.findPicturesTask(searchField.getText());
+                ProgressTask.setOnSucceeded(new EventHandler() {
+                    @Override
+                    public void handle(Event t) {
+                        displayPictures(selectedTag);
+                        updateTagButtons();
+                        setSelectedButton(tagButtons.size() - 1);
+                    }
+                });
+                progressBar.progressProperty().unbind();
+                progressBar.progressProperty().bind(ProgressTask.progressProperty());
+                ProgressTask.messageProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        if (ProgressTask.isDone() || ProgressTask.isCancelled()) {
+                            searchButton.setDisable(false);
+                            searchField.setDisable(false);
+                            try {
+                                tagCom.storeTag(searchField.getText(), minTagID);
+                            } catch (IOException ex) {
+                                Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            updateTagButtons();
+                            searchField.setText("");
+                        }
+                        if (addingToList) {
+                            if (Pattern.matches("[0-9]+", newValue)) {
+                                minTagID = Long.parseLong(newValue, 10);
+                            }
+                        } else {
+                            setStatusText(newValue);
+                        }
+                    }
+                });
+                new Thread(ProgressTask).start();
             }
-            updateTagButtons();
-
-            searchButton.setDisable(true);
-            searchField.setDisable(true);
-
-            ProgressTask = logic.findPicturesTask(searchField.getText());
-            ProgressTask.setOnSucceeded(new EventHandler() {
-                @Override
-                public void handle(Event t) {
-                    displayPictures(selectedTag);
-                    updateTagButtons();
-                    setSelectedButton(tagButtons.size() - 1);
-                }
-            });
-            progressBar.progressProperty().unbind();
-            progressBar.progressProperty().bind(ProgressTask.progressProperty());
-            ProgressTask.messageProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    if (ProgressTask.isDone() || ProgressTask.isCancelled()) {
-                        searchButton.setDisable(false);
-                        searchField.setDisable(false);
-                    }
-                    if (addingToList) {
-                        setProgressText(newValue);
-                    } else {
-                        setStatusText(newValue);
-                    }
-                }
-            });
-            new Thread(ProgressTask).start();
-            searchField.setText("");
+            else{
+               setStatusText("Du har allerde denne tag-en");
+            }
         }
     }
 
@@ -276,10 +277,6 @@ public class AddImageGUI extends GridPane {
 
     public void setStatusText(String text) {
         statusLabel.setText(text);
-    }
-
-    public void setProgressText(String text) {
-        progressLabel.setText(text);
     }
 
     public void setProgress(double progress) {

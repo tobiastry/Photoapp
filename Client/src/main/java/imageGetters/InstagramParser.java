@@ -1,8 +1,11 @@
 package imageGetters;
 
+import addImage.AddImageGUI;
 import java.io.InputStreamReader;
 import model.Picture;
 import com.google.gson.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,7 +48,6 @@ public class InstagramParser {
             } catch (NullPointerException e) {
                 return null;
             }
-
         } else {
             return null;
         }
@@ -65,9 +67,8 @@ public class InstagramParser {
                 if (min_tag_id != null) {
                     String minTagID = min_tag_id.getAsString();
                     return minTagID;
-                }
-                else{ 
-                    return "0";                
+                } else {
+                    return "0";
                 }
             } catch (NullPointerException e) {
                 return "0";

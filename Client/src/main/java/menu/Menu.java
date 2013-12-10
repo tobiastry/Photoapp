@@ -62,7 +62,8 @@ public class Menu {
         addImagePane = new AddImageGUI();
         setActivityPane(addImagePane);
 
-        scene = new Scene(root, 1280, 720, Color.TRANSPARENT);
+        //Here the default size can be changed
+        scene = new Scene(root, 1000, 720, Color.TRANSPARENT);
         scene.getStylesheets().add(Menu.class.getResource("/stylesheets/Menu.css").toExternalForm());
 
         //Toggle Fullscreen
@@ -102,10 +103,11 @@ public class Menu {
                 if (!stage.isFullScreen()) {
                     double x = event.getScreenX();
                     double y = event.getScreenY();
-                    if (x - scene.getWindow().getX() > 1280) {
+                    //Minimum size can be set here
+                    if (x - scene.getWindow().getX() > 800) {
                         scene.getWindow().setWidth(event.getScreenX() - scene.getWindow().getX());
                     }
-                    if (y - scene.getWindow().getY() > 720) {
+                    if (y - scene.getWindow().getY() > 600) {
                         scene.getWindow().setHeight(event.getScreenY() - scene.getWindow().getY());
                     }
                 }

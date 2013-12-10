@@ -28,7 +28,7 @@ public class AddImageGUI extends GridPane {
     final TextField searchField = new TextField();
     public static boolean addingToList = false;
     Task ProgressTask;
-    private int minTagID;
+    private long minTagID;
 
     public AddImageGUI() {
         setAlignment(Pos.CENTER);
@@ -59,7 +59,7 @@ public class AddImageGUI extends GridPane {
                         }
                         if (addingToList) {
                             if (Pattern.matches("[0-9]+", newValue)) {
-                                minTagID = Integer.parseInt(newValue);
+                                minTagID = Long.parseLong(newValue, 10);
                             } else {
                                 setProgressText(newValue);
                             }

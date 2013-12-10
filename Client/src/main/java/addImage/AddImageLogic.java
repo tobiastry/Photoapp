@@ -135,16 +135,16 @@ public class AddImageLogic {
      * @throws IOException
      */
     private boolean exportList() throws IOException {
-       /* StorePicturesCom store = new StorePicturesCom();
+        StorePicturesCom store = new StorePicturesCom();
         if (store.storePictures(pictureList) != 200) {
             jsonArrayList.clear();
             pictureList.clear();
             return false;
         } else {
             jsonArrayList.clear();
-            pictureList.clear();*/
+            pictureList.clear();
             return true;
-      //  }
+        }
     }
 
     /**

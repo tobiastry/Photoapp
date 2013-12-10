@@ -103,7 +103,7 @@ public class TwitterParser {
             picture.setId(id);
             String date = jsonPicture.get("created_at").getAsString();
             long unix_timestamp = strDateToUnixTimestamp(date);
-            picture.setUnixDate(unix_timestamp);
+            picture.setUnixDate(unix_timestamp + "");
         } else if (otherMedia != null) {
             otherMedia = ((JsonArray) otherMedia).get(0);
             String pictureUrl = otherMedia.getAsJsonObject().get("expanded_url").getAsString();
@@ -120,7 +120,7 @@ public class TwitterParser {
                     picture.setId(id);
                     String date = jsonPicture.get("created_at").getAsString();
                     long unix_timestamp = strDateToUnixTimestamp(date);
-                    picture.setUnixDate(unix_timestamp);
+                    picture.setUnixDate(unix_timestamp +"");
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(TwitterParser.class
                             .getName()).log(Level.SEVERE, null, ex);

@@ -73,7 +73,7 @@ public class InstagramParser {
         String id = jsonPicture.get("id").getAsString();
         picture.setId(id);
         String unixDate = jsonPicture.get("created_time").getAsString();
-        picture.setUnixDate(Long.parseLong(unixDate));
+        picture.setUnixDate(unixDate);
         return picture;
     }
 }

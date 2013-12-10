@@ -33,10 +33,9 @@ public class LoginWindow {
     private Stage stage;
     private final GridPane grid;
     private double xPos, yPos;
-    private final Slideshow slideshow;
 
-    public LoginWindow(final Slideshow slideshow) {
-        this.slideshow = slideshow;
+    public LoginWindow() {
+
         Text header = new Text("Login");
         header.setFont(Font.font("Tahoma", FontWeight.NORMAL, 50));
         header.setFill(Color.web("#0E485E"));
@@ -104,7 +103,7 @@ public class LoginWindow {
                 if (LoginLogic.checkLogin(txtBox.getText())) {
                     Menu menu;
                     try {
-                        menu = new Menu(slideshow);
+                        menu = new Menu();
                         menu.generateStage();
                     } catch (IOException ex) {
                         Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);

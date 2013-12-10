@@ -96,7 +96,7 @@ public class Slideshow extends Application {
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                LoginWindow login = new LoginWindow(getSlideshowObject());
+                LoginWindow login = new LoginWindow();
                 login.generateStage();
             }
         });
@@ -289,8 +289,6 @@ public class Slideshow extends Application {
                 double bilderVist = timeStamp / (delay + fadeTime);
                 String[] split = newValue.split(" ");
                 int numberOfImagesGenerated = Integer.parseInt(split[3]);
-              //  if(split.length == 5){
-               // }
                 if (numberOfImagesGenerated > bilderVist || split.length == 5) {
                     initiateNewSlideshow();
                 }

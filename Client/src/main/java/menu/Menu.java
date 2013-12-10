@@ -36,13 +36,11 @@ public class Menu {
     //Keeps the panes for different activities
     private AddImageGUI addImagePane;
     private RemoveImageGUI removeImagePane;
-    private Slideshow slideshow;
     private static PictureList pictureList;
 
-    public Menu(Slideshow slideshow) throws IOException {
+    public Menu() throws IOException {
         pictureList = new PictureList();
         
-        this.slideshow = slideshow;
         buttons = new ArrayList<>();
         makeButtons();
 
@@ -140,7 +138,6 @@ public class Menu {
         btnExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                slideshow.initiateRetrieveImagesThread();
                 stage.close();
             }
         });

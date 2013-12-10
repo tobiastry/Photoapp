@@ -48,6 +48,7 @@ public class Slideshow extends Application {
     private Task retrieveImagesTask, checkDelayTask, pictureTimerTask;
     private Thread retrieveImagesThread, checkDelayThread, updatePictureTimerThread;
     private boolean startup = true;
+    private boolean startOfSlide = true;
     private Button quit, menu;
     private HBox box;
     private double delayDiffFactor = 1.0;
@@ -72,6 +73,25 @@ public class Slideshow extends Application {
 
         delay = imageTrans.getDelay();
 
+        /*
+        * Initiate picture while loading
+        */
+        if (startOfSlide){
+            ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
+            root.getChildren().add(loadImage);
+            SequentialTransition loadImageTransition = imageTrans.getLoadingScreenTransition(loadImage);
+            loadImageTransition.setOnFinished(new EventHandler<ActionEvent>(){
+                @Override            
+                public void handle(ActionEvent arg0) {
+                    startOfSlide = false;
+                }
+            });
+            slideshow.getChildren().add(imageTrans.getLoadingScreenTransition(loadImage));
+            
+        }        
+        /*
+        */
+        
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
         initiateUpdatePictureTimerThread();
@@ -201,15 +221,6 @@ public class Slideshow extends Application {
 
         root.getChildren().add(box);
 
-        /*
-        * Initiate picture while loading
-        */
-        ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
-        root.getChildren().add(loadImage);
-        slideshow.getChildren().add(imageTrans.getLoadingScreenTransition(loadImage));
-        /*
-        */
-        
         for (int i = 0; i < imageList.size(); i++) {
             imageList.get(i).setOpacity(0);
             root.getChildren().add(imageList.get(i));

@@ -31,7 +31,7 @@ public class TagComTest {
     public void testStoreTag() throws Exception {
         System.out.println("storeTag");
         int expResult = 200;
-        int result = instance.storeTag("Taggg1");
+        int result = instance.storeTag("Taggg1", 500);
         assertEquals(expResult, result);
         instance.removeTag(tags);
     }
@@ -42,7 +42,7 @@ public class TagComTest {
     @Test
     public void testGetTags() throws Exception {
         System.out.println("getTags");
-        instance.storeTag("Taggg1");
+        instance.storeTag("Taggg1", 500);
         ArrayList<String> result = instance.getTags();
         assertEquals(tags.get(0), result.get(result.size() -1));
         instance.removeTag(tags);
@@ -54,7 +54,7 @@ public class TagComTest {
     @Test
     public void testRemoveTag() throws Exception {
         System.out.println("removeTag");
-        instance.storeTag("Taggg1");
+        instance.storeTag("Taggg1", 500);
         instance.removeTag(tags);
         ArrayList<String> result = instance.getTags();
         boolean b = false;

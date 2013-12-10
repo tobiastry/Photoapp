@@ -69,5 +69,9 @@ public class Picture {
     public void setUnixDate(String unixDate) {
         this.unixDate = unixDate;
     }
+    
+    public boolean equals(Picture pic){
+        return pic.getLargeUrl().equals(this.getLargeUrl());
+    }
 
 }

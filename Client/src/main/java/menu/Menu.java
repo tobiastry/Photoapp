@@ -32,7 +32,8 @@ public class Menu {
     private double xPos, yPos;
     private Pane resize;
     //Keeps the panes for different activities
-    private Pane addImagePane, removeImagePane;
+    private AddImageGUI addImagePane;
+    private RemoveImageGUI removeImagePane;
     private Slideshow slideshow;
 
     public Menu(Slideshow slideshow) {
@@ -156,6 +157,7 @@ public class Menu {
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                removeImagePane.update();
                 setActivityPane(removeImagePane);
             }
         });

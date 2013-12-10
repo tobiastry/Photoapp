@@ -33,3 +33,8 @@
 .button:pressed{
     -fx-background-color:#090a0c;
 }
+
+.checkBox{
+    -fx-text-fill:
+        white;
+}

@@ -20,6 +20,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +51,7 @@ public class Slideshow extends Application {
     private Thread retrieveImagesThread, checkDelayThread, updatePictureTimerThread;
     private boolean startup = true;
     private Button quit, menu;
+    private CheckBox resetChk;
     private HBox box;
     private double delayDiffFactor = 1.0;
     private int delay;
@@ -85,6 +87,8 @@ public class Slideshow extends Application {
         initiateCheckDelayThread();
         initiateUpdatePictureTimerThread();
 
+        resetChk = new CheckBox("Restart slideshow if new images are added!");
+        
         menu = new Button();
         menu.setText("Admin Menu");
         menu.setMaxSize(200, 100);               
@@ -110,16 +114,20 @@ public class Slideshow extends Application {
         box.setPadding(new Insets(10, 10, 10, 10));
         box.setAlignment(Pos.BOTTOM_CENTER);
         
-
         box.setStyle("../stylesheets/Menu.css");
         
+        // Layout of buttons and checkbox related to window
         AnchorPane anchorpane = new AnchorPane();
-        anchorpane.setLeftAnchor(quit, 400.0);
+        anchorpane.setLeftAnchor(quit, 300.0);
         anchorpane.setBottomAnchor(quit, 30.0);
-        anchorpane.setRightAnchor(menu, 400.0);
+        anchorpane.setRightAnchor(menu, 300.0);
         anchorpane.setBottomAnchor(menu, 30.0);
-        anchorpane.getChildren().addAll(quit, menu);
+        anchorpane.setBottomAnchor(resetChk, 10.0);
+        anchorpane.setRightAnchor(resetChk, 20.0);
+        anchorpane.setLeftAnchor(resetChk, 100.0);
+        anchorpane.getChildren().addAll(quit, menu, resetChk);
         box.getChildren().add(anchorpane);
+        
         /*
          * Listener on mouse movement for buttons
          */
@@ -300,6 +308,13 @@ public class Slideshow extends Application {
 
     public Slideshow getSlideshowObject() {
         return this;
+    }
+    /*
+     * Checks if checkbox is selected, and returns true or false
+     * 
+     */
+    public boolean checkRestartOnNewImages(){
+        return resetChk.isSelected();
     }
 
     /*

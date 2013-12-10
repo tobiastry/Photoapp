@@ -9,7 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -214,7 +213,6 @@ public class AddImageGUI extends GridPane {
         thumbnails.addAll(pictureList.getThumbnails(tag));
         gridLabel.setText(thumbnails.size() + " bilder med " + selectedTag + " tag:");
         grid.getChildren().addAll(thumbnails);
-
 
         for (Thumbnail t : thumbnails) {
             t.loadImage();

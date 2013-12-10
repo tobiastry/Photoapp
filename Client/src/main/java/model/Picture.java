@@ -1,18 +1,31 @@
 package model;
 
-
 public class Picture {
 
-	private String thumbUrl;
-	private String largeUrl;
-        private String tag;
-        private String id;
-        private String unixDate;
-        
-        public Picture (String url, String thumb){
-            this.largeUrl = url;
-            this.thumbUrl = thumb;
-        }
+    private String thumbUrl;
+    private String largeUrl;
+    private String tag;
+    private String id;
+    private String unixDate;
+
+    public Picture(String url, String thumb) {
+        this.largeUrl = url;
+        this.thumbUrl = thumb;
+    }
+
+    /** 
+     * @param thumbUrl the thumbUrl to set
+     */
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    /**
+     * @param largeUrl the largeUrl to set
+     */
+    public void setLargeUrl(String largeUrl) {
+        this.largeUrl = largeUrl;
+    }
 
     /**
      * @return the thumbUrl
@@ -55,8 +68,8 @@ public class Picture {
     public void setId(String id) {
         this.id = id;
     }
-    
-     /**
+
+    /**
      * @return the unixDate
      */
     public String getUnixDate() {
@@ -68,6 +81,10 @@ public class Picture {
      */
     public void setUnixDate(String unixDate) {
         this.unixDate = unixDate;
+    }
+    
+    public boolean equals(Picture pic){
+        return pic.getLargeUrl().equals(this.getLargeUrl());
     }
 
 }

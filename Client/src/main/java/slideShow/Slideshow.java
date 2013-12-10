@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -72,13 +73,21 @@ public class Slideshow extends Application {
 
         delay = imageTrans.getDelay();
 
+        /*
+        * Initiate picture while loading
+        */
+        ImageView loadImage = new ImageView (new Image("/images/loading_screen.png"));
+        root.getChildren().add(loadImage);      
+        /*
+        */
+        
         initiateRetrieveImagesThread();
         initiateCheckDelayThread();
         initiateUpdatePictureTimerThread();
 
         menu = new Button();
         menu.setText("Admin Menu");
-        menu.setMaxSize(200, 50);
+        menu.setMaxSize(200, 100);               
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -89,7 +98,7 @@ public class Slideshow extends Application {
 
         quit = new Button();
         quit.setText("Quit Slideshow");
-        quit.setMaxSize(200, 50);
+        quit.setMaxSize(200, 100);
         quit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -97,14 +106,20 @@ public class Slideshow extends Application {
             }
         });
 
-        box = new HBox(1000);
-        box.setPadding(new Insets(15, 15, 15, 15));
+        box = new HBox();
+        box.setPadding(new Insets(10, 10, 10, 10));
         box.setAlignment(Pos.BOTTOM_CENTER);
-        box.getChildren().add(quit);
-        box.getChildren().add(menu);
+        
 
         box.setStyle("../stylesheets/Menu.css");
-
+        
+        AnchorPane anchorpane = new AnchorPane();
+        anchorpane.setLeftAnchor(quit, 400.0);
+        anchorpane.setBottomAnchor(quit, 30.0);
+        anchorpane.setRightAnchor(menu, 400.0);
+        anchorpane.setBottomAnchor(menu, 30.0);
+        anchorpane.getChildren().addAll(quit, menu);
+        box.getChildren().add(anchorpane);
         /*
          * Listener on mouse movement for buttons
          */

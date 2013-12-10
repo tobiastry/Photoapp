@@ -70,6 +70,10 @@ public class InstagramGetter {
     public String getNextUrl() {
         return parser.getNextUrl();
     }
+    
+    public String getMinID() {
+        return parser.getMinID();
+    }
 
     public Picture addToList(JsonElement j) {
         Picture picture = parser.addToList(j);

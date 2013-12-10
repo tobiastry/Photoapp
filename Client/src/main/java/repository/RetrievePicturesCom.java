@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import model.Picture;
@@ -16,7 +17,8 @@ import model.Picture;
  */
 public class RetrievePicturesCom {
 
-    private String request = GlobalVariables.baseUrl+"picture/getpictures";
+    private String request = GlobalVariables.baseUrl + "picture/getpictures";
+
     /**
      * Retrieves a list of Pictures from the Server
      *
@@ -36,21 +38,11 @@ public class RetrievePicturesCom {
         int respons = connection.getResponseCode();
 
         if (respons == 200) {
-            JsonParser parser = new JsonParser();
-
-            JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
-
-            for (JsonElement j : imageUrlArray) {
-                Picture picture = new Picture(
-                        j.getAsJsonObject().get("url").getAsString(),
-                        j.getAsJsonObject().get("thumburl").getAsString());
-                picture.setTag(j.getAsJsonObject().get("tag").getAsString());
-                imageList.add(picture);
-            }
+            imageList = parsePictures(reader);
         }
         return imageList;
     }
-    
+
     public ArrayList<Picture> getImageListByTag(String tag) throws IOException {
         ArrayList<Picture> imageList = new ArrayList();
 
@@ -64,17 +56,42 @@ public class RetrievePicturesCom {
         int respons = connection.getResponseCode();
 
         if (respons == 200) {
-            JsonParser parser = new JsonParser();
+            imageList = parsePictures(reader);
+        }
+        return imageList;
+    }
 
-            JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
+    private ArrayList<Picture> parsePictures(InputStreamReader reader) throws MalformedURLException, IOException {
+        ExpandUrl expandUrl = new ExpandUrl();
+        DeletePicturesCom deletePictures = new DeletePicturesCom();
+        StorePicturesCom storePictures = new StorePicturesCom();
 
-            for (JsonElement j : imageUrlArray) {
-                Picture picture = new Picture(
-                        j.getAsJsonObject().get("url").getAsString(),
-                        j.getAsJsonObject().get("thumburl").getAsString());
-                picture.setTag(j.getAsJsonObject().get("tag").getAsString());
-                imageList.add(picture);
+        ArrayList<Picture> imageList = new ArrayList();
+        ArrayList<Picture> forDeletion = new ArrayList();
+        ArrayList<Picture> forStorage = new ArrayList();
+
+        JsonParser parser = new JsonParser();
+        JsonArray imageUrlArray = parser.parse(reader).getAsJsonArray();
+
+        for (JsonElement j : imageUrlArray) {
+            String largeUrl = j.getAsJsonObject().get("url").getAsString();
+            String thumbUrl = j.getAsJsonObject().get("thumburl").getAsString();
+            Picture picture = new Picture(
+                    largeUrl,
+                    thumbUrl);
+            picture.setTag(j.getAsJsonObject().get("tag").getAsString());
+            picture.setUnixDate(j.getAsJsonObject().get("date").getAsString());
+            if (picture.getLargeUrl().contains("twitpic")) {
+                forDeletion.add(picture);
+                picture.setLargeUrl(expandUrl.expand(largeUrl));
+                picture.setThumbUrl(expandUrl.expand(thumbUrl));
+                forStorage.add(picture);
             }
+            imageList.add(picture);
+        }
+        if (!forDeletion.isEmpty() && !forStorage.isEmpty()) {
+            deletePictures.deletePictures(forDeletion);
+            storePictures.storePictures(forStorage);
         }
         return imageList;
     }

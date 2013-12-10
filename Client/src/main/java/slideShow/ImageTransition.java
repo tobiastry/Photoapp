@@ -44,7 +44,7 @@ public class ImageTransition {
        */
     public static SequentialTransition getLoadingScreenTransition(ImageView imageView) {
         SequentialTransition fullTransition = new SequentialTransition();
-        fullTransition.getChildren().addAll(getTransitionStart(imageView), new PauseTransition(Duration.millis(5000)), getTransitionStop(imageView));
+        fullTransition.getChildren().addAll(getTransitionStart(imageView), new PauseTransition(Duration.millis(20000)), getTransitionStop(imageView));
         return fullTransition;
     }
     /**

@@ -76,7 +76,7 @@ public class Slideshow extends Application {
         /*
         * Initiate picture while loading
         */
-        ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
+        ImageView loadImage = new ImageView (new Image("/images/loading_screen.png"));
         root.getChildren().add(loadImage);      
         /*
         */

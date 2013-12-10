@@ -80,11 +80,11 @@ public class RetrievePicturesCom {
                     largeUrl,
                     thumbUrl);
             picture.setTag(j.getAsJsonObject().get("tag").getAsString());
+            picture.setUnixDate(Long.parseLong(j.getAsJsonObject().get("date").getAsString()));
             if (picture.getLargeUrl().contains("twitpic")) {
                 forDeletion.add(picture);
                 picture.setLargeUrl(expandUrl.expand(largeUrl));
                 picture.setThumbUrl(expandUrl.expand(thumbUrl));
-                picture.setUnixDate(j.getAsJsonObject().get("date").getAsString());
                 forStorage.add(picture);
             }
             imageList.add(picture);

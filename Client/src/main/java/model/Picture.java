@@ -6,7 +6,7 @@ public class Picture {
     private String largeUrl;
     private String tag;
     private String id;
-    private String unixDate;
+    private long unixDate;
 
     public Picture(String url, String thumb) {
         this.largeUrl = url;
@@ -72,14 +72,14 @@ public class Picture {
     /**
      * @return the unixDate
      */
-    public String getUnixDate() {
+    public long getUnixDate() {
         return unixDate;
     }
 
     /**
      * @param unixDate the unixDate to set
      */
-    public void setUnixDate(String unixDate) {
+    public void setUnixDate(long unixDate) {
         this.unixDate = unixDate;
     }
     

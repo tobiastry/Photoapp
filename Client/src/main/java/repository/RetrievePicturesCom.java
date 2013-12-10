@@ -84,6 +84,7 @@ public class RetrievePicturesCom {
                 forDeletion.add(picture);
                 picture.setLargeUrl(expandUrl.expand(largeUrl));
                 picture.setThumbUrl(expandUrl.expand(thumbUrl));
+                picture.setUnixDate(j.getAsJsonObject().get("date").getAsString());
                 forStorage.add(picture);
             }
             imageList.add(picture);

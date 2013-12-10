@@ -54,29 +54,6 @@ public class ImageTransitionTest {
     @Test
     public void test6() 
     {
-        assertTrue(ImageTransition.getTransitionStop(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
-    }
-        @Test
-    public void test7()
-    {
-        assertTrue(ImageTransition.getLoadingScreenTransition(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof SequentialTransition);
-    }
-    
-    @Test
-    public void test8()
-    {
-        ImageTransition trans = new ImageTransition();
-        Image image = new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg");
-        ImageView imageview = new ImageView(image);
-        assertNotSame(trans.getLoadingScreenTransition(imageview), ImageTransition.getLoadingScreenTransition(imageview));
-    }
-    
-    @Test
-    public void test9()
-    {
-        ImageTransition trans = new ImageTransition();
-        Image image = new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg");
-        ImageView imageview = new ImageView(image);
-        assertNotSame(trans.getFullTransition(imageview), new SequentialTransition(ImageTransition.getTransitionStart(imageview), ImageTransition.getTransitionPause(), ImageTransition.getTransitionStop(imageview)));
+        assertTrue(ImageTransition.GetTransitionStop(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
     }
 }

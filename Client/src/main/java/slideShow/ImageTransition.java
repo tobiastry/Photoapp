@@ -31,22 +31,10 @@ public class ImageTransition {
      */
     public SequentialTransition getFullTransition(ImageView imageView) {
         SequentialTransition fullTransition = new SequentialTransition();
-        fullTransition.getChildren().addAll(getTransitionStart(imageView), getTransitionPause(), getTransitionStop(imageView));
+        fullTransition.getChildren().addAll(getTransitionStart(imageView), getTransitionPause(), GetTransitionStop(imageView));
         return fullTransition;
     }
-    
-        /**
-       * Combines fades in, fade out and pause to create an individual transition
-       * for loading screen where pause time is not dependent on server
-       * configuration
-       * @param imageView
-       * @return
-       */
-    public static SequentialTransition getLoadingScreenTransition(ImageView imageView) {
-        SequentialTransition fullTransition = new SequentialTransition();
-        fullTransition.getChildren().addAll(getTransitionStart(imageView), new PauseTransition(Duration.millis(5000)), getTransitionStop(imageView));
-        return fullTransition;
-    }
+
     /**
      *
      * @return
@@ -63,21 +51,21 @@ public class ImageTransition {
      * @return FadeTransition for the fade in of images
      */
     public static FadeTransition getTransitionStart(ImageView imageView) {
-        FadeTransition transitionStart = new FadeTransition(Duration.millis(fadeTime), imageView);
-        transitionStart.setFromValue(0);
-        transitionStart.setToValue(1);
-        return transitionStart;
+        FadeTransition TransitionStart = new FadeTransition(Duration.millis(fadeTime), imageView);
+        TransitionStart.setFromValue(0);
+        TransitionStart.setToValue(1);
+        return TransitionStart;
     }
     /**
      * Fade out, with fade time from fadeTime
      * @param imageView
      * @return FadeTransition for the fade out of images
      */
-    public static FadeTransition getTransitionStop(ImageView imageView) {
-        FadeTransition transitionStop = new FadeTransition(Duration.millis(fadeTime), imageView);
-        transitionStop.setFromValue(1);
-        transitionStop.setToValue(0);
-        return transitionStop;
+    public static FadeTransition GetTransitionStop(ImageView imageView) {
+        FadeTransition TransitionStop = new FadeTransition(Duration.millis(fadeTime), imageView);
+        TransitionStop.setFromValue(1);
+        TransitionStop.setToValue(0);
+        return TransitionStop;
     }
     //
     /**

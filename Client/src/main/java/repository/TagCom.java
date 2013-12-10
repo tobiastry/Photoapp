@@ -55,7 +55,7 @@ public class TagCom {
      * @return The response code from the server.
      * @throws IOException 
      */
-    public int storeTag(String tag) throws IOException {
+    public int storeTag(String tag, int id) throws IOException {
         URL url = new URL(tagUrl + "/addtag");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -66,7 +66,7 @@ public class TagCom {
 
         DataOutputStream outStream;
         outStream = new DataOutputStream(connection.getOutputStream());
-        outStream.writeBytes("{\"name\": "+"\""+ tag +"\"}");
+        outStream.writeBytes("{\"name\": "+"\""+ tag +"\",\"min_id\": "+ id +"}");
         outStream.flush();
         outStream.close();
         
@@ -101,7 +101,6 @@ public class TagCom {
                  body = body+" {\"name\": "+"\""+tags.get(i)+"\"";
         }
         body = body+"}]";
-        System.out.println(body);
         outStream.writeBytes(body);
         outStream.flush();
         outStream.close();

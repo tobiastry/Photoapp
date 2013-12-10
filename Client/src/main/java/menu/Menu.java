@@ -1,6 +1,7 @@
 package menu;
 
 import addImage.AddImageGUI;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.PictureList;
 import removeImage.RemoveImageGUI;
 import slideShow.Slideshow;
 
@@ -34,8 +36,11 @@ public class Menu {
     //Keeps the panes for different activities
     private Pane addImagePane, removeImagePane;
     private Slideshow slideshow;
+    private static PictureList pictureList;
 
-    public Menu(Slideshow slideshow) {
+    public Menu(Slideshow slideshow) throws IOException {
+        pictureList = new PictureList();
+        
         this.slideshow = slideshow;
         buttons = new ArrayList<>();
         makeButtons();
@@ -145,7 +150,7 @@ public class Menu {
 
     //The buttons for different activities
     private void makeButtons() {
-        Button btnSearch = new Button("Hente Bilder");
+        Button btnSearch = new Button("Behandle Tags");
         btnSearch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -189,4 +194,9 @@ public class Menu {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
     }
+
+    public static PictureList getPictureList() {
+        return pictureList;
+    }
+    
 }

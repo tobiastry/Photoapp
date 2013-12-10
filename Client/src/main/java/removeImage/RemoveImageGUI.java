@@ -24,7 +24,7 @@ import repository.DeletePicturesCom;
  */
 public class RemoveImageGUI extends GridPane {
 
-    private final ArrayList<Thumbnail> thumbnails;
+    private final ArrayList<SelectableThumbnail> thumbnails;
     private final ThumbnailLoader pl;
     private final static int imagePerPane = 24;
     private int thumbIndex = 0, maxImages = 0, rem = 0;
@@ -66,7 +66,7 @@ public class RemoveImageGUI extends GridPane {
         mark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (Thumbnail thumbnail : thumbnails) {
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     thumbnail.setSelected(true);
                 }
             }
@@ -74,7 +74,7 @@ public class RemoveImageGUI extends GridPane {
         unmark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (Thumbnail thumbnail : thumbnails) {
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     thumbnail.setSelected(false);
                 }
             }
@@ -88,8 +88,8 @@ public class RemoveImageGUI extends GridPane {
                 } catch (IOException ex) {
                     Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                ArrayList<Thumbnail> selected = new ArrayList();
-                for (Thumbnail thumbnail : thumbnails) {
+                ArrayList<SelectableThumbnail> selected = new ArrayList();
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     if (thumbnail.isSelected()) {
                         selected.add(thumbnail);
                     }
@@ -150,7 +150,7 @@ public class RemoveImageGUI extends GridPane {
         setHalignment(delete, HPos.RIGHT);
         add(delete, 2, 2);
 
-        pl = new ThumbnailLoader(thumbnails);
+        pl = new ThumbnailLoader();
 
         maxImages = pl.imageListSize();
 
@@ -159,7 +159,7 @@ public class RemoveImageGUI extends GridPane {
         }
         //temp
         for (int i = 0; i < maxImages; i++) {
-            Thumbnail tn = new Thumbnail();
+            SelectableThumbnail tn = new SelectableThumbnail();
             thumbnails.add(tn);
         }
 

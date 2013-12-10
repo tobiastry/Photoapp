@@ -9,17 +9,17 @@ import model.Picture;
  */
 public class SelectedThumbnailLister {
 
-    private ArrayList<Thumbnail> thumbnails;
+    private ArrayList<SelectableThumbnail> thumbnails;
     private ArrayList<Picture> images;
     
-    public SelectedThumbnailLister(ArrayList<Thumbnail> thumbnails) {
+    public SelectedThumbnailLister(ArrayList<SelectableThumbnail> thumbnails) {
         this.thumbnails = thumbnails;
         images = new ArrayList();
     }
     
     public ArrayList<Picture> ListSelectedThumbnails(){
         images.clear();
-        for (Thumbnail thumbnail : thumbnails) {
+        for (SelectableThumbnail thumbnail : thumbnails) {
             if(thumbnail.isSelected()){
                 images.add(thumbnail.getPicture());
             }

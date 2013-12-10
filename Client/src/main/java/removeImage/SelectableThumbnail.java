@@ -72,12 +72,18 @@ public class SelectableThumbnail extends StackPane {
      *
      * @param pic
      */
-    public void loadImage(/*Picture picture*/) {
-        //this.setPicture(picture);
+    public void loadImage() {
         if (!loaded) {
-            image = new Image(picture.getThumbUrl());
-            imageView.setImage(image);
-            loaded = true;
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    image = new Image(picture.getThumbUrl());
+                    imageView.setImage(image);
+                    loaded = true;
+                }
+            }).start();
+
         }
     }
 

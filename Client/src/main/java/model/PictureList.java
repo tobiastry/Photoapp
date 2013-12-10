@@ -17,7 +17,7 @@ import repository.TagCom;
  */
 public class PictureList extends ArrayList<Picture> {
 
-    private ArrayList<String> tags = new ArrayList(), loadedUrls = new ArrayList();
+    private ArrayList<String> tags = new ArrayList();
     private Map<Picture, Thumbnail> thumbnails = new HashMap<>();
     private RetrievePicturesCom retriver;
     private TagCom tagCom;

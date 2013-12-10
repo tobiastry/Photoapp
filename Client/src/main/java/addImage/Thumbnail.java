@@ -34,11 +34,14 @@ public class Thumbnail extends StackPane {
      */
     public void loadImage(/*Picture picture*/) {
         //this.setPicture(picture);
-        if (!loaded) {
-            image = new Image(picture.getThumbUrl());
-            imageView.setImage(image);
-            loaded = true;
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                image = new Image(picture.getThumbUrl());
+                imageView.setImage(image);
+                loaded = true;
+            }
+        }).start();
     }
 
     /**

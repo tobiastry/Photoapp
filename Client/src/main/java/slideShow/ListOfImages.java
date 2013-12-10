@@ -76,7 +76,7 @@ public class ListOfImages {
                         }
                     } catch (Exception e) {
                         //If path is wrong, it returns image below
-                        imageViewList.add(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg")));
+                        imageViewList.add(new ImageView(new Image("/images/imageNotFound.jpg")));
                     }
                 }
                 updateMessage("Generate new slideshow " + newImageList.size() + " SISTE");

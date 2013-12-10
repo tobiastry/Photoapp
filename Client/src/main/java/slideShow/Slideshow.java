@@ -75,17 +75,8 @@ public class Slideshow extends Application {
         /*
         * Initiate picture while loading
         */
-        ImageView loadImage = new ImageView (new Image("file:/c:/Temp/LoadingImage.jpg"));
-        root.getChildren().add(loadImage);
-        SequentialTransition loadImageTransition = imageTrans.getLoadingScreenTransition(loadImage);
-        loadImageTransition.setOnFinished(new EventHandler<ActionEvent>(){
-            @Override            
-            public void handle(ActionEvent arg0) {
-                        ImageView couldNotConnectImage = new ImageView (new Image("file:/c:/Temp/ErrorNoInternet.jpg"));
-                        root.getChildren().add(couldNotConnectImage);
-            }
-        });
-        slideshow.getChildren().add(loadImageTransition);       
+        ImageView loadImage = new ImageView (new Image("file:/c:/Temp/loading_screen.png"));
+        root.getChildren().add(loadImage);      
         /*
         */
         
@@ -95,7 +86,7 @@ public class Slideshow extends Application {
 
         menu = new Button();
         menu.setText("Admin Menu");
-        menu.setMaxSize(200, 50);
+        menu.setMaxSize(200, 50);               
         menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {

@@ -54,6 +54,6 @@ public class ImageTransitionTest {
     @Test
     public void test6() 
     {
-        assertTrue(ImageTransition.GetTransitionStop(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
+        assertTrue(ImageTransition.getTransitionStop(new ImageView(new Image("http://cdn.panasonic.com/images/imageNotFound400.jpg"))) instanceof FadeTransition);
     }
 }

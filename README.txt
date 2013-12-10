@@ -1,2 +1,3 @@
 Dette er en github for semesterprosjektet i DAT210 Programutvikling.
-MÂlet for prosjektet er Â lage en photoapp.
+M√•let for prosjektet er √• lage en photoapp.
+API Docs og Continous Integration finner du p√• http://pensolut.net.

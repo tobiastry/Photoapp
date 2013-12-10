@@ -53,6 +53,7 @@ public class AddImageLogic {
         if (instaUrl == null || twitterUrl == null) {
             failedMsg = "Ugyldig tag";
         }
+
         instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaUrl), "Instagram");
         twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl), "Twitter");
         minTagID = instaGetter.getMinID();
@@ -207,7 +208,6 @@ public class AddImageLogic {
             protected void succeeded() {
                 super.succeeded();
                 updateMessage("-Ferdig-");
-
             }
 
             @Override
@@ -235,6 +235,7 @@ public class AddImageLogic {
                 updateMessage("");
                 updateProgress(0, 0);
             }
+            
         };
     }
 }

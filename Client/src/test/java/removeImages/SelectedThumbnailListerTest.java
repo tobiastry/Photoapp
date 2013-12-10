@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Picture;
 import org.junit.Test;
 import removeImage.SelectedThumbnailLister;
-import removeImage.Thumbnail;
+import removeImage.SelectableThumbnail;
 import static org.junit.Assert.*;
 
 /**
@@ -20,9 +20,9 @@ public class SelectedThumbnailListerTest {
     @Test
     public void TestListing() {
         System.out.println("Testing listing of selected thumbnails");
-        ArrayList<Thumbnail> thumbnails = new ArrayList<>();
+        ArrayList<SelectableThumbnail> thumbnails = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Thumbnail tn = new Thumbnail();
+            SelectableThumbnail tn = new SelectableThumbnail();
             Picture pic = new Picture(i + "" + i + "" + i, i + "" + i + "" + i);
             tn.setPicture(pic);
             thumbnails.add(tn);

@@ -101,7 +101,6 @@ public class TagCom {
                  body = body+" {\"name\": "+"\""+tags.get(i)+"\"";
         }
         body = body+"}]";
-        System.out.println(body);
         outStream.writeBytes(body);
         outStream.flush();
         outStream.close();

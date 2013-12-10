@@ -26,7 +26,7 @@ import repository.RetrievePicturesCom;
  */
 public class RemoveImageGUI extends GridPane {
 
-    private final ArrayList<Thumbnail> thumbnails;
+    private final ArrayList<SelectableThumbnail> thumbnails;
     private ArrayList<Picture> images;
     private RetrievePicturesCom com;
     private FlowPane grid;
@@ -68,7 +68,7 @@ public class RemoveImageGUI extends GridPane {
         mark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (Thumbnail thumbnail : thumbnails) {
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     thumbnail.setSelected(true);
                 }
             }
@@ -76,7 +76,7 @@ public class RemoveImageGUI extends GridPane {
         unmark.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                for (Thumbnail thumbnail : thumbnails) {
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     thumbnail.setSelected(false);
                 }
             }
@@ -90,13 +90,13 @@ public class RemoveImageGUI extends GridPane {
                 } catch (IOException ex) {
                     Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                ArrayList<Thumbnail> selected = new ArrayList();
-                for (Thumbnail thumbnail : thumbnails) {
+                ArrayList<SelectableThumbnail> selected = new ArrayList();
+                for (SelectableThumbnail thumbnail : thumbnails) {
                     if (thumbnail.isSelected()) {
                         selected.add(thumbnail);
                     }
                 }
-                for (Thumbnail thumb : selected) {
+                for (SelectableThumbnail thumb : selected) {
                     images.remove(thumb.getPicture());
                 }
                 thumbnails.removeAll(selected);
@@ -113,7 +113,7 @@ public class RemoveImageGUI extends GridPane {
         add(delete, 2, 2);
 
         for (int i = 0; i < images.size(); i++) {
-            Thumbnail tn = new Thumbnail();
+            SelectableThumbnail tn = new SelectableThumbnail();
             tn.setPicture(images.get(i));
             thumbnails.add(tn);
         }
@@ -126,7 +126,7 @@ public class RemoveImageGUI extends GridPane {
     private void updateGrid() {
         grid.getChildren().clear();
         grid.getChildren().addAll(thumbnails);
-        for (Thumbnail thumb : thumbnails) {
+        for (SelectableThumbnail thumb : thumbnails) {
             thumb.loadImage();
         }
     }
@@ -154,7 +154,7 @@ public class RemoveImageGUI extends GridPane {
                 images = newPics;
                 thumbnails.clear();
                 for (int i = 0; i < images.size(); i++) {
-                    Thumbnail tn = new Thumbnail();
+                    SelectableThumbnail tn = new SelectableThumbnail();
                     tn.setPicture(images.get(i));
                     thumbnails.add(tn);
                 }

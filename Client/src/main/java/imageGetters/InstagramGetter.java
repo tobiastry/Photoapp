@@ -10,6 +10,8 @@ import model.Picture;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.net.MalformedURLException;
 import javax.net.ssl.HttpsURLConnection;
 
@@ -19,8 +21,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class InstagramGetter {
 
-    private InstagramParser parser;
     private JsonArray jsonPictures;
+    private JsonObject obj;
     
     /**
      * Takes a tag and makes a valid URL out of it.
@@ -51,8 +53,7 @@ public class InstagramGetter {
             connection.setRequestMethod("GET");
             connection.connect();
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-            parser = new InstagramParser();
-            jsonPictures = parser.parse(reader);
+            jsonPictures = jsonParse(reader);
 
             if (jsonPictures != null) {
                 return jsonPictures;
@@ -66,13 +67,37 @@ public class InstagramGetter {
         }
         return null;
     }
-
-    public String getNextUrl() {
-        return parser.getNextUrl();
+    
+    /**
+     * Finds the location of the pictures in the InputStreamReader, returns them
+     * as a JsonArray.
+     *
+     * @param reader (InputStreamReader)
+     * @return jsonPictures (JsonArray)
+     */
+    public JsonArray jsonParse(InputStreamReader reader) {
+        JsonParser parser = new JsonParser();
+        obj = parser.parse(reader).getAsJsonObject();
+        jsonPictures = obj.get("data").getAsJsonArray();
+        return jsonPictures;
     }
-
-    public Picture addToList(JsonElement j) {
-        Picture picture = parser.addToList(j);
-        return picture;
+   
+    /**
+     * Finds the next url in the InputStreamReader and returns it as a string.
+     *
+     * @return next_url (String)
+     */
+    public String getNextUrl() {
+        JsonElement next_url = obj.get("pagination");
+        if (next_url != null) {           
+                String url = next_url.getAsJsonObject().get("next_url").getAsString();
+                if (url != null) {
+                    return url;
+                } else {
+                    return null;
+                }           
+        } else {
+            return null;
+        }
     }
 }

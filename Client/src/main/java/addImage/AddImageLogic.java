@@ -22,6 +22,7 @@ public class AddImageLogic {
     private ArrayList<Picture> pictureList = new ArrayList<>();
     private List<JsonArray> jsonArrayList = new ArrayList<>();
     private InstagramGetter instaGetter = null;
+    private InstagramParser instaParser = null;
     private TwitterGetter twitterGetter = null;
     public String failedMsg = "Fant ingen bilder";
     private String tag = null;
@@ -42,6 +43,7 @@ public class AddImageLogic {
      */
     private int getPictures(String tag) throws IOException {
         instaGetter = new InstagramGetter();
+        instaParser = new InstagramParser();
         twitterGetter = new TwitterGetter();
         String instaUrl = instaGetter.toUrl(tag);
         String twitterUrl = twitterGetter.toUrl(tag);
@@ -108,8 +110,9 @@ public class AddImageLogic {
     private void addPictureToList(JsonElement j, String source) {
         switch (source) {
             case "Instagram": {
-                Picture picture = instaGetter.addToList(j);
+                Picture picture = instaParser.addToList(j);
                 picture.setTag(tag);
+                System.out.println(picture.getLargeUrl());
                 pictureList.add(picture);
                 break;
             }

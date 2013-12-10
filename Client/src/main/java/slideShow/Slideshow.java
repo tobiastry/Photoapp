@@ -59,6 +59,7 @@ public class Slideshow extends Application {
     private double yPos, xPos;
     private FadeTransition fadeOut = null;
     private Timeline timeline = null;
+    private boolean isAddingImages = false;
 
     @Override
     public void start(Stage stage1) throws Exception {
@@ -229,10 +230,14 @@ public class Slideshow extends Application {
             root.getChildren().add(imageList.get(i));
             slideshow.getChildren().add(imageTrans.getFullTransition(imageList.get(i)));
         }
-
         slideshow.setCycleCount(Timeline.INDEFINITE);
-        double tempDuration = (timestamp.toMillis() * delayDiffFactor);
-        slideshow.playFrom(new Duration(tempDuration));
+        if(!checkRestartOnNewImages() || delayDiffFactor != 1.0 || isAddingImages){
+            double tempDuration = (timestamp.toMillis() * delayDiffFactor);
+            slideshow.playFrom(new Duration(tempDuration));
+        }else{
+            slideshow.play();
+        }
+        isAddingImages = true;
         delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;
         System.out.println("initated new slideshow with " + imageList.size() + " images");
@@ -284,6 +289,9 @@ public class Slideshow extends Application {
                 double bilderVist = timeStamp / (delay + fadeTime);
                 String[] split = newValue.split(" ");
                 int numberOfImagesGenerated = Integer.parseInt(split[3]);
+                if(split.length == 5){
+                    isAddingImages = false;
+                }
                 if (numberOfImagesGenerated > bilderVist || split.length == 5) {
                     initiateNewSlideshow();
                 }

@@ -48,7 +48,6 @@ public class Slideshow extends Application {
     private Task retrieveImagesTask, checkDelayTask, pictureTimerTask;
     private Thread retrieveImagesThread, checkDelayThread, updatePictureTimerThread;
     private boolean startup = true;
-    private boolean startOfSlide = true;
     private Button quit, menu;
     private HBox box;
     private double delayDiffFactor = 1.0;
@@ -76,19 +75,17 @@ public class Slideshow extends Application {
         /*
         * Initiate picture while loading
         */
-        if (startOfSlide){
-            ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
-            root.getChildren().add(loadImage);
-            SequentialTransition loadImageTransition = imageTrans.getLoadingScreenTransition(loadImage);
-            loadImageTransition.setOnFinished(new EventHandler<ActionEvent>(){
-                @Override            
-                public void handle(ActionEvent arg0) {
-                    startOfSlide = false;
-                }
-            });
-            slideshow.getChildren().add(imageTrans.getLoadingScreenTransition(loadImage));
-            
-        }        
+        ImageView loadImage = new ImageView (new Image("file:/c:/Temp/LoadingImage.jpg"));
+        root.getChildren().add(loadImage);
+        SequentialTransition loadImageTransition = imageTrans.getLoadingScreenTransition(loadImage);
+        loadImageTransition.setOnFinished(new EventHandler<ActionEvent>(){
+            @Override            
+            public void handle(ActionEvent arg0) {
+                        ImageView couldNotConnectImage = new ImageView (new Image("file:/c:/Temp/ErrorNoInternet.jpg"));
+                        root.getChildren().add(couldNotConnectImage);
+            }
+        });
+        slideshow.getChildren().add(loadImageTransition);       
         /*
         */
         

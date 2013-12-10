@@ -209,9 +209,8 @@ public class AddImageGUI extends GridPane {
                     }
                 });
                 new Thread(ProgressTask).start();
-            }
-            else{
-               setStatusText("Du har allerde denne tag-en");
+            } else {
+                setStatusText("Du har allerde denne tag-en");
             }
         }
     }
@@ -223,14 +222,11 @@ public class AddImageGUI extends GridPane {
         gridLabel.setText(thumbnails.size() + " bilder med " + selectedTag + " tag:");
         grid.getChildren().addAll(thumbnails);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (Thumbnail t : thumbnails) {
-                    t.loadImage();
-                }
-            }
-        }).start();
+
+        for (Thumbnail t : thumbnails) {
+            t.loadImage();
+
+        }
     }
 
     private void setSelectedButton(int i) {

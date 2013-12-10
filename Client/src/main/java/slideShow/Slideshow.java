@@ -271,7 +271,7 @@ public class Slideshow extends Application {
                 Logger.getLogger(Slideshow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //imageList.clear();
+        isAddingImages = false;
         imageViewSetter = new ListOfImages(imageList, oldImageList);
         retrieveImagesTask = imageViewSetter.getImageViewList();
         retrieveImagesThread = new Thread(retrieveImagesTask);
@@ -289,9 +289,8 @@ public class Slideshow extends Application {
                 double bilderVist = timeStamp / (delay + fadeTime);
                 String[] split = newValue.split(" ");
                 int numberOfImagesGenerated = Integer.parseInt(split[3]);
-                if(split.length == 5){
-                    isAddingImages = false;
-                }
+              //  if(split.length == 5){
+               // }
                 if (numberOfImagesGenerated > bilderVist || split.length == 5) {
                     initiateNewSlideshow();
                 }

@@ -34,7 +34,7 @@
     -fx-background-color:#090a0c;
 }
 
-.checkBox{
-    -fx-text-fill:
-        white;
+.check-box{
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+
 }

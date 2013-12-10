@@ -1,5 +1,6 @@
 package addImage;
 
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.beans.value.ChangeListener;
@@ -27,6 +28,7 @@ public class AddImageGUI extends GridPane {
     final TextField searchField = new TextField();
     public static boolean addingToList = false;
     Task ProgressTask;
+    private int minTagID;
 
     public AddImageGUI() {
         setAlignment(Pos.CENTER);
@@ -56,13 +58,18 @@ public class AddImageGUI extends GridPane {
                             searchButton.setDisable(false);
                         }
                         if (addingToList) {
-                            setProgressText(newValue);
+                            if (Pattern.matches("[0-9]+", newValue)) {
+                                minTagID = Integer.parseInt(newValue);
+                            } else {
+                                setProgressText(newValue);
+                            }
                         } else {
                             setStatusText(newValue);
                         }
                     }
                 });
                 new Thread(ProgressTask).start();
+                ProgressTask.messageProperty().getValue();
             }
         });
 
@@ -78,11 +85,10 @@ public class AddImageGUI extends GridPane {
         progressBar.setPrefWidth(300);
         pbHBox.getChildren().add(progressBar);
         add(pbHBox, 0, 5, 3, 1);
-        
+
         GridPane.setHgrow(this, Priority.ALWAYS);
         GridPane.setVgrow(this, Priority.ALWAYS);
-        
-        
+
     }
 
     public void setStatusText(String text) {

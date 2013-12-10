@@ -31,6 +31,11 @@ public class AddImageLogic {
     private JsonPrimitive fromSource = null;
     private final int pictureLimit = 100;
     private int picCountTmp = 0;
+    private String minTagID = null;
+
+    public String getMinTagID() {
+        return minTagID;
+    }
 
     /**
      * Takes a tag, finds pictures from Instagram and Twitter, returns amount of
@@ -50,6 +55,7 @@ public class AddImageLogic {
         }
         instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaUrl), "Instagram");
         twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl), "Twitter");
+        minTagID = instaGetter.getMinID();
         picturesFound = getMore();
         return picturesFound;
     }
@@ -129,16 +135,16 @@ public class AddImageLogic {
      * @throws IOException
      */
     private boolean exportList() throws IOException {
-        StorePicturesCom store = new StorePicturesCom();
+       /* StorePicturesCom store = new StorePicturesCom();
         if (store.storePictures(pictureList) != 200) {
             jsonArrayList.clear();
             pictureList.clear();
             return false;
         } else {
             jsonArrayList.clear();
-            pictureList.clear();
+            pictureList.clear();*/
             return true;
-        }
+      //  }
     }
 
     /**
@@ -154,6 +160,7 @@ public class AddImageLogic {
             @Override
             protected Object call() throws Exception {
                 int size = getPictures(tag);
+                updateMessage(getMinTagID());
                 if (size > pictureLimit) {
                     int tmp = size - pictureLimit;
                     size = size - tmp;
@@ -177,6 +184,7 @@ public class AddImageLogic {
                             i++;
                         }
                     }
+                    
                     if (!exportList()) {
                         AddImageGUI.addingToList = false;
                         failedMsg = "Klarte ikke legge bilder inn på server";

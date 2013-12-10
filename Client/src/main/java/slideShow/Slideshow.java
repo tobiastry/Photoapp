@@ -201,6 +201,15 @@ public class Slideshow extends Application {
 
         root.getChildren().add(box);
 
+        /*
+        * Initiate picture while loading
+        */
+        ImageView loadImage = new ImageView (new Image("http://www.taleoftwowastelands.com/sites/default/files/chucksteel/images/loading_screen01.png"));
+        root.getChildren().add(loadImage);
+        slideshow.getChildren().add(imageTrans.getLoadingScreenTransition(loadImage));
+        /*
+        */
+        
         for (int i = 0; i < imageList.size(); i++) {
             imageList.get(i).setOpacity(0);
             root.getChildren().add(imageList.get(i));

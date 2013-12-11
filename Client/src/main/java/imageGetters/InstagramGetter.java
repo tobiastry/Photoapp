@@ -30,7 +30,7 @@ public class InstagramGetter {
      * @return
      */
     public String toUrl(String tag) {
-        if (Pattern.matches("[\\wÃ†Ã˜Ã…Ã¦Ã¸Ã¥]+", tag)) {
+        if (Pattern.matches("[\\wÆØÅæøå]+", tag)) {
             String instagramUrl = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=27dbaa9b6235400f8dc76af4aa5b0458";
             return instagramUrl;
         } else {
@@ -54,7 +54,7 @@ public class InstagramGetter {
             connection.setRequestMethod("GET");
             connection.connect();
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-            jsonPictures = jsonParse(reader);
+            jsonPictures = findJsonPictures(reader);
 
             if (jsonPictures != null) {
                 return jsonPictures;
@@ -76,7 +76,7 @@ public class InstagramGetter {
      * @param reader (InputStreamReader)
      * @return jsonPictures (JsonArray)
      */
-    public JsonArray jsonParse(InputStreamReader reader) {
+    public JsonArray findJsonPictures(InputStreamReader reader) {
         JsonParser parser = new JsonParser();
         obj = parser.parse(reader).getAsJsonObject();
         jsonPictures = obj.get("data").getAsJsonArray();

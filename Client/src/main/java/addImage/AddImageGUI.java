@@ -188,16 +188,23 @@ public class AddImageGUI extends GridPane {
                 ProgressTask.messageProperty().addListener(new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (ProgressTask.isDone() || ProgressTask.isCancelled()) {
+                        if (ProgressTask.isDone()) {
                             searchButton.setDisable(false);
                             searchField.setDisable(false);
-                            try {
-                                tagCom.storeTag(searchField.getText(), minTagID);
-                            } catch (IOException ex) {
-                                Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            updateTagButtons();
+                            String tag = searchField.getText();
+                            if (Pattern.matches("[\\wÆØÅæøå]+", tag)) {
+                                try {
+                                    tagCom.storeTag(searchField.getText(), minTagID);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                updateTagButtons();
+                            }                           
                             searchField.setText("");
+                        }
+                        if (ProgressTask.isCancelled()) {
+                            searchButton.setDisable(false);
+                            searchField.setDisable(false);
                         }
                         if (addingToList) {
                             if (Pattern.matches("[0-9]+", newValue)) {
@@ -209,9 +216,8 @@ public class AddImageGUI extends GridPane {
                     }
                 });
                 new Thread(ProgressTask).start();
-            }
-            else{
-               setStatusText("Du har allerde denne tag-en");
+            } else {
+                setStatusText("Du har allerde denne tag-en");
             }
         }
     }

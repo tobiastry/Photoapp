@@ -17,7 +17,7 @@ public class ImageTransition {
     private static int fadeTime =  1000;
     private static boolean getNewDelay = false;
     /*Delay in milliseconds*/
-    private static int delay;
+    private static int delay = 0;
 
     public ImageTransition(){
        delay = getTimeBetweenImages();
@@ -127,8 +127,11 @@ public class ImageTransition {
         try {
             d = tempDelay.getDelay();
         } catch (IOException ex) {
-            //Delay in seconds if delay can't be retrieved    
-            return 5;
+            //Delay in seconds if delay can't be retrieved  
+            if(delay == 0){
+                delay = 10000;
+            }
+            return delay;
         }
         return d * 1000;
     }

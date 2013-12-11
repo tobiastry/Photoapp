@@ -106,10 +106,14 @@ public class TwitterGetter {
     public String getNextUrl() {
         JsonElement next_url = obj.get("search_metadata");
         if (next_url != null) {
+            try{
             String url = next_url.getAsJsonObject().get("next_results").getAsString();
             if (url != null) {
                 return "https://api.twitter.com/1.1/search/tweets.json" + url;
             } else {
+                return null;
+            }
+            } catch (NullPointerException e){
                 return null;
             }
         } else {

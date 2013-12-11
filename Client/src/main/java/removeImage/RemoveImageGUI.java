@@ -143,31 +143,15 @@ public class RemoveImageGUI extends GridPane {
             Logger.getLogger(RemoveImageGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        images = newPics;
+        thumbnails.clear();
+        for (int i = 0; i < images.size(); i++) {
+            SelectableThumbnail tn = new SelectableThumbnail();
+            tn.setPicture(images.get(i));
+            thumbnails.add(tn);
+        }
+        updateGrid();
 
-        boolean exists = false;
-        if (!newPics.isEmpty()) {
-            for (Picture pic : newPics) {
-                for (Picture img : images) {
-                    if (pic.equals(img)) {
-                        exists = true;
-                        break;
-                    }
-                }
-                if (!exists) {
-                    break;
-                }
-            }
-        }
-        if (!exists) {
-            images = newPics;
-            thumbnails.clear();
-            for (int i = 0; i < images.size(); i++) {
-                SelectableThumbnail tn = new SelectableThumbnail();
-                tn.setPicture(images.get(i));
-                thumbnails.add(tn);
-            }
-            updateGrid();
-        }
 
     }
 }

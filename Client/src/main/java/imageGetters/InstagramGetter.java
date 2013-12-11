@@ -54,7 +54,6 @@ public class InstagramGetter {
             connection.connect();
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
             jsonPictures = findJsonPictures(reader);
-
             if (jsonPictures != null) {
                 return jsonPictures;
             }
@@ -89,11 +88,15 @@ public class InstagramGetter {
      */
     public String getNextUrl() {
         JsonElement next_url = obj.get("pagination");
-        if (next_url != null) {
+        if (next_url != null) { 
+            try{
             String url = next_url.getAsJsonObject().get("next_url").getAsString();
             if (url != null) {
                 return url;
             } else {
+                return null;
+            }
+            } catch (NullPointerException e){
                 return null;
             }
         } else {

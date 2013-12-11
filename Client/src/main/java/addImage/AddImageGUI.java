@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -174,22 +175,36 @@ public class AddImageGUI extends GridPane {
                 searchField.setDisable(true);
 
                 ProgressTask = logic.findPicturesTask(searchField.getText());
+                ProgressTask.setOnSucceeded(new EventHandler() {
+                    @Override
+                    public void handle(Event t) {
+                        displayPictures(selectedTag);
+                        updateTagButtons();
+                        setSelectedButton(tagButtons.size() - 1);
+                    }
+                });
                 progressBar.progressProperty().unbind();
                 progressBar.progressProperty().bind(ProgressTask.progressProperty());
                 ProgressTask.messageProperty().addListener(new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (ProgressTask.isDone() || ProgressTask.isCancelled()) {
+                        if (ProgressTask.isDone()) {
                             searchButton.setDisable(false);
                             searchField.setDisable(false);
-                            try {
-                                tagCom.storeTag(searchField.getText(), minTagID);
-                            } catch (IOException ex) {
-                                Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            updateTagButtons();
-                            setSelectedButton(tagButtons.size() - 1);
+                            String tag = searchField.getText();
+                            if (Pattern.matches("[\\wÆØÅæøå]+", tag)) {
+                                try {
+                                    tagCom.storeTag(searchField.getText(), minTagID);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(AddImageGUI.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                updateTagButtons();
+                            }                           
                             searchField.setText("");
+                        }
+                        if (ProgressTask.isCancelled()) {
+                            searchButton.setDisable(false);
+                            searchField.setDisable(false);
                         }
                         if (addingToList) {
                             if (Pattern.matches("[0-9]+", newValue)) {

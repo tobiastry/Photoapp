@@ -6,24 +6,26 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import model.Picture;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.net.MalformedURLException;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * 
+ *
  * @author T
  */
 public class InstagramGetter {
 
-    private InstagramParser parser;
     private JsonArray jsonPictures;
-    
+    private JsonObject obj;
+
     /**
      * Takes a tag and makes a valid URL out of it.
+     *
      * @param tag
      * @return
      */
@@ -35,10 +37,11 @@ public class InstagramGetter {
             return null;
         }
     }
-    
-     /**
-     * Sends a request to the site with the given URL receives a JSON reply parses it
-     * and returns a JsonArray which contains the pictures.
+
+    /**
+     * Sends a request to the site with the given URL receives a JSON reply
+     * parses it and returns a JsonArray which contains the pictures.
+     *
      * @param surl (URL(String))
      * @return jsonPictures (JsonArray)
      * @throws IOException
@@ -51,8 +54,7 @@ public class InstagramGetter {
             connection.setRequestMethod("GET");
             connection.connect();
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-            parser = new InstagramParser();
-            jsonPictures = parser.parse(reader);
+            jsonPictures = findJsonPictures(reader);
 
             if (jsonPictures != null) {
                 return jsonPictures;
@@ -67,16 +69,60 @@ public class InstagramGetter {
         return null;
     }
 
-    public String getNextUrl() {
-        return parser.getNextUrl();
+    /**
+     * Finds the location of the pictures in the InputStreamReader, returns them
+     * as a JsonArray.
+     *
+     * @param reader (InputStreamReader)
+     * @return jsonPictures (JsonArray)
+     */
+    public JsonArray findJsonPictures(InputStreamReader reader) {
+        JsonParser parser = new JsonParser();
+        obj = parser.parse(reader).getAsJsonObject();
+        jsonPictures = obj.get("data").getAsJsonArray();
+        return jsonPictures;
     }
     
     public String getMinID() {
         return parser.getMinID();
     }
 
-    public Picture addToList(JsonElement j) {
-        Picture picture = parser.addToList(j);
-        return picture;
+    /**
+     * Finds the next url in the InputStreamReader and returns it as a string.
+     *
+     * @return next_url (String)
+     */
+    public String getNextUrl() {
+        JsonElement next_url = obj.get("pagination");
+        if (next_url != null) {
+            String url = next_url.getAsJsonObject().get("next_url").getAsString();
+            if (url != null) {
+                return url;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    /**
+     * Finds the the newest ID for the tag in the InputStreamReader and returns
+     * it as a int.
+     *
+     * @return minTagID (int)
+     */
+    public String getMinID() {
+        JsonElement pagination = obj.get("pagination");
+        if (pagination != null) {
+                JsonElement min_tag_id = pagination.getAsJsonObject().get("min_tag_id");
+                if (min_tag_id != null) {
+                    String minTagID = min_tag_id.getAsString();
+                    return minTagID;
+                } else {
+                    return "0";
+                }
+        } else {
+            return "0";
+        }
     }
 }

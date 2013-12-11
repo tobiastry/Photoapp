@@ -23,8 +23,9 @@ public class TwitterParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        TwitterGetter getter = new TwitterGetter();
         TwitterParser parser = new TwitterParser();
-        JsonArray jsonPictures = parser.parse(ir);
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -40,8 +41,9 @@ public class TwitterParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        TwitterGetter getter = new TwitterGetter();
         TwitterParser parser = new TwitterParser();
-        JsonArray jsonPictures = parser.parse(ir);
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -57,8 +59,9 @@ public class TwitterParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        TwitterGetter getter = new TwitterGetter();
         TwitterParser parser = new TwitterParser();
-        JsonArray jsonPictures = parser.parse(ir);
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -74,8 +77,9 @@ public class TwitterParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        TwitterGetter getter = new TwitterGetter();
         TwitterParser parser = new TwitterParser();
-        JsonArray jsonPictures = parser.parse(ir);
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -91,8 +95,9 @@ public class TwitterParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        TwitterGetter getter = new TwitterGetter();
         TwitterParser parser = new TwitterParser();
-        JsonArray jsonPictures = parser.parse(ir);
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -107,9 +112,10 @@ public class TwitterParserTests {
         InputStream fis = getClass().getResourceAsStream("./TwitterJsonSampleData.json");
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
-        TwitterParser parser = new TwitterParser();
-        parser.parse(ir);
-        String next_url = parser.getNextUrl();
+        TwitterGetter getter = new TwitterGetter();
+        
+        getter.findJsonPictures(ir);
+        String next_url = getter.getNextUrl();
 
         assertThat(next_url, is(not(nullValue())));
     }

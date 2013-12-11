@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
 import javafx.concurrent.Task;
+import repository.AuthenticationTwitter;
 import repository.StorePicturesCom;
 
 /**
@@ -19,10 +20,14 @@ import repository.StorePicturesCom;
  * @author T
  */
 public class AddImageLogic {
+
     private ArrayList<Picture> pictureList = new ArrayList<>();
     private List<JsonArray> jsonArrayList = new ArrayList<>();
     private InstagramGetter instaGetter = null;
+    private InstagramParser instaParser = null;
     private TwitterGetter twitterGetter = null;
+    private TwitterParser twitterParser = null;
+    private AuthenticationTwitter Auth = null;
     public String failedMsg = "Fant ingen bilder";
     private String tag = null;
     private int picturesFound = 0;
@@ -32,6 +37,7 @@ public class AddImageLogic {
     private final int pictureLimit = 100;
     private int picCountTmp = 0;
     private String minTagID = null;
+    String bearerToken = null;
 
     public String getMinTagID() {
         return minTagID;
@@ -46,19 +52,28 @@ public class AddImageLogic {
      * @throws IOException
      */
     private int getPictures(String tag) throws IOException {
-        instaGetter = new InstagramGetter();
-        twitterGetter = new TwitterGetter();
+        initiate();
         String instaUrl = instaGetter.toUrl(tag);
         String twitterUrl = twitterGetter.toUrl(tag);
         if (instaUrl == null || twitterUrl == null) {
             failedMsg = "Ugyldig tag";
         }
-
+        bearerToken = Auth.requestBearerToken();
         instagramPicFound = getSizeAndAdd(instaGetter.findPictures(instaUrl), "Instagram");
-        twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl), "Twitter");
+        if (bearerToken != null) {
+            twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(twitterUrl, bearerToken), "Twitter");
+        }
         minTagID = instaGetter.getMinID();
         picturesFound = getMore();
         return picturesFound;
+    }
+
+    private void initiate() {
+        instaGetter = new InstagramGetter();
+        instaParser = new InstagramParser();
+        twitterGetter = new TwitterGetter();
+        twitterParser = new TwitterParser();
+        Auth = new AuthenticationTwitter();
     }
 
     /**
@@ -95,8 +110,8 @@ public class AddImageLogic {
         }
         if (twitterPicFound != 0 && picturesFound <= pictureLimit) {
             String next_url = twitterGetter.getNextUrl();
-            if (next_url != null) {
-                twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(next_url), "Twitter");
+            if (next_url != null && bearerToken != null) {
+                twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(next_url, bearerToken), "Twitter");
             }
         }
         if (picturesFound <= pictureLimit && (instagramPicFound + twitterPicFound) != picCountTmp) {
@@ -115,13 +130,13 @@ public class AddImageLogic {
     private void addPictureToList(JsonElement j, String source) {
         switch (source) {
             case "Instagram": {
-                Picture picture = instaGetter.addToList(j);
+                Picture picture = instaParser.addToList(j);
                 picture.setTag(tag);
                 pictureList.add(picture);
                 break;
             }
             case "Twitter": {
-                Picture picture = twitterGetter.addToList(j);
+                Picture picture = twitterParser.addToList(j);
                 picture.setTag(tag);
                 pictureList.add(picture);
                 break;
@@ -173,7 +188,7 @@ public class AddImageLogic {
                         String source = jsonArrayList.get(t).get(jsonArrayList.get(t).size() - 1).getAsString();
                         for (int j = 0; j < jsonArrayList.get(t).size() - 1; j++) {
                             JsonElement json = jsonArrayList.get(t).get(j);
-                            Thread.sleep(25);
+                            Thread.sleep(10);
                             addPictureToList(json, source);
                             updateProgress(i, size);
                             if (i >= size) {
@@ -183,10 +198,10 @@ public class AddImageLogic {
                             i++;
                         }
                     }
-                    
+
                     if (!exportList()) {
                         AddImageGUI.addingToList = false;
-                        failedMsg = "Klarte ikke legge bilder inn på server";
+                        failedMsg = "Klarte ikke legge bilder inn pÃ¥ server";
                         failed();
                         return false;
                     } else {

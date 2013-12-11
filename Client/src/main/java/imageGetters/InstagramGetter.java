@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -82,10 +81,6 @@ public class InstagramGetter {
         jsonPictures = obj.get("data").getAsJsonArray();
         return jsonPictures;
     }
-    
-    public String getMinID() {
-        return parser.getMinID();
-    }
 
     /**
      * Finds the next url in the InputStreamReader and returns it as a string.
@@ -105,6 +100,7 @@ public class InstagramGetter {
             return null;
         }
     }
+
     /**
      * Finds the the newest ID for the tag in the InputStreamReader and returns
      * it as a int.
@@ -114,13 +110,13 @@ public class InstagramGetter {
     public String getMinID() {
         JsonElement pagination = obj.get("pagination");
         if (pagination != null) {
-                JsonElement min_tag_id = pagination.getAsJsonObject().get("min_tag_id");
-                if (min_tag_id != null) {
-                    String minTagID = min_tag_id.getAsString();
-                    return minTagID;
-                } else {
-                    return "0";
-                }
+            JsonElement min_tag_id = pagination.getAsJsonObject().get("min_tag_id");
+            if (min_tag_id != null) {
+                String minTagID = min_tag_id.getAsString();
+                return minTagID;
+            } else {
+                return "0";
+            }
         } else {
             return "0";
         }

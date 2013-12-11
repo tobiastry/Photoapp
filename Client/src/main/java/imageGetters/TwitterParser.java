@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package imageGetters;
 
 import com.google.gson.JsonArray;
@@ -23,7 +19,7 @@ import repository.ExpandUrl;
  *
  * @author T
  */
-public class TwitterParser {    
+public class TwitterParser {
 
     /**
      * Finds the URLs in the JsonElement and makes a type Picture out of them.
@@ -79,7 +75,7 @@ public class TwitterParser {
         }
         return picture;
     }
-     
+
     private static long strDateToUnixTimestamp(String dt) {
         DateFormat formatter;
         Date date = null;

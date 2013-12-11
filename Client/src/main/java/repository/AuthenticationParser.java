@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import com.google.gson.JsonObject;
@@ -15,7 +11,9 @@ import java.io.InputStreamReader;
 public class AuthenticationParser {
 
     /**
-     * Parses the InputStreamReader to find the access_token/bearer_token, returns the token.
+     * Parses the InputStreamReader to find the access_token/bearer_token,
+     * returns the token.
+     *
      * @param reader (InputStreamReader)
      * @return bearerToken (String)
      */

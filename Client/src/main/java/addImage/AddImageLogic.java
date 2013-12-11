@@ -248,7 +248,6 @@ public class AddImageLogic {
                 updateMessage("");
                 updateProgress(0, 0);
             }
-            
         };
     }
 }

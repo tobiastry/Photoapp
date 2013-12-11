@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import java.io.IOException;
@@ -17,6 +13,7 @@ public class ExpandUrl {
 
     /**
      * Takes an shorted URL, expands it and returns the expanded URL.
+     *
      * @param pictureUrl
      * @return URL (String)
      * @throws MalformedURLException

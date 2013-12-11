@@ -1,17 +1,14 @@
 package imageGetters;
 
-
 import model.Picture;
 import com.google.gson.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author T
  */
 public class InstagramParser {
-    
+
     /**
      * Finds the URLs in the JsonElement and makes a type Picture out of them.
      *

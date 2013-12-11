@@ -118,16 +118,16 @@ public class Slideshow extends Application {
         box.setStyle("../stylesheets/Menu.css");
         
         // Layout of buttons and checkbox related to window
-        AnchorPane anchorpane = new AnchorPane();
-        anchorpane.setLeftAnchor(quit, 300.0);
-        anchorpane.setBottomAnchor(quit, 30.0);
-        anchorpane.setRightAnchor(menu, 300.0);
-        anchorpane.setBottomAnchor(menu, 30.0);
-        anchorpane.setBottomAnchor(resetChk, 10.0);
-        anchorpane.setRightAnchor(resetChk, 20.0);
-        anchorpane.setLeftAnchor(resetChk, 100.0);
-        anchorpane.getChildren().addAll(quit, menu, resetChk);
-        box.getChildren().add(anchorpane);
+        AnchorPane anchorPane = new AnchorPane();
+        AnchorPane.setLeftAnchor(quit, 300.0);
+        AnchorPane.setBottomAnchor(quit, 30.0);
+        AnchorPane.setRightAnchor(menu, 300.0);
+        AnchorPane.setBottomAnchor(menu, 30.0);
+        AnchorPane.setBottomAnchor(resetChk, 10.0);
+        AnchorPane.setRightAnchor(resetChk, 20.0);
+        AnchorPane.setLeftAnchor(resetChk, 100.0);
+        anchorPane.getChildren().addAll(quit, menu, resetChk);
+        box.getChildren().add(anchorPane);
         
         /*
          * Listener on mouse movement for buttons
@@ -240,7 +240,7 @@ public class Slideshow extends Application {
         isAddingImages = true;
         delay = imageTrans.getDelay();
         delayDiffFactor = 1.0;
-        System.out.println("initated new slideshow with " + imageList.size() + " images");
+        //System.out.println("initated new slideshow with " + imageList.size() + " images");
     }
 
     public void initiateCheckDelayThread() {
@@ -254,7 +254,7 @@ public class Slideshow extends Application {
         checkDelayTask.messageProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println(newValue);
+                //System.out.println(newValue);
                 delayDiffFactor = Double.parseDouble(checkDelayTask.messageProperty().getValue().split(" ")[4]);
                 initiateNewSlideshow();
             }
@@ -262,7 +262,7 @@ public class Slideshow extends Application {
     }
 
     public void initiateRetrieveImagesThread() {
-        System.out.println("Initiating new retreiveImagesThread");
+        //System.out.println("Initiating new retreiveImagesThread");
         if (!startup) {
             imageViewSetter.setIsRunning(false);
             try {

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import java.io.BufferedWriter;
@@ -16,7 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * 
+ *
  * @author John McEpic
  */
 public class AuthenticationTwitter {
@@ -38,6 +34,7 @@ public class AuthenticationTwitter {
 
     /**
      * Requests a bearer_token from Twitters api, returns the token as a string.
+     *
      * @return bearer_token (String)
      * @throws IOException
      */

@@ -42,7 +42,7 @@ public class Menu {
 
     public Menu() throws IOException {
         pictureList = new PictureList();
-        
+
         buttons = new ArrayList<>();
         makeButtons();
 
@@ -206,5 +206,4 @@ public class Menu {
     public static PictureList getPictureList() {
         return pictureList;
     }
-    
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package imageGetters;
 
 import com.google.gson.JsonArray;
@@ -26,6 +22,7 @@ public class TwitterGetter {
 
     /**
      * Takes a tag and makes a valid URL out of it.
+     *
      * @param tag
      * @return
      */
@@ -39,8 +36,9 @@ public class TwitterGetter {
     }
 
     /**
-     * Sends a request to the site with the given URL receives a JSON reply parses it
-     * and returns a JsonArray which contains the pictures.
+     * Sends a request to the site with the given URL receives a JSON reply
+     * parses it and returns a JsonArray which contains the pictures.
+     *
      * @param surl (URL(String))
      * @return jsonPictures (JsonArray)
      * @throws IOException
@@ -72,7 +70,7 @@ public class TwitterGetter {
         }
         return null;
 
-    }    
+    }
 
     /**
      * Finds the location of the pictures in the InputStreamReader, returns them
@@ -108,18 +106,18 @@ public class TwitterGetter {
     public String getNextUrl() {
         JsonElement next_url = obj.get("search_metadata");
         if (next_url != null) {
-                String url = next_url.getAsJsonObject().get("next_results").getAsString();
-                if (url != null) {
-                    return "https://api.twitter.com/1.1/search/tweets.json" + url;
-                } else {
-                    return null;
-                }            
+            String url = next_url.getAsJsonObject().get("next_results").getAsString();
+            if (url != null) {
+                return "https://api.twitter.com/1.1/search/tweets.json" + url;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
 
     }
-    
+
     private boolean hasPictureUrl(JsonObject entities) {
         JsonElement media = entities.getAsJsonObject().get("media");
         JsonElement url = entities.getAsJsonObject().get("urls");

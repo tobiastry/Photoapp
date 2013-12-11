@@ -16,8 +16,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
- * This class is a GridPane that contains all the text and
- * buttons for setting delay.
+ * This class is a GridPane that contains all the text and buttons for setting
+ * delay.
+ *
  * @author Stian
  */
 public class DelayNode extends GridPane {

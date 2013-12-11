@@ -24,8 +24,9 @@ public class InstagramParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        InstagramGetter getter = new InstagramGetter();
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
         InstagramParser parser = new InstagramParser();
-        JsonArray jsonPictures = parser.parse(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -41,9 +42,10 @@ public class InstagramParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        InstagramGetter getter = new InstagramGetter();
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
         InstagramParser parser = new InstagramParser();
-        JsonArray jsonPictures = parser.parse(ir);
-
+;
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
             pictureList.add(picture);
@@ -58,8 +60,9 @@ public class InstagramParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        InstagramGetter getter = new InstagramGetter();
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
         InstagramParser parser = new InstagramParser();
-        JsonArray jsonPictures = parser.parse(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -75,8 +78,9 @@ public class InstagramParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        InstagramGetter getter = new InstagramGetter();
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
         InstagramParser parser = new InstagramParser();
-        JsonArray jsonPictures = parser.parse(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -92,8 +96,9 @@ public class InstagramParserTests {
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
         ArrayList<Picture> pictureList = new ArrayList<>();
+        InstagramGetter getter = new InstagramGetter();
+        JsonArray jsonPictures = getter.findJsonPictures(ir);
         InstagramParser parser = new InstagramParser();
-        JsonArray jsonPictures = parser.parse(ir);
 
         for (JsonElement j : jsonPictures) {
             Picture picture = parser.addToList(j);
@@ -109,9 +114,9 @@ public class InstagramParserTests {
         InputStream fis = getClass().getResourceAsStream("./InstagramJsonSampleData.json");
         InputStreamReader ir = new InputStreamReader(fis, "UTF-8");
 
-        InstagramParser parser = new InstagramParser();
-        parser.parse(ir);
-        String next_url = parser.getNextUrl();
+        InstagramGetter getter = new InstagramGetter();
+        getter.findJsonPictures(ir);
+        String next_url = getter.getNextUrl();
        
         assertThat(next_url, is(not(nullValue())));
     }

@@ -102,27 +102,22 @@ public class AddImageLogic {
      * @throws IOException
      */
     private int getMore() throws IOException {
-        System.out.println("I startet getMore() and i have "+ picturesFound);
         if (instagramPicFound != 0 && picturesFound <= pictureLimit) {
-            System.out.println("Now I am looking for instagram");
             String next_url = instaGetter.getNextUrl();
             if (next_url != null) {
                 instagramPicFound = getSizeAndAdd(instaGetter.findPictures(next_url), "Instagram");
             }
         }
         if (twitterPicFound != 0 && picturesFound <= pictureLimit) {
-            System.out.println("Now I am looking for twitter");
             String next_url = twitterGetter.getNextUrl();
             if (next_url != null && bearerToken != null) {
                 twitterPicFound = getSizeAndAdd(twitterGetter.findPictures(next_url, bearerToken), "Twitter");
             }
         }
         if (picturesFound <= pictureLimit && (instagramPicFound + twitterPicFound) != picCountTmp) {
-            System.out.println("I want to start getMore again and i have "+ picturesFound);
             picCountTmp = instagramPicFound + twitterPicFound;
             return getMore();
         }
-        System.out.println("I am done and i have "+ picturesFound);
         return picturesFound;
     }
 
